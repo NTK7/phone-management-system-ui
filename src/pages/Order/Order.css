@@ -15,9 +15,9 @@
 	background-color: white;
 	color: #e94560;
 }
-.order__billing {
+.order__table {
 	padding: 30px;
-	height: 500px !important;
+	height: 340px !important;
 	overflow: scroll;
 }
 .rowOdd {
@@ -33,4 +33,33 @@
 td {
 	border: none !important;
 	outline: none !important;
+}
+.order__billing > h2 {
+	color: white;
+	padding: 30px 30px 10px 30px;
+}
+
+.order__searchByBrandModel {
+	margin: 10px 30px;
+	display: flex;
+	align-items: center;
+}
+.order__searchByBrandModel > input {
+	padding: 5px;
+	width: 220px;
+}
+.order__searchByBrandModel > button {
+	color: white;
+	margin-left: 5px;
+	background-color: #e94560;
+}
+.order__searchByBrandModel > button:hover {
+	background-color: white;
+	color: #e94560;
+}
+td > input {
+    text-align: center;
+}
+.order__total{
+    margin: 20px 50px;
 }

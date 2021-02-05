@@ -1,31 +1,36 @@
-import { Button } from '@material-ui/core';
+import { Button, Card } from '@material-ui/core';
 import { useState } from 'react';
-import { Table } from 'react-bootstrap';
+import { ListGroup, Table } from 'react-bootstrap';
 import './Order.css';
 
 function Order() {
 	const [searchByBrand, setSearchByBrand] = useState('');
+	const [searchByBrandModel, setSearchByBrandModel] = useState('');
 
 	const searchByBrandFunction = () => {
 		alert(searchByBrand);
 	};
 
+	const searchByBrandAndModelFunction = () => {
+		alert(searchByBrandModel);
+	};
+
 	return (
 		<div className="order">
 			{/* Search by brand section */}
-            <br/>
+			<br />
 			<div className="order__searchByBrand">
 				<input
 					type="text"
-					placeholder="Search by vendor"
+					placeholder="Search by brand"
 					onChange={(e) => setSearchByBrand(e.target.value)}
 					value={searchByBrand}
 				/>{' '}
 				<Button onClick={searchByBrandFunction}>Search</Button>
 			</div>
 
-			{/* Billing section */}
-			<div className="order__billing">
+			{/* table section */}
+			<div className="order__table">
 				<Table responsive striped bordered hover variant="dark">
 					<thead>
 						{/* Headings of the table */}
@@ -58,8 +63,71 @@ function Order() {
 				</Table>
 			</div>
 
+			{/* Billing Section */}
+			<div className="order__billing">
+				<h2>Billing</h2>
+				<div className="order__searchByBrandModel">
+					<input
+						type="text"
+						placeholder="Search by brand or model"
+						onChange={(e) => setSearchByBrandModel(e.target.value)}
+						value={setSearchByBrandModel}
+					/>{' '}
+					<Button onClick={searchByBrandAndModelFunction}>Search</Button>
+				</div>
+
+				{/* table section */}
+				<div className="order__table">
+					<Table responsive striped bordered hover variant="dark">
+						<thead>
+							{/* Headings of the table */}
+							<tr>
+								<th>ITEM</th>
+								<th>QUANTITY</th>
+								<th>SELLING PRICE</th>
+								<th>TOTAL BILL</th>
+							</tr>
+						</thead>
+						<tbody>
+							{/* Creating dummy data with 20 rows */}
+							{Array.from({ length: 2 }).map((_) => (
+								<>
+									<tr className="rowOdd">
+										<td>Item Data</td>
+										<td>
+											<input type="text" placeholder="Quantity" />
+										</td>
+										<td>
+											<input type="text" placeholder="Quantity" />
+										</td>
+										<td>Total bill Data</td>
+									</tr>
+									<tr className="rowEven">
+										<td>Item Data</td>
+										<td>
+											<input type="text" placeholder="Quantity" />
+										</td>
+										<td>
+											<input type="text" placeholder="Quantity" />
+										</td>
+										<td>Total bill Data</td>
+									</tr>
+								</>
+							))}
+						</tbody>
+					</Table>
+				</div>
+			</div>
 			{/* Total Section */}
-			<div className="order__total"></div>
+			<div className="order__total">
+				<Card className="viewInventory__bottomCard">
+					<ListGroup variant="flush" className="viewInventory__bottomCardListGroup">
+						<ListGroup.Item className="viewInventory__bottomCardListGroupItem">
+							<span>Total Sale :</span> <input type="text" value={0} />
+						</ListGroup.Item>
+					</ListGroup>
+				</Card>
+			</div>
 		</div>
 	);
 }

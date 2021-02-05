@@ -1,0 +1,46 @@
+.home__nav {
+	position: sticky;
+	top: 0;
+	/* border: 1px black solid; */
+	margin-bottom: 20px;
+	padding: 10px 25px;
+	border-bottom: 2px #ff002b solid;
+	background-color: #fd3758;
+	color: white;
+}
+
+.home__cards {
+	/* background-color: #16213e; */
+	/* border: 1px green solid; */
+	color: white;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 80vh;
+}
+
+.home__cardsOrder,
+.home__cardsInventory {
+	border: 2px #206ece solid;
+	cursor: pointer;
+	width: 50%;
+	background-color: #0f3460;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 10px;
+	padding: 50px;
+    transition: 0.3s ease-in-out;
+}
+.home__cardsOrder:hover,
+.home__cardsInventory:hover {
+	background-color: rgba(26, 89, 167, 0.952);
+    transition: 0.3s ease-in-out;
+
+}
+.home__cardsOrder > p,
+.home__cardsInventory > p {
+	font-size: 25px;
+}

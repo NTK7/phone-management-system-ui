@@ -1,0 +1,27 @@
+.addInventory {
+	margin: 50px;
+	outline: none;
+}
+.addInventory__section {
+	padding: 20px;
+	display: flex;
+	align-items: center;
+	border-radius: 10px !important;
+	justify-content: center;
+	border: 1px red solid;
+	background-color: #fff;
+	flex-direction: column;
+	/* width: fit-content; */
+}
+.tabs {
+	/* border: 1px red solid; */
+	background-color: #fff;
+}
+.tab {
+	/* border: 1px red solid; */
+	background-color: #fff;
+}
+.tab__buttonAction {
+	border: 1px red solid;
+	float: right;
+}

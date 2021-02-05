@@ -6,6 +6,7 @@ import ViewInventory from './pages/ViewInventory/ViewInventory';
 import Home from './pages/Home/Home';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
+import SignUp from './components/SignUp/SignUp';
 
 function App() {
 	return (
@@ -26,6 +27,11 @@ function App() {
 					<Route path="/view+inventory">
 						<Header />
 						<ViewInventory />
+						<Footer />
+					</Route>
+					<Route path="/signUp">
+						<Header />
+						<SignUp />
 						<Footer />
 					</Route>
 					<Route path="/">

@@ -49,17 +49,29 @@ function ViewInventory() {
 						</thead>
 						<tbody>
 							{/* Creating dummy data with 20 rows */}
-							{Array.from({ length: 20 }).map((_) => (
-								<tr>
-									<td>Brand Data</td>
-									<td>Model Data</td>
-									<td>Vendor Data</td>
-									<td>Quantity Data</td>
-									<td>My Payment Data</td>
-									<td>Pay Date Data</td>
-									<td>Pur Date Data</td>
-									<td>Total Data</td>
-								</tr>
+							{Array.from({ length: 10 }).map((_) => (
+								<>
+									<tr className="rowOdd">
+										<td>Brand Data</td>
+										<td>Model Data</td>
+										<td>Vendor Data</td>
+										<td>Quantity Data</td>
+										<td>My Payment Data</td>
+										<td>Pay Date Data</td>
+										<td>Pur Date Data</td>
+										<td>Total Data</td>
+									</tr>
+									<tr  className="rowEven">
+										<td>Brand Data</td>
+										<td>Model Data</td>
+										<td>Vendor Data</td>
+										<td>Quantity Data</td>
+										<td>My Payment Data</td>
+										<td>Pay Date Data</td>
+										<td>Pur Date Data</td>
+										<td>Total Data</td>
+									</tr>
+								</>
 							))}
 						</tbody>
 					</Table>

@@ -3,18 +3,17 @@
 	margin-top: 50px;
 }
 table {
-	border: 2px rgb(221, 221, 221) solid !important;
+	/* border: 2px rgb(221, 221, 221) solid !important; */
 }
 th {
-	border: 2px rgb(202, 202, 202) solid !important;
+	/* border: 2px rgb(202, 202, 202) solid !important; */
+	border: none !important;
+	outline: none !important;
 	text-align: center !important;
-	background-color: #072852;
+	font-size: 15px;
+	background-color: #dd2a48;
 }
-td {
-	text-align: center;
-	background-color: #0f3460;
-	border-left: 2px rgb(136, 136, 136) solid !important;
-}
+
 .viewInventory__topTable {
 	padding: 30px;
 	height: 500px !important;
@@ -25,7 +24,7 @@ td {
 	background: transparent; /* Optional: just make scrollbar invisible */
 }
 .viewInventory__topInput {
-	margin: 30px 20px;
+	margin: 30px;
 	display: flex;
 	align-items: center;
 }
@@ -47,7 +46,7 @@ td {
 .viewInventory__bottomCard {
 	border: 1px white solid;
 	padding: 20px;
-	background-color: #0f3460 !important;
+	background-color: #0f4d99 !important;
 	display: flex;
 	justify-content: center;
 }
@@ -57,11 +56,25 @@ td {
 	font-weight: bold;
 	display: flex !important;
 	font-size: 18px;
-	border-bottom: 1px #e94560 solid !important;
-	background-color: #0f3460 !important;
+	border-bottom: 2px #e94560 solid !important;
+	background-color: #0f4d99 !important;
 	align-items: center !important;
 	justify-content: space-between !important;
 }
 .viewInventory__bottomCardListGroupItem > span {
 	padding: 5px;
+}
+.rowOdd {
+	background-color: #0b3568 !important;
+	font-size: 15px;
+	text-align: center;
+}
+.rowEven {
+	background-color: #2263b3 !important;
+	font-size: 15px;
+	text-align: center;
+}
+td{
+	border: none !important;
+	outline: none !important;
 }

@@ -1,17 +1,14 @@
 .home__nav {
 	position: sticky;
 	top: 0;
-	/* border: 1px black solid; */
 	margin-bottom: 20px;
-	padding: 10px 25px;
+	padding: 15px 25px;
 	border-bottom: 2px #ff002b solid;
 	background-color: #fd3758;
 	color: white;
 }
 
 .home__cards {
-	/* background-color: #16213e; */
-	/* border: 1px green solid; */
 	color: white;
 	display: flex;
 	flex-direction: column;
@@ -29,18 +26,100 @@
 
 	display: flex;
 	align-items: center;
-	justify-content: center;
+	justify-content: space-evenly;
 	margin: 10px;
 	padding: 50px;
-    transition: 0.3s ease-in-out;
+	transition: 0.3s ease-in-out;
 }
 .home__cardsOrder:hover,
 .home__cardsInventory:hover {
 	background-color: rgba(26, 89, 167, 0.952);
-    transition: 0.3s ease-in-out;
-
+	transition: 0.3s ease-in-out;
 }
 .home__cardsOrder > p,
 .home__cardsInventory > p {
-	font-size: 25px;
+	font-size: 20px;
+	transition: 0.1s ease-in-out;
+	padding: 0 20px;
+	text-align: center;
+}
+.home__cardsOrder > p:hover,
+.home__cardsInventory > p:hover {
+	transition: 0.1s ease-in-out;
+	transform: scale(1.05);
+}
+.home__cardsOrder > p > a,
+.home__cardsInventory > p > a {
+	color: white;
+}
+.home__cardsOrder > p > a:hover,
+.home__cardsInventory > p > a:hover {
+	text-decoration: none;
+}
+@media screen and (max-width: 768px) and (min-width: 400px) {
+	.home__nav {
+		margin-bottom: 10px;
+		padding: 10px 15px;
+		border-bottom: 2px #ff002b solid;
+		background-color: #fd3758;
+		color: white;
+	}
+	.home__nav > h4 {
+		font-size: 15px;
+	}
+	.home__cardsOrder,
+	.home__cardsInventory {
+		border: 1px #206ece solid;
+		cursor: pointer;
+		width: 70%;
+		background-color: #0f3460;
+
+		display: flex;
+		align-items: center;
+		justify-content: space-evenly;
+		margin: 8px;
+		padding: 30px;
+		transition: 0.3s ease-in-out;
+	}
+	.home__cardsOrder > p,
+	.home__cardsInventory > p {
+		font-size: 15px;
+		transition: 0.1s ease-in-out;
+		padding: 0 20px;
+		text-align: center;
+	}
+}
+
+@media screen and (max-width: 400px) {
+	.home__nav {
+		margin-bottom: 5px;
+		padding: 10px 15px;
+		border-bottom: 2px #ff002b solid;
+		background-color: #fd3758;
+		color: white;
+	}
+	.home__nav > h4 {
+		font-size: 15px;
+	}
+	.home__cardsOrder > p,
+	.home__cardsInventory > p {
+		font-size: 18px;
+		transition: 0.1s ease-in-out;
+		padding: 0 20px;
+		text-align: center;
+	}
+	.home__cardsOrder,
+	.home__cardsInventory {
+		border: 1px #206ece solid;
+		cursor: pointer;
+		width: 70%;
+		background-color: #0f3460;
+
+		display: flex;
+		align-items: center;
+		justify-content: space-evenly;
+		margin: 8px;
+		padding: 30px;
+		transition: 0.3s ease-in-out;
+	}
 }

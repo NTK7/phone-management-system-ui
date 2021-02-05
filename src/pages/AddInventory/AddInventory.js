@@ -1,5 +1,5 @@
 import { Button } from '@material-ui/core';
-import { Tab } from 'bootstrap';
+import { Alert, Tab } from 'bootstrap';
 import { useState } from 'react';
 import { FormControl, InputGroup, Tabs } from 'react-bootstrap';
 import './AddInventory.css';
@@ -27,15 +27,55 @@ function AddInventory() {
 
 	// this is the insert method
 	const insertRecord = () => {
-		alert(insertBrand);
-		
+		// field validation
+		if (
+			!insertBrand ||
+			!insertModel ||
+			!insertMyPayment ||
+			!insertPayDate ||
+			!insertPurDate ||
+			!insertQuantity ||
+			!insertTotal ||
+			!insertVendor
+		) {
+			alert('Please fill all the fields!');
+		}
+
 		// clearing all the fields after backend implementation
-	
+		setInsertBrand('');
+		setInsertModel('');
+		setInsertVendor('');
+		setInsertMyPayment('');
+		setInsertQuantity('');
+		setInsertPayDate('');
+		setInsertPurDate('');
+		setInsertTotal('');
 	};
 
 	// this is the update method
 	const updateRecord = () => {
-		alert(updateBrand);
+		// field validation
+		if (
+			!updateBrand ||
+			!updateModel ||
+			!updateMyPayment ||
+			!updatePayDate ||
+			!updatePurDate ||
+			!updateQuantity ||
+			!updateTotal ||
+			!updateVendor
+		) {
+			alert('Please fill all the fields!');
+		}
+		// clearing all the fields after backend implementation
+		setUpdateBrand('');
+		setUpdateModel('');
+		setUpdateVendor('');
+		setUpdateMyPayment('');
+		setUpdateQuantity('');
+		setUpdatePayDate('');
+		setUpdatePurDate('');
+		setUpdateTotal('');
 	};
 	return (
 		<div className="addInventory">

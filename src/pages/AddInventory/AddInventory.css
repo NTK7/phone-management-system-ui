@@ -51,3 +51,6 @@
 	color: #e94560;
     border: 1px #e94560 solid;
 }
+.input__label{
+    width: 120px;
+}

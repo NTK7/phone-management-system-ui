@@ -24,7 +24,7 @@ th {
 	background: transparent; /* Optional: just make scrollbar invisible */
 }
 .viewInventory__topInput {
-	margin: 30px;
+	margin: 10px 30px;
 	display: flex;
 	align-items: center;
 }
@@ -41,7 +41,7 @@ th {
 	color: #e94560;
 }
 .viewInventory__bottom {
-	padding:30px;
+	padding: 30px;
 }
 .viewInventory__bottomCard {
 	border: 1px white solid;
@@ -74,7 +74,7 @@ th {
 	font-size: 15px;
 	text-align: center;
 }
-td{
+td {
 	border: none !important;
 	outline: none !important;
 }

@@ -1,4 +1,5 @@
 import { Button, Card } from '@material-ui/core';
+import { ViewArraySharp } from '@material-ui/icons';
 import { useState } from 'react';
 import { ListGroup, Table } from 'react-bootstrap';
 import './ViewInventory.css';
@@ -21,6 +22,7 @@ function ViewInventory() {
 		<div className="viewInventory">
 			{/* search by vendor */}
 			<div className="viewInventory__top">
+				{/* input and search button to search for the vender */}
 				<div className="viewInventory__topInput">
 					<input
 						type="text"
@@ -33,67 +35,32 @@ function ViewInventory() {
 				<div className="viewInventory__topTable">
 					<Table responsive striped bordered hover variant="dark">
 						<thead>
+							{/* Headings of the table */}
 							<tr>
-								{Array.from({ length: 12 }).map((_, index) => (
-									<th key={index}>Table heading</th>
-								))}
+								<th>BRAND</th>
+								<th>MODEL</th>
+								<th>VENDOR</th>
+								<th>QUANTITY</th>
+								<th>MY PAYMENT</th>
+								<th>PAY DATE</th>
+								<th>PUR DATE</th>
+								<th>TOTAL</th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td>1</td>
-								{Array.from({ length: 12 }).map((_, index) => (
-									<td key={index}>Table cell {index}</td>
-								))}
-							</tr>
-							<tr>
-								<td>2</td>
-								{Array.from({ length: 12 }).map((_, index) => (
-									<td key={index}>Table cell {index}</td>
-								))}
-							</tr>
-							<tr>
-								<td>3</td>
-								{Array.from({ length: 12 }).map((_, index) => (
-									<td key={index}>Table cell {index}</td>
-								))}
-							</tr>
-							<tr>
-								<td>1</td>
-								{Array.from({ length: 12 }).map((_, index) => (
-									<td key={index}>Table cell {index}</td>
-								))}
-							</tr>
-							<tr>
-								<td>2</td>
-								{Array.from({ length: 12 }).map((_, index) => (
-									<td key={index}>Table cell {index}</td>
-								))}
-							</tr>
-							<tr>
-								<td>3</td>
-								{Array.from({ length: 12 }).map((_, index) => (
-									<td key={index}>Table cell {index}</td>
-								))}
-							</tr>
-							<tr>
-								<td>1</td>
-								{Array.from({ length: 12 }).map((_, index) => (
-									<td key={index}>Table cell {index}</td>
-								))}
-							</tr>
-							<tr>
-								<td>2</td>
-								{Array.from({ length: 12 }).map((_, index) => (
-									<td key={index}>Table cell {index}</td>
-								))}
-							</tr>
-							<tr>
-								<td>3</td>
-								{Array.from({ length: 12 }).map((_, index) => (
-									<td key={index}>Table cell {index}</td>
-								))}
-							</tr>
+							{/* Creating dummy data with 20 rows */}
+							{Array.from({ length: 20 }).map((_) => (
+								<tr>
+									<td>Brand Data</td>
+									<td>Model Data</td>
+									<td>Vendor Data</td>
+									<td>Quantity Data</td>
+									<td>My Payment Data</td>
+									<td>Pay Date Data</td>
+									<td>Pur Date Data</td>
+									<td>Total Data</td>
+								</tr>
+							))}
 						</tbody>
 					</Table>
 				</div>

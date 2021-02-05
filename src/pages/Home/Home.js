@@ -6,13 +6,10 @@ function Home() {
 	const [displayInventoryOptions, setDisplayInventoryOptions] = useState(false);
 	return (
 		<div className="home">
-			{/* nav bar for home */}
 			<div className="home__nav">
 				<h4>Phone Shop</h4>
 			</div>
-			{/* cards */}
 			<div className="home__cards container">
-				{/* inventory card */}
 				{displayInventoryOptions ? (
 					<div className="home__cardsInventory" onMouseLeave={() => setDisplayInventoryOptions(false)}>
 						<p>
@@ -28,7 +25,6 @@ function Home() {
 					</div>
 				)}
 
-				{/* order card */}
 				<div className="home__cardsOrder">
 					<p>
 						<Link to="/order">ORDER</Link>

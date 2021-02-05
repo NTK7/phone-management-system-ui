@@ -1,17 +1,24 @@
 .addInventory {
-	margin: 50px;
+	margin: 30px;
 	outline: none;
+    background-color: #16213E;
 }
 .addInventory__section {
 	padding: 20px;
 	display: flex;
 	align-items: center;
-	border-radius: 10px !important;
 	justify-content: center;
-	border: 1px red solid;
-	background-color: #fff;
+	/* background-color: #2263B3; */
 	flex-direction: column;
 	/* width: fit-content; */
+}
+.addInventory__sectionInner{
+    display: flex;
+	border-radius: 10px !important;
+	flex-direction: column;
+	background-color: #fff;
+	align-items: center;
+    padding: 10px 20px;
 }
 .tabs {
 	/* border: 1px red solid; */
@@ -22,6 +29,19 @@
 	background-color: #fff;
 }
 .tab__buttonAction {
-	border: 1px red solid;
 	float: right;
+}
+.tab__details{
+    padding: 20px;
+}
+
+.tab__buttonAction > button {
+	color: white;
+    padding: 8px 15px;
+	margin-left: 5px;
+	background-color: #e94560;
+}
+.tab__buttonAction > button:hover {
+	background-color: white;
+	color: #e94560;
 }

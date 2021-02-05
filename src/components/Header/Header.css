@@ -5,11 +5,13 @@
 	padding: 15px 25px;
 	border-bottom: 2px #ff002b solid;
 	background-color: #fd3758;
-	color: white;
 
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
+}
+.header__navLeft > h4 > a {
+	color: white;
 }
 .header__navRight {
 	display: flex;
@@ -26,6 +28,7 @@
 	color: white;
 }
 
-.header__navRight > h6 > a:hover {
+.header__navRight > h6 > a:hover,
+.header__navLeft > h4 > a:hover {
 	text-decoration: none;
 }

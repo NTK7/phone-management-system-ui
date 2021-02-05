@@ -6,7 +6,7 @@ function Header() {
 		<div>
 			<div className="header__nav">
 				<div className="header__navLeft">
-					<h4>Phone Shop</h4>
+					<h4><Link to="/">Phone Shop</Link></h4>
 				</div>
 				<div className="header__navRight">
 					<h6>

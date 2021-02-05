@@ -1,0 +1,36 @@
+.order__searchByBrand {
+	margin: 10px 30px;
+	display: flex;
+	align-items: center;
+}
+.order__searchByBrand > input {
+	padding: 5px;
+}
+.order__searchByBrand > button {
+	color: white;
+	margin-left: 5px;
+	background-color: #e94560;
+}
+.order__searchByBrand > button:hover {
+	background-color: white;
+	color: #e94560;
+}
+.order__billing {
+	padding: 30px;
+	height: 500px !important;
+	overflow: scroll;
+}
+.rowOdd {
+	background-color: #0b3568 !important;
+	font-size: 15px;
+	text-align: center;
+}
+.rowEven {
+	background-color: #2263b3 !important;
+	font-size: 15px;
+	text-align: center;
+}
+td {
+	border: none !important;
+	outline: none !important;
+}

@@ -1,11 +1,11 @@
-import './Footer.css'
+import './Footer.css';
 
 function Footer() {
-    return (
-        <div>
-            Footer
-        </div>
-    )
+	return (
+		<div className="footer">
+			<p>©Phone Shop Name</p>
+		</div>
+	);
 }
 
-export default Footer
+export default Footer;

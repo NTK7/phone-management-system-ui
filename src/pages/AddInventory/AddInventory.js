@@ -2,7 +2,7 @@ import './AddInventory.css'
 
 function AddInventory() {
     return (
-        <div>
+        <div className="addInventory">
             Add Inventory
         </div>
     )

@@ -1,7 +1,7 @@
 .addInventory {
 	margin: 30px;
 	outline: none;
-    background-color: #16213E;
+	background-color: #1b1b1b;
 }
 .addInventory__section {
 	padding: 20px;
@@ -12,21 +12,20 @@
 	flex-direction: column;
 	/* width: fit-content; */
 }
-.addInventory__sectionInner{
-    display: flex;
+.addInventory__sectionInner {
+	display: flex;
 	border-radius: 10px !important;
 	flex-direction: column;
 	background-color: #fff;
 	align-items: center;
-    padding:40px 50px;
+	padding: 40px 50px;
 }
 .tabs {
 	/* border: 1px red solid; */
 	background-color: #fff;
-    
 }
-.tabs > a{
-    color: #e94560;
+.tabs > a {
+	color: #e94560;
 }
 .tab {
 	/* border: 1px red solid; */
@@ -35,22 +34,27 @@
 .tab__buttonAction {
 	float: right;
 }
-.tab__details{
-    padding: 20px;
+.tab__details {
+	padding: 20px;
 }
 
 .tab__buttonAction > button {
 	color: white;
-    padding: 10px 20px;
-    border: 1px #e94560 solid;
+	padding: 10px 20px;
+	border-radius: 10px;
+	border: 1px #ff2c4f solid;
 	margin-left: 5px;
-	background-color: #e94560;
+	background-color: #ff2c4f;
 }
 .tab__buttonAction > button:hover {
 	background-color: white;
-	color: #e94560;
-    border: 1px #e94560 solid;
+	color: #ff2c4f;
+	border: 1px #ff2c4f solid;
 }
-.input__label{
-    width: 120px;
+.input__label {
+	width: 120px;
+}
+.form-control:focus {
+	border-color: #ff0000 !important;
+	box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.075), 0 0 8px #ff2c4f79 !important;
 }

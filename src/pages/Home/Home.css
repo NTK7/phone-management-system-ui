@@ -1,5 +1,5 @@
-.home{
-    background-color: #16213E;
+.home {
+	background-color: #161616;
 	height: 100vh;
 }
 .home__nav {
@@ -7,13 +7,13 @@
 	top: 0;
 	margin-bottom: 20px;
 	padding: 15px 25px;
-	border-bottom: 2px #ff002b solid;
-	background-color: #fd3758;
+	border-bottom: 2px #000000 solid;
+	background-color: #000000;
 	color: white;
 }
 
 .home__cards {
-	color: white;
+	color: rgb(0, 0, 0);
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -23,10 +23,9 @@
 
 .home__cardsOrder,
 .home__cardsInventory {
-	border: 3px #fd3758 solid;
 	cursor: pointer;
 	width: 50%;
-	background-color: #ff4a68;
+	background-color: #f3f3f3;
 
 	display: flex;
 	align-items: center;
@@ -41,7 +40,8 @@
 }
 .home__cardsOrder:hover,
 .home__cardsInventory:hover {
-	background-color: white;
+	background-color: #fd3758;
+	color: white;
 	transition: 0.3s ease-in-out;
 }
 .home__cardsOrder > p,
@@ -54,14 +54,20 @@
 .home__cardsOrder > p:hover,
 .home__cardsInventory > p:hover {
 	transition: 0.1s ease-in-out;
+	color: white;
 	transform: scale(1.05);
+}
+.home__cardsOrder:hover > p > a,
+.home__cardsInventory:hover > p > a {
+	color: white;
 }
 .home__cardsOrder > p > a,
 .home__cardsInventory > p > a {
-	color: white;
+	color: rgb(8, 8, 8);
 }
 .home__cardsOrder > p > a:hover,
 .home__cardsInventory > p > a:hover {
+	color: white !important;
 	text-decoration: none;
 }
 @media screen and (max-width: 768px) and (min-width: 400px) {
@@ -80,7 +86,6 @@
 		border: 1px #206ece solid;
 		cursor: pointer;
 		width: 70%;
-		background-color: #0f3460;
 
 		display: flex;
 		align-items: center;

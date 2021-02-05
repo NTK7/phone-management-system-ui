@@ -9,7 +9,7 @@
 .order__searchByBrand > button {
 	color: white;
 	margin-left: 5px;
-	background-color: #e94560;
+	background-color: #ff2c4f;
 }
 .order__searchByBrand > button:hover {
 	background-color: white;
@@ -51,11 +51,11 @@ td {
 .order__searchByBrandModel > button {
 	color: white;
 	margin-left: 5px;
-	background-color: #e94560;
+	background-color: #ff2c4f;
 }
 .order__searchByBrandModel > button:hover {
 	background-color: white;
-	color: #e94560;
+	color: #ff2c4f;
 }
 td > input {
     text-align: center;

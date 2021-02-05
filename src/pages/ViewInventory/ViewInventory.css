@@ -1,5 +1,5 @@
 .viewInventory {
-	background-color: #16213e;
+	background-color: #1d1d1d;
 	margin-top: 50px;
 }
 table {
@@ -11,7 +11,7 @@ th {
 	outline: none !important;
 	text-align: center !important;
 	font-size: 15px;
-	background-color: #dd2a48;
+	background-color: #000000;
 }
 
 .viewInventory__topTable {
@@ -34,19 +34,19 @@ th {
 .viewInventory__topInput > button {
 	color: white;
 	margin-left: 5px;
-	background-color: #e94560;
+	background-color: #fd3153;
 }
 .viewInventory__topInput > button:hover {
 	background-color: white;
-	color: #e94560;
+	color: #fd3153;
 }
 .viewInventory__bottom {
 	padding: 30px;
 }
 .viewInventory__bottomCard {
-	border: 1px white solid;
+	/* border: 1px white solid; */
 	padding: 50px 20px;
-	background-color: #0f4d99 !important;
+	background-color: #1b1b1b !important;
 	display: flex;
 	justify-content: center;
 }
@@ -56,8 +56,8 @@ th {
 	font-weight: bold;
 	display: flex !important;
 	font-size: 18px;
-	border-bottom: 2px #e94560 solid !important;
-	background-color: #0f4d99 !important;
+	border-bottom: 2px #d6d6d6 solid !important;
+	background-color: #1b1b1b !important;
 	align-items: center !important;
 	justify-content: space-between !important;
 }
@@ -65,16 +65,31 @@ th {
 	padding: 5px;
 }
 .rowOdd {
-	background-color: #0b3568 !important;
+	background-color: #e7e7e7 !important;
+	color: black;
+	transition: 0.3s ease-in-out;
 	font-size: 15px;
 	text-align: center;
 }
 .rowEven {
-	background-color: #2263b3 !important;
+	background-color: #666666 !important;
+	transition: 0.3s ease-in-out;
 	font-size: 15px;
 	text-align: center;
 }
 td {
 	border: none !important;
 	outline: none !important;
+}
+.rowOdd:hover {
+	cursor: pointer;
+	color: black !important;
+	background-color: #fff !important;
+	transition: 0.3s ease-in-out;
+}
+.rowEven:hover {
+	cursor: pointer;
+	color: white !important;
+	background-color: #4d4d4d !important;
+	transition: 0.3s ease-in-out;
 }

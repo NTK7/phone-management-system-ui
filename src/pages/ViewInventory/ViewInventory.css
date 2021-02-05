@@ -41,11 +41,11 @@ th {
 	color: #e94560;
 }
 .viewInventory__bottom {
-	padding: 50px 30px;
+	padding:30px;
 }
 .viewInventory__bottomCard {
 	border: 1px white solid;
-	padding: 20px;
+	padding: 50px 20px;
 	background-color: #0f4d99 !important;
 	display: flex;
 	justify-content: center;

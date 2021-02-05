@@ -18,11 +18,15 @@
 	flex-direction: column;
 	background-color: #fff;
 	align-items: center;
-    padding: 10px 20px;
+    padding:40px 50px;
 }
 .tabs {
 	/* border: 1px red solid; */
 	background-color: #fff;
+    
+}
+.tabs > a{
+    color: #e94560;
 }
 .tab {
 	/* border: 1px red solid; */
@@ -37,11 +41,13 @@
 
 .tab__buttonAction > button {
 	color: white;
-    padding: 8px 15px;
+    padding: 10px 20px;
+    border: 1px #e94560 solid;
 	margin-left: 5px;
 	background-color: #e94560;
 }
 .tab__buttonAction > button:hover {
 	background-color: white;
 	color: #e94560;
+    border: 1px #e94560 solid;
 }

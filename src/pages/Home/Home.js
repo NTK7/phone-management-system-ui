@@ -1,8 +1,10 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import './Home.css';
 
 function Home() {
+	const history = useHistory();
+
 	const [displayInventoryOptions, setDisplayInventoryOptions] = useState(false);
 	return (
 		<div className="home">
@@ -25,7 +27,7 @@ function Home() {
 					</div>
 				)}
 
-				<div className="home__cardsOrder">
+				<div className="home__cardsOrder" onClick = {() => {history.replace('/order')}}>
 					<p>
 						<Link to="/order">ORDER</Link>
 					</p>

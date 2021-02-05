@@ -19,26 +19,30 @@
 
 .home__cardsOrder,
 .home__cardsInventory {
-	border: 2px #206ece solid;
+	border: 3px #fd3758 solid;
 	cursor: pointer;
 	width: 50%;
-	background-color: #0f3460;
+	background-color: #ff4a68;
 
 	display: flex;
 	align-items: center;
 	justify-content: space-evenly;
 	margin: 10px;
-	padding: 50px;
+	padding: 40px;
 	transition: 0.3s ease-in-out;
+}
+.home__cardsOrder:hover > p > a,
+.home__cardsInventory:hover > p > a {
+	color: #fd3758;
 }
 .home__cardsOrder:hover,
 .home__cardsInventory:hover {
-	background-color: rgba(26, 89, 167, 0.952);
+	background-color: white;
 	transition: 0.3s ease-in-out;
 }
 .home__cardsOrder > p,
 .home__cardsInventory > p {
-	font-size: 20px;
+	font-size: 22px;
 	transition: 0.1s ease-in-out;
 	padding: 0 20px;
 	text-align: center;

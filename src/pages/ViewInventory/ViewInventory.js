@@ -68,11 +68,18 @@ function ViewInventory() {
 
 			{/* total bill section */}
 			<div className="viewInventory__bottom">
-				<Card>
-					<ListGroup variant="flush">
-						<ListGroup.Item>Total Bill : {totalBill}</ListGroup.Item>
-						<ListGroup.Item>Initial Payment: {initialPayment}</ListGroup.Item>
-						<ListGroup.Item>Balance: {balance}</ListGroup.Item>
+				<Card className="viewInventory__bottomCard">
+					<ListGroup variant="flush" className="viewInventory__bottomCardListGroup">
+						<ListGroup.Item className="viewInventory__bottomCardListGroupItem">
+							<span>Total Bill :</span> <input type="text" value={totalBill} />
+						</ListGroup.Item>
+						<ListGroup.Item className="viewInventory__bottomCardListGroupItem">
+							<span>Initial Payment: </span>
+							<input type="text" value={initialPayment} />
+						</ListGroup.Item>
+						<ListGroup.Item className="viewInventory__bottomCardListGroupItem">
+							<span>Balance:</span> <input type="text" value={balance} />
+						</ListGroup.Item>
 					</ListGroup>
 				</Card>
 			</div>

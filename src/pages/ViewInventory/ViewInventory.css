@@ -41,3 +41,27 @@ td {
 	background-color: white;
 	color: #e94560;
 }
+.viewInventory__bottom {
+	padding: 50px 30px;
+}
+.viewInventory__bottomCard {
+	border: 1px white solid;
+	padding: 20px;
+	background-color: #0f3460 !important;
+	display: flex;
+	justify-content: center;
+}
+.viewInventory__bottomCardListGroupItem {
+	width: 400px;
+	color: white;
+	font-weight: bold;
+	display: flex !important;
+	font-size: 18px;
+	border-bottom: 1px #e94560 solid !important;
+	background-color: #0f3460 !important;
+	align-items: center !important;
+	justify-content: space-between !important;
+}
+.viewInventory__bottomCardListGroupItem > span {
+	padding: 5px;
+}

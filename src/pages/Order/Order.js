@@ -98,7 +98,7 @@ function Order() {
 											<input type="text" placeholder="Quantity" />
 										</td>
 										<td>
-											<input type="text" placeholder="Quantity" />
+											<input type="text" placeholder="Selling Price" />
 										</td>
 										<td>Total bill Data</td>
 									</tr>
@@ -108,7 +108,7 @@ function Order() {
 											<input type="text" placeholder="Quantity" />
 										</td>
 										<td>
-											<input type="text" placeholder="Quantity" />
+											<input type="text" placeholder="Selling Price" />
 										</td>
 										<td>Total bill Data</td>
 									</tr>

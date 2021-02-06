@@ -24,8 +24,12 @@
 	/* border: 1px red solid; */
 	background-color: #fff;
 }
+.tabs > a:focus {
+	color: #ff2c4f !important;
+}
+
 .tabs > a {
-	color: #e94560;
+	color: #707070 !important;
 }
 .tab {
 	/* border: 1px red solid; */

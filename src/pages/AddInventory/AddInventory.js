@@ -25,6 +25,10 @@ function AddInventory() {
 	const [updatePurDate, setUpdatePurDate] = useState('');
 	const [updateTotal, setUpdateTotal] = useState('');
 
+	// Insert and Update color change
+	const [insertColor, setInsertColor] = useState(true);
+	const [updateColor, setUpdateColor] = useState(false);
+
 	// this is the insert method
 	const insertRecord = () => {
 		// field validation
@@ -128,7 +132,9 @@ function AddInventory() {
 								</InputGroup>
 								<InputGroup className="mb-3">
 									<InputGroup.Prepend>
-										<InputGroup.Text  className="input__label" id="basic-addon4">Quantity</InputGroup.Text>
+										<InputGroup.Text className="input__label" id="basic-addon4">
+											Quantity
+										</InputGroup.Text>
 									</InputGroup.Prepend>
 									<FormControl
 										placeholder="Enter Quantity"
@@ -140,7 +146,9 @@ function AddInventory() {
 								</InputGroup>
 								<InputGroup className="mb-3">
 									<InputGroup.Prepend>
-										<InputGroup.Text  className="input__label" id="basic-addon5">My Payment</InputGroup.Text>
+										<InputGroup.Text className="input__label" id="basic-addon5">
+											My Payment
+										</InputGroup.Text>
 									</InputGroup.Prepend>
 									<FormControl
 										placeholder="Enter My Payment"
@@ -152,7 +160,9 @@ function AddInventory() {
 								</InputGroup>
 								<InputGroup className="mb-3">
 									<InputGroup.Prepend>
-										<InputGroup.Text  className="input__label" id="basic-addon6">Pay Date</InputGroup.Text>
+										<InputGroup.Text className="input__label" id="basic-addon6">
+											Pay Date
+										</InputGroup.Text>
 									</InputGroup.Prepend>
 									<FormControl
 										placeholder="Pay Date"
@@ -164,7 +174,9 @@ function AddInventory() {
 								</InputGroup>
 								<InputGroup className="mb-3">
 									<InputGroup.Prepend>
-										<InputGroup.Text  className="input__label" id="basic-addon7">Pur Date</InputGroup.Text>
+										<InputGroup.Text className="input__label" id="basic-addon7">
+											Pur Date
+										</InputGroup.Text>
 									</InputGroup.Prepend>
 									<FormControl
 										placeholder="Puy Date"
@@ -176,7 +188,9 @@ function AddInventory() {
 								</InputGroup>
 								<InputGroup className="mb-3">
 									<InputGroup.Prepend>
-										<InputGroup.Text  className="input__label" id="basic-addon8">Total</InputGroup.Text>
+										<InputGroup.Text className="input__label" id="basic-addon8">
+											Total
+										</InputGroup.Text>
 									</InputGroup.Prepend>
 									<FormControl
 										placeholder="Total"
@@ -196,7 +210,9 @@ function AddInventory() {
 							<div className="tab__details">
 								<InputGroup className="mb-3">
 									<InputGroup.Prepend>
-										<InputGroup.Text  className="input__label" id="basic-addon9">Brand</InputGroup.Text>
+										<InputGroup.Text className="input__label" id="basic-addon9">
+											Brand
+										</InputGroup.Text>
 									</InputGroup.Prepend>
 									<FormControl
 										placeholder="Enter Brand"
@@ -208,7 +224,9 @@ function AddInventory() {
 								</InputGroup>
 								<InputGroup className="mb-3">
 									<InputGroup.Prepend>
-										<InputGroup.Text  className="input__label" id="basic-addon10">Model</InputGroup.Text>
+										<InputGroup.Text className="input__label" id="basic-addon10">
+											Model
+										</InputGroup.Text>
 									</InputGroup.Prepend>
 									<FormControl
 										placeholder="Enter Model"
@@ -220,7 +238,9 @@ function AddInventory() {
 								</InputGroup>
 								<InputGroup className="mb-3">
 									<InputGroup.Prepend>
-										<InputGroup.Text  className="input__label" id="basic-addon11">Vendor</InputGroup.Text>
+										<InputGroup.Text className="input__label" id="basic-addon11">
+											Vendor
+										</InputGroup.Text>
 									</InputGroup.Prepend>
 									<FormControl
 										placeholder="Enter Vendor"
@@ -232,7 +252,9 @@ function AddInventory() {
 								</InputGroup>
 								<InputGroup className="mb-3">
 									<InputGroup.Prepend>
-										<InputGroup.Text  className="input__label" id="basic-addon12">Quantity</InputGroup.Text>
+										<InputGroup.Text className="input__label" id="basic-addon12">
+											Quantity
+										</InputGroup.Text>
 									</InputGroup.Prepend>
 									<FormControl
 										placeholder="Enter Quantity"
@@ -244,7 +266,9 @@ function AddInventory() {
 								</InputGroup>
 								<InputGroup className="mb-3">
 									<InputGroup.Prepend>
-										<InputGroup.Text  className="input__label" id="basic-addon13">My Payment</InputGroup.Text>
+										<InputGroup.Text className="input__label" id="basic-addon13">
+											My Payment
+										</InputGroup.Text>
 									</InputGroup.Prepend>
 									<FormControl
 										placeholder="Enter My Payment"
@@ -256,7 +280,9 @@ function AddInventory() {
 								</InputGroup>
 								<InputGroup className="mb-3">
 									<InputGroup.Prepend>
-										<InputGroup.Text  className="input__label" id="basic-addon14">Pay Date</InputGroup.Text>
+										<InputGroup.Text className="input__label" id="basic-addon14">
+											Pay Date
+										</InputGroup.Text>
 									</InputGroup.Prepend>
 									<FormControl
 										placeholder="Pay Date"
@@ -268,7 +294,9 @@ function AddInventory() {
 								</InputGroup>
 								<InputGroup className="mb-3">
 									<InputGroup.Prepend>
-										<InputGroup.Text className="input__label" id="basic-addon15">Pur Date</InputGroup.Text>
+										<InputGroup.Text className="input__label" id="basic-addon15">
+											Pur Date
+										</InputGroup.Text>
 									</InputGroup.Prepend>
 									<FormControl
 										placeholder="Puy Date"
@@ -280,7 +308,9 @@ function AddInventory() {
 								</InputGroup>
 								<InputGroup className="mb-3">
 									<InputGroup.Prepend>
-										<InputGroup.Text className="input__label" id="basic-addon16">Total</InputGroup.Text>
+										<InputGroup.Text className="input__label" id="basic-addon16">
+											Total
+										</InputGroup.Text>
 									</InputGroup.Prepend>
 									<FormControl
 										placeholder="Total"

@@ -58,8 +58,19 @@ td {
 	color: #ff2c4f;
 }
 td > input {
-    text-align: center;
+	text-align: center;
 }
-.order__total{
-    margin: 20px 50px;
+.order__total {
+	margin: 20px 50px;
+}
+.payment__button > button {
+	background-color: #ff2c4f !important;
+	margin-right: 25px;
+	padding: 10px 20px;
+	float: right;
+	color: white !important;
+}
+.payment__button > button:hover {
+	background-color: white !important;
+	color: #ff2c4f !important;
 }

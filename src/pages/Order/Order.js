@@ -117,6 +117,11 @@ function Order() {
 						</tbody>
 					</Table>
 				</div>
+
+				{/* Button */}
+				<div className="payment__button">
+					<Button>Payment</Button>
+				</div>
 			</div>
 			{/* Total Section */}
 			<div className="order__total">

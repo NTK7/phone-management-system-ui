@@ -31,6 +31,12 @@
 .tabs > a {
 	color: #707070 !important;
 }
+.tabs > a:first-child {
+	color: #ff2c4f !important;
+}
+.tab__insert > a:first-child {
+	color: #707070 !important;
+}
 .tab {
 	/* border: 1px red solid; */
 	background-color: #fff;

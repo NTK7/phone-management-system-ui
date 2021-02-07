@@ -27,7 +27,6 @@ function AddInventory() {
 
 	// Insert and Update color change
 	const [insertColor, setInsertColor] = useState(true);
-	const [updateColor, setUpdateColor] = useState(false);
 
 	// this is the insert method
 	const insertRecord = () => {
@@ -85,7 +84,12 @@ function AddInventory() {
 		<div className="addInventory">
 			<div className="addInventory__section">
 				<div className="addInventory__sectionInner">
-					<Tabs defaultActiveKey="home" id="uncontrolled-tab-example" className="tabs">
+					<Tabs
+						defaultActiveKey="home"
+						id="uncontrolled-tab-example"
+						className={` tabs ${!insertColor && 'tab__insert'}`}
+						onSelect={() => setInsertColor(!insertColor)}
+					>
 						<Tab eventKey="home" title="Insert" className="tab">
 							<div className="tab__details">
 								<InputGroup className="mb-3">

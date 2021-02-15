@@ -1,6 +1,9 @@
 .addInventory {
-	margin: 30px;
+	margin: 50px;
 	outline: none;
+	height: 80vh;
+	display: "grid";
+    place-items:'center';
 	background-color: #1b1b1b;
 }
 .addInventory__section {

@@ -12,10 +12,28 @@ th {
 	text-align: center !important;
 	font-size: 13px;
 	background-color: #000000;
+
+}
+.viewInventory__topTableHeading{
+
 }
 
-.viewInventory__topTable {
+/* .viewInventory__topTable {
 	padding: 30px;
+	height: 500px !important;
+	overflow: scroll;
+} */
+.viewInventory__topTableHeading{
+	padding: 0 30px;
+	margin-bottom: -10px;
+
+}
+.viewInventory__topTableBody{
+	padding: 0 30px;
+	height: 500px !important;
+	overflow: scroll;
+}
+.viewInventory__bodyTable{
 	height: 500px !important;
 	overflow: scroll;
 }

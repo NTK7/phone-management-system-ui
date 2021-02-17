@@ -3,6 +3,13 @@
 	display: flex;
 	align-items: center;
 }
+.order__topTableHeading {
+	margin-bottom: -10px;
+}
+.order__topTableBody {
+	height: 200px !important;
+	overflow: scroll;
+}
 .order__searchByBrand > input {
 	padding: 5px;
 }
@@ -17,8 +24,8 @@
 }
 .order__table {
 	padding: 30px;
-	height: 340px !important;
-	overflow: scroll;
+	/* height: 340px !important; */
+	/* overflow: scroll; */
 }
 .rowOdd {
 	background-color: #0b3568 !important;
@@ -65,12 +72,20 @@ td > input {
 }
 .payment__button > button {
 	background-color: #ff2c4f !important;
-	margin-right: 25px;
+	margin-left: 25px;
 	padding: 10px 20px;
-	float: right;
+	float: left;
 	color: white !important;
 }
 .payment__button > button:hover {
 	background-color: white !important;
 	color: #ff2c4f !important;
+}
+.viewInventory__bottomCardListGroup {
+	display: flex !important;
+	flex-direction: row !important;
+	align-items: center !important;
+	/* justify-content: space-evenly; */
+	/* border: 1px red solid; */
+	/* width: 100%; */
 }

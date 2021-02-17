@@ -32,49 +32,55 @@ function ViewInventory() {
 					/>{' '}
 					<Button onClick={searchVendor}>Search</Button>
 				</div>
-				<div className="viewInventory__topTable">
-					<Table responsive striped bordered hover variant="dark">
-						<thead>
-							{/* Headings of the table */}
-							<tr>
-								<th>BRAND</th>
-								<th>MODEL</th>
-								<th>VENDOR</th>
-								<th>QUANTITY</th>
-								<th>MY PAYMENT</th>
-								<th>PAY DATE</th>
-								<th>PUR DATE</th>
-								<th>TOTAL</th>
-							</tr>
-						</thead>
-						<tbody>
-							{/* Creating dummy data with 20 rows */}
-							{Array.from({ length: 10 }).map((_) => (
-								<>
-									<tr className="rowOdd">
-										<td>Brand Data</td>
-										<td>Model Data</td>
-										<td>Vendor Data</td>
-										<td>Quantity Data</td>
-										<td>My Payment Data</td>
-										<td>Pay Date Data</td>
-										<td>Pur Date Data</td>
-										<td>Total Data</td>
-									</tr>
-									<tr  className="rowEven">
-										<td>Brand Data</td>
-										<td>Model Data</td>
-										<td>Vendor Data</td>
-										<td>Quantity Data</td>
-										<td>My Payment Data</td>
-										<td>Pay Date Data</td>
-										<td>Pur Date Data</td>
-										<td>Total Data</td>
-									</tr>
-								</>
-							))}
-						</tbody>
-					</Table>
+				<div>
+					<div className="viewInventory__topTableHeading">
+						<Table responsive striped bordered hover variant="dark">
+							<thead>
+								{/* Headings of the table */}
+								<tr className="viewInventory__topTableHeading">
+									<th>BRAND</th>
+									<th>MODEL</th>
+									<th>VENDOR</th>
+									<th>QUANTITY</th>
+									<th>MY PAYMENT</th>
+									<th>PAY DATE</th>
+									<th>PUR DATE</th>
+									<th>TOTAL</th>
+								</tr>
+							</thead>
+						</Table>
+					</div>
+					<div className="viewInventory__topTableBody">
+						<Table responsive striped bordered hover variant="dark">
+							<tbody>
+								{/* Creating dummy data with 20 rows */}
+								{Array.from({ length: 10 }).map((_) => (
+									<>
+										<tr className="rowOdd">
+											<td>Brand Data</td>
+											<td>Model Data</td>
+											<td>Vendor Data</td>
+											<td>Quantity Data</td>
+											<td>My Payment Data</td>
+											<td>Pay Date Data</td>
+											<td>Pur Date Data</td>
+											<td>Total Data</td>
+										</tr>
+										<tr className="rowEven">
+											<td>Brand Data</td>
+											<td>Model Data</td>
+											<td>Vendor Data</td>
+											<td>Quantity Data</td>
+											<td>My Payment Data</td>
+											<td>Pay Date Data</td>
+											<td>Pur Date Data</td>
+											<td>Total Data</td>
+										</tr>
+									</>
+								))}
+							</tbody>
+						</Table>
+					</div>
 				</div>
 			</div>
 

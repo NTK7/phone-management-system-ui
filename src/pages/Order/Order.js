@@ -31,36 +31,42 @@ function Order() {
 
 			{/* table section */}
 			<div className="order__table">
-				<Table responsive striped bordered hover variant="dark">
-					<thead>
-						{/* Headings of the table */}
-						<tr>
-							<th>BRAND</th>
-							<th>MODEL</th>
-							<th>QUANTITY</th>
-							<th>ORIGINAL PRICE</th>
-						</tr>
-					</thead>
-					<tbody>
-						{/* Creating dummy data with 20 rows */}
-						{Array.from({ length: 3 }).map((_) => (
-							<>
-								<tr className="rowOdd">
-									<td>Brand Data</td>
-									<td>Model Data</td>
-									<td>Quantity Data</td>
-									<td>Original Price Data</td>
-								</tr>
-								<tr className="rowEven">
-									<td>Brand Data</td>
-									<td>Model Data</td>
-									<td>Quantity Data</td>
-									<td>Original Price Data</td>
-								</tr>
-							</>
-						))}
-					</tbody>
-				</Table>
+				<div className="order__topTableHeading">
+					<Table responsive striped bordered hover variant="dark">
+						<thead>
+							{/* Headings of the table */}
+							<tr>
+								<th>BRAND</th>
+								<th>MODEL</th>
+								<th>QUANTITY</th>
+								<th>ORIGINAL PRICE</th>
+							</tr>
+						</thead>
+					</Table>
+				</div>
+				<div className="order__topTableBody">
+					<Table responsive striped bordered hover variant="dark">
+						<tbody>
+							{/* Creating dummy data with 20 rows */}
+							{Array.from({ length: 3 }).map((_) => (
+								<>
+									<tr className="rowOdd">
+										<td>Brand Data</td>
+										<td>Model Data</td>
+										<td>Quantity Data</td>
+										<td>Original Price Data</td>
+									</tr>
+									<tr className="rowEven">
+										<td>Brand Data</td>
+										<td>Model Data</td>
+										<td>Quantity Data</td>
+										<td>Original Price Data</td>
+									</tr>
+								</>
+							))}
+						</tbody>
+					</Table>
+				</div>
 			</div>
 
 			{/* Billing Section */}
@@ -78,49 +84,50 @@ function Order() {
 
 				{/* table section */}
 				<div className="order__table">
-					<Table responsive striped bordered hover variant="dark">
-						<thead>
-							{/* Headings of the table */}
-							<tr>
-								<th>ITEM</th>
-								<th>QUANTITY</th>
-								<th>SELLING PRICE</th>
-								<th>TOTAL BILL</th>
-							</tr>
-						</thead>
-						<tbody>
-							{/* Creating dummy data with 20 rows */}
-							{Array.from({ length: 2 }).map((_) => (
-								<>
-									<tr className="rowOdd">
-										<td>Item Data</td>
-										<td>
-											<input type="text" placeholder="Quantity" />
-										</td>
-										<td>
-											<input type="text" placeholder="Selling Price" />
-										</td>
-										<td>Total bill Data</td>
-									</tr>
-									<tr className="rowEven">
-										<td>Item Data</td>
-										<td>
-											<input type="text" placeholder="Quantity" />
-										</td>
-										<td>
-											<input type="text" placeholder="Selling Price" />
-										</td>
-										<td>Total bill Data</td>
-									</tr>
-								</>
-							))}
-						</tbody>
-					</Table>
-				</div>
-
-				{/* Button */}
-				<div className="payment__button">
-					<Button>Payment</Button>
+					<div className="order__topTableHeading">
+						<Table responsive striped bordered hover variant="dark">
+							<thead>
+								{/* Headings of the table */}
+								<tr>
+									<th>ITEM</th>
+									<th>QUANTITY</th>
+									<th>SELLING PRICE</th>
+									<th>TOTAL BILL</th>
+								</tr>
+							</thead>
+						</Table>
+					</div>
+					<div className="order__topTableBody">
+						<Table responsive striped bordered hover variant="dark">
+							<tbody>
+								{/* Creating dummy data with 20 rows */}
+								{Array.from({ length: 2 }).map((_) => (
+									<>
+										<tr className="rowOdd">
+											<td>Item Data</td>
+											<td>
+												<input type="text" placeholder="Quantity" />
+											</td>
+											<td>
+												<input type="text" placeholder="Selling Price" />
+											</td>
+											<td>Total bill Data</td>
+										</tr>
+										<tr className="rowEven">
+											<td>Item Data</td>
+											<td>
+												<input type="text" placeholder="Quantity" />
+											</td>
+											<td>
+												<input type="text" placeholder="Selling Price" />
+											</td>
+											<td>Total bill Data</td>
+										</tr>
+									</>
+								))}
+							</tbody>
+						</Table>
+					</div>
 				</div>
 			</div>
 			{/* Total Section */}
@@ -130,6 +137,10 @@ function Order() {
 						<ListGroup.Item className="viewInventory__bottomCardListGroupItem">
 							<span>Total Sale :</span> <input type="text" value={0} />
 						</ListGroup.Item>
+						{/* Button */}
+						<div className="payment__button">
+							<Button>Payment</Button>
+						</div>
 					</ListGroup>
 				</Card>
 			</div>

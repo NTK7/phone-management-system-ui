@@ -1,39 +1,66 @@
 .viewInventory {
 	background-color: #1d1d1d;
-	margin-top: 50px;
+	padding-top: 100px;
 }
-table {
-	/* border: 2px rgb(221, 221, 221) solid !important; */
+.viewInventory__topTableAndSearchSection {
+	position: fixed;
+	top: 70px;
+	background-color: #1d1d1d;
+	width: 100%;
+	z-index: 1;
 }
+@media screen and (max-width: 768px) {
+	.viewInventory {
+		height: 94vh;
+	}
+	.viewInventory__bottomCardListGroupItem > input {
+		width: 100px;
+		font-size: 15px !important;
+	}
+	.viewInventory__bottomCardListGroupItem > span {
+		font-size: 15px !important;
+	}
+	.viewInventory__bottomCardListGroupItem {
+		/* border: 1px red solid !important; */
+		width: 250px !important;
+		height: 80px;
+	}
+	.viewInventory__bottomCardListGroup {
+		display: flex;
+		align-items: flex-end !important;
+		/* border: 1px red solid !important; */
+	}
+	.viewInventory__topTableBody {
+		margin-top: 130px !important;
+		/* border: 1px red solid; */
+	}
+}
+
 th {
-	/* border: 2px rgb(202, 202, 202) solid !important; */
+	/* border: 2px red solid !important; */
 	border: none !important;
 	outline: none !important;
 	text-align: center !important;
+	vertical-align: middle !important;
 	font-size: 13px;
+	align-content: center !important;
 	background-color: #000000;
-
 }
-.viewInventory__topTableHeading{
-
+td{
+	text-align: center !important;
+	vertical-align: middle !important;
 }
-
-/* .viewInventory__topTable {
-	padding: 30px;
-	height: 500px !important;
-	overflow: scroll;
-} */
-.viewInventory__topTableHeading{
+.viewInventory__topTableHeading {
 	padding: 0 30px;
 	margin-bottom: -10px;
-
 }
-.viewInventory__topTableBody{
+.viewInventory__topTableBody {
 	padding: 0 30px;
+	margin-top: 120px;
 	height: 500px !important;
 	overflow: scroll;
 }
-.viewInventory__bodyTable{
+.viewInventory__bodyTable {
 	height: 500px !important;
 	overflow: scroll;
 }
@@ -41,8 +68,13 @@ th {
 	width: 0px; /* Remove scrollbar space */
 	background: transparent; /* Optional: just make scrollbar invisible */
 }
+table {
+	table-layout: fixed;
+	word-wrap: break-word;
+	width: 100px;
+}
 .viewInventory__topInput {
-	margin: 10px 30px;
+	margin: 30px 30px;
 	display: flex;
 	align-items: center;
 }
@@ -72,6 +104,7 @@ th {
 	width: 400px;
 	color: white;
 	font-weight: bold;
+	/* border: 1px red solid !important; */
 	display: flex !important;
 	font-size: 18px;
 	border-bottom: 2px #d6d6d6 solid !important;
@@ -79,6 +112,7 @@ th {
 	align-items: center !important;
 	justify-content: space-between !important;
 }
+
 .viewInventory__bottomCardListGroupItem > span {
 	padding: 5px;
 }

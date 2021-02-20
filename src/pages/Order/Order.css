@@ -1,3 +1,6 @@
+.order {
+	padding-top: 80px;
+}
 .order__searchByBrand {
 	margin: 10px 30px;
 	display: flex;
@@ -12,6 +15,10 @@
 }
 .order__searchByBrand > input {
 	padding: 5px;
+}
+th {
+	text-align: center !important;
+	vertical-align: middle !important;
 }
 .order__searchByBrand > button {
 	color: white;
@@ -40,7 +47,10 @@
 td {
 	border: none !important;
 	outline: none !important;
+	text-align: center !important;
+	vertical-align: middle !important;
 }
+
 .order__billing > h2 {
 	color: white;
 	padding: 30px 30px 10px 30px;
@@ -64,8 +74,23 @@ td {
 	background-color: white;
 	color: #ff2c4f;
 }
+/* .order__topTableHeadingThreadHeader > tr > th,
+.order__topTableHeadingThreadBody > tr > td {
+	word-wrap: break-word;
+} */
+table {
+	table-layout: fixed;
+	word-wrap: break-word;
+	width: 100px;
+}
 td > input {
 	text-align: center;
+	/* border: 1px red solid; */
+}
+@media screen and (max-width: 768px) {
+	td > input {
+		width: 110px;
+	}
 }
 .order__total {
 	margin: 20px 50px;

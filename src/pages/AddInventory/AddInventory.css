@@ -1,14 +1,16 @@
 .addInventory {
-	margin: 50px;
+	padding: 100px;
 	outline: none;
 	height: 100%;
 	display: 'grid';
 	place-items: 'center';
+	/* border: 1px white solid; */
 	background-color: #1b1b1b;
 }
 @media screen and (max-width: 768px) {
 	.addInventory {
-		height: 80vh;
+		height: 94vh;
+		padding-top: 150px;
 	}
 }
 .addInventory__section {

@@ -23,21 +23,21 @@ function ViewInventory() {
 			{/* search by vendor */}
 			<div className="viewInventory__top">
 				{/* input and search button to search for the vender */}
-				<div className="viewInventory__topInput">
-					<input
-						type="text"
-						placeholder="Search by vendor"
-						onChange={(e) => setSearchVendorName(e.target.value)}
-						value={searchVendorName}
-					/>{' '}
-					<Button onClick={searchVendor}>Search</Button>
-				</div>
-				<div>
+				<div className="viewInventory__topTableAndSearchSection">
+					<div className="viewInventory__topInput">
+						<input
+							type="text"
+							placeholder="Search by vendor"
+							onChange={(e) => setSearchVendorName(e.target.value)}
+							value={searchVendorName}
+						/>{' '}
+						<Button onClick={searchVendor}>Search</Button>
+					</div>
 					<div className="viewInventory__topTableHeading">
-						<Table responsive striped bordered hover variant="dark">
+						<Table responsive striped bordered hover variant="dark" >
 							<thead>
 								{/* Headings of the table */}
-								<tr className="viewInventory__topTableHeading">
+								<tr>
 									<th>BRAND</th>
 									<th>MODEL</th>
 									<th>VENDOR</th>
@@ -50,37 +50,37 @@ function ViewInventory() {
 							</thead>
 						</Table>
 					</div>
-					<div className="viewInventory__topTableBody">
-						<Table responsive striped bordered hover variant="dark">
-							<tbody>
-								{/* Creating dummy data with 20 rows */}
-								{Array.from({ length: 10 }).map((_) => (
-									<>
-										<tr className="rowOdd">
-											<td>Brand Data</td>
-											<td>Model Data</td>
-											<td>Vendor Data</td>
-											<td>Quantity Data</td>
-											<td>My Payment Data</td>
-											<td>Pay Date Data</td>
-											<td>Pur Date Data</td>
-											<td>Total Data</td>
-										</tr>
-										<tr className="rowEven">
-											<td>Brand Data</td>
-											<td>Model Data</td>
-											<td>Vendor Data</td>
-											<td>Quantity Data</td>
-											<td>My Payment Data</td>
-											<td>Pay Date Data</td>
-											<td>Pur Date Data</td>
-											<td>Total Data</td>
-										</tr>
-									</>
-								))}
-							</tbody>
-						</Table>
-					</div>
+				</div>
+				<div className="viewInventory__topTableBody">
+					<Table responsive striped bordered hover variant="dark">
+						<tbody>
+							{/* Creating dummy data with 20 rows */}
+							{Array.from({ length: 10 }).map((_) => (
+								<>
+									<tr className="rowOdd">
+										<td>BrandBrand Data</td>
+										<td>Model Data</td>
+										<td>VendorVendor Data</td>
+										<td>Quantity Data</td>
+										<td>My Paas Payment Data</td>
+										<td>Pay My Payment Datta</td>
+										<td>Pur DateDateDate Data</td>
+										<td>Total Datal Datal Data</td>
+									</tr>
+									<tr className="rowEven">
+										<td>Brand Data</td>
+										<td>Model Data</td>
+										<td>Vendor Data</td>
+										<td>Quantity Data</td>
+										<td>My Payment Data</td>
+										<td>Pay Date Data</td>
+										<td>Pur Date Data</td>
+										<td>Total Data</td>
+									</tr>
+								</>
+							))}
+						</tbody>
+					</Table>
 				</div>
 			</div>
 

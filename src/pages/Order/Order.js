@@ -33,7 +33,7 @@ function Order() {
 			<div className="order__table">
 				<div className="order__topTableHeading">
 					<Table responsive striped bordered hover variant="dark">
-						<thead>
+						<thead className="order__topTableHeadingThreadHeader">
 							{/* Headings of the table */}
 							<tr>
 								<th>BRAND</th>
@@ -46,15 +46,15 @@ function Order() {
 				</div>
 				<div className="order__topTableBody">
 					<Table responsive striped bordered hover variant="dark">
-						<tbody>
+						<tbody className="order__topTableHeadingThreadBody">
 							{/* Creating dummy data with 20 rows */}
 							{Array.from({ length: 3 }).map((_) => (
 								<>
 									<tr className="rowOdd">
-										<td>Brand Data</td>
-										<td>Model Data</td>
-										<td>Quantity Data</td>
-										<td>Original Price Data</td>
+										<td> DataBrand Data</td>
+										<td>Model DataModel </td>
+										<td>Quantity DataQuantity Data</td>
+										<td>Original Price DataPrice Data</td>
 									</tr>
 									<tr className="rowEven">
 										<td>Brand Data</td>

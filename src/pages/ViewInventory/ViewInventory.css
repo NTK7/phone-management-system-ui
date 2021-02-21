@@ -23,11 +23,12 @@
 	.viewInventory__bottomCardListGroupItem {
 		/* border: 1px red solid !important; */
 		width: 250px !important;
-		height: 80px;
+		/* height: 80px; */
 	}
 	.viewInventory__bottomCardListGroup {
 		display: flex;
 		align-items: flex-end !important;
+		flex-direction: column !important;
 		/* border: 1px red solid !important; */
 	}
 	.viewInventory__topTableBody {
@@ -46,7 +47,7 @@ th {
 	align-content: center !important;
 	background-color: #000000;
 }
-td{
+td {
 	text-align: center !important;
 	vertical-align: middle !important;
 }
@@ -81,23 +82,31 @@ table {
 .viewInventory__topInput > input {
 	padding: 5px;
 }
-.viewInventory__topInput > button {
+.viewInventory__topInput > button,
+.payBalance__button > button {
 	color: white;
 	margin-left: 5px;
 	background-color: #fd3153;
 }
-.viewInventory__topInput > button:hover {
+.viewInventory__topInput > button:hover,
+.payBalance__button > button:hover {
 	background-color: white;
 	color: #fd3153;
 }
 .viewInventory__bottom {
 	padding: 30px;
 }
+.viewInventory__bottomCardListGroup {
+	display: flex !important;
+	flex-direction: column !important;
+	align-items: center !important;
+}
 .viewInventory__bottomCard {
 	/* border: 1px white solid; */
-	padding: 50px 20px;
+	padding: 30px;
 	background-color: #1b1b1b !important;
 	display: flex;
+	align-items: center;
 	justify-content: center;
 }
 .viewInventory__bottomCardListGroupItem {

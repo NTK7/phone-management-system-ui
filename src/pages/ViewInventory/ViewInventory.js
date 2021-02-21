@@ -34,7 +34,7 @@ function ViewInventory() {
 						<Button onClick={searchVendor}>Search</Button>
 					</div>
 					<div className="viewInventory__topTableHeading">
-						<Table responsive striped bordered hover variant="dark" >
+						<Table responsive striped bordered hover variant="dark">
 							<thead>
 								{/* Headings of the table */}
 								<tr>
@@ -99,6 +99,9 @@ function ViewInventory() {
 							<span>Balance:</span> <input type="text" value={balance} />
 						</ListGroup.Item>
 					</ListGroup>
+					<div className="payBalance__button">
+						<Button onClick={searchVendor}>Pay Balance</Button>
+					</div>
 				</Card>
 			</div>
 		</div>

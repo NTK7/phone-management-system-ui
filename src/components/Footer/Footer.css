@@ -1,5 +1,5 @@
-.footer{
-    position: relative;
+.footer {
+	position: relative;
 	bottom: 0;
 	padding: 15px 25px;
 	background-color: #000000;
@@ -7,6 +7,11 @@
 
 	display: flex;
 	align-items: center;
-    font-weight: bold;
+	font-weight: bold;
 	justify-content: center;
+}
+@media screen and (max-width: 768px) {
+	.footer {
+		bottom: -70px;
+	}
 }

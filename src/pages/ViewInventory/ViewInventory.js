@@ -1,14 +1,18 @@
 import { Button, Card } from '@material-ui/core';
 import { ViewArraySharp } from '@material-ui/icons';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { ListGroup, Table } from 'react-bootstrap';
 import './ViewInventory.css';
 
 function ViewInventory() {
 	const [searchVendorName, setSearchVendorName] = useState('');
-	const [totalBill, setTotalBill] = useState('15,000');
-	const [initialPayment, setInitialPayment] = useState('7,000');
+	const [totalBill, setTotalBill] = useState(15000);
+	const [initialPayment, setInitialPayment] = useState(7000);
 	const [balance, setBalance] = useState('8,000');
+	const initialPayODD__ref = useRef();
+	const totalPayODD__ref = useRef();
+	const initialPayEVEN__ref = useRef();
+	const totalPayEVEN__ref = useRef();
 
 	//  SEARCH VENDOR BY NAME
 	const searchVendor = () => {
@@ -16,6 +20,20 @@ function ViewInventory() {
 
 		// clear the text field once searching is done
 		setSearchVendorName('');
+	};
+
+	const payBalance = () => {
+		alert('Paying balance');
+	};
+
+	const handleOnClickODDRow = () => {
+		setInitialPayment(initialPayODD__ref.current.innerText);
+		setTotalBill(totalPayODD__ref.current.innerText);
+	};
+
+	const handleOnClickEVENRow = () => {
+		setInitialPayment(initialPayEVEN__ref.current.innerText);
+		setTotalBill(totalPayEVEN__ref.current.innerText);
 	};
 
 	return (
@@ -57,25 +75,25 @@ function ViewInventory() {
 							{/* Creating dummy data with 20 rows */}
 							{Array.from({ length: 10 }).map((_) => (
 								<>
-									<tr className="rowOdd">
+									<tr className="rowOdd" onClick={handleOnClickODDRow}>
 										<td>BrandBrand Data</td>
 										<td>Model Data</td>
 										<td>VendorVendor Data</td>
 										<td>Quantity Data</td>
-										<td>My Paas Payment Data</td>
+										<td ref={initialPayODD__ref}>1200</td>
 										<td>Pay My Payment Datta</td>
 										<td>Pur DateDateDate Data</td>
-										<td>Total Datal Datal Data</td>
+										<td ref={totalPayODD__ref}>2500</td>
 									</tr>
-									<tr className="rowEven">
+									<tr className="rowEven" onClick={handleOnClickEVENRow}>
 										<td>Brand Data</td>
 										<td>Model Data</td>
 										<td>Vendor Data</td>
 										<td>Quantity Data</td>
-										<td>My Payment Data</td>
+										<td ref={initialPayEVEN__ref}>1600</td>
 										<td>Pay Date Data</td>
 										<td>Pur Date Data</td>
-										<td>Total Data</td>
+										<td ref={totalPayEVEN__ref}>5000</td>
 									</tr>
 								</>
 							))}
@@ -96,11 +114,11 @@ function ViewInventory() {
 							<input type="text" value={initialPayment} />
 						</ListGroup.Item>
 						<ListGroup.Item className="viewInventory__bottomCardListGroupItem">
-							<span>Balance:</span> <input type="text" value={balance} />
+							<span>Balance:</span> <input type="text" value={totalBill - initialPayment} />
 						</ListGroup.Item>
 					</ListGroup>
 					<div className="payBalance__button">
-						<Button onClick={searchVendor}>Pay Balance</Button>
+						<Button onClick={payBalance}>Pay Balance</Button>
 					</div>
 				</Card>
 			</div>

@@ -133,7 +133,7 @@ function Order() {
 			{/* Total Section */}
 			<div className="order__total">
 				<Card className="viewInventory__bottomCard">
-					<ListGroup variant="flush" className="viewInventory__bottomCardListGroup">
+					<ListGroup variant="flush" className="order__bottomCardListGroup">
 						<ListGroup.Item className="viewInventory__bottomCardListGroupItem">
 							<span>Total Sale :</span> <input type="text" value={0} />
 						</ListGroup.Item>

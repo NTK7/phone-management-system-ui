@@ -1,5 +1,4 @@
 import { Button, Card } from '@material-ui/core';
-import { ViewArraySharp } from '@material-ui/icons';
 import { useRef, useState } from 'react';
 import { ListGroup, Table } from 'react-bootstrap';
 import './ViewInventory.css';
@@ -26,14 +25,9 @@ function ViewInventory() {
 		alert('Paying balance');
 	};
 
-	const handleOnClickODDRow = () => {
-		setInitialPayment(initialPayODD__ref.current.innerText);
-		setTotalBill(totalPayODD__ref.current.innerText);
-	};
-
-	const handleOnClickEVENRow = () => {
-		setInitialPayment(initialPayEVEN__ref.current.innerText);
-		setTotalBill(totalPayEVEN__ref.current.innerText);
+	const handleOnClickRow = (input) => {
+		setInitialPayment(input?.initialPay);
+		setTotalBill(input?.totalB);
 	};
 
 	return (
@@ -73,19 +67,71 @@ function ViewInventory() {
 					<Table responsive striped bordered hover variant="dark">
 						<tbody>
 							{/* Creating dummy data with 20 rows */}
-							{Array.from({ length: 10 }).map((_) => (
+							{Array.from({ length: 5 }).map((_) => (
 								<>
-									<tr className="rowOdd" onClick={handleOnClickODDRow}>
+									<tr
+										className="rowOdd"
+										onClick={() =>
+											handleOnClickRow({
+												totalB: 2500,
+												initialPay: 1200,
+											})
+										}
+									>
 										<td>BrandBrand Data</td>
 										<td>Model Data</td>
 										<td>VendorVendor Data</td>
 										<td>Quantity Data</td>
-										<td ref={initialPayODD__ref}>1200</td>
+										<td>1200</td>
 										<td>Pay My Payment Datta</td>
 										<td>Pur DateDateDate Data</td>
-										<td ref={totalPayODD__ref}>2500</td>
+										<td>2500</td>
 									</tr>
-									<tr className="rowEven" onClick={handleOnClickEVENRow}>
+									<tr
+										className="rowEven"
+										onClick={() =>
+											handleOnClickRow({
+												totalB: 5000,
+												initialPay: 1600,
+											})
+										}
+									>
+										<td>Brand Data</td>
+										<td>Model Data</td>
+										<td>Vendor Data</td>
+										<td>Quantity Data</td>
+										<td>1600</td>
+										<td>Pay Date Data</td>
+										<td>Pur Date Data</td>
+										<td>5000</td>
+									</tr>
+									<tr
+										className="rowOdd"
+										onClick={() =>
+											handleOnClickRow({
+												totalB: 1919,
+												initialPay: 1200,
+											})
+										}
+									>
+										<td>BrandBrand Data</td>
+										<td>Model Data</td>
+										<td>VendorVendor Data</td>
+										<td>Quantity Data</td>
+										<td>1200</td>
+										<td>Pay My Payment Datta</td>
+										<td>Pur DateDateDate Data</td>
+										<td ref={totalPayODD__ref}>1919</td>
+									</tr>
+									<tr
+										className="rowEven"
+										onClick={() =>
+											handleOnClickRow({
+												totalB: 4652,
+												initialPay: 1600,
+											})
+										}
+									>
 										<td>Brand Data</td>
 										<td>Model Data</td>
 										<td>Vendor Data</td>
@@ -93,7 +139,7 @@ function ViewInventory() {
 										<td ref={initialPayEVEN__ref}>1600</td>
 										<td>Pay Date Data</td>
 										<td>Pur Date Data</td>
-										<td ref={totalPayEVEN__ref}>5000</td>
+										<td ref={totalPayEVEN__ref}>4652</td>
 									</tr>
 								</>
 							))}

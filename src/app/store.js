@@ -1,8 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit';
 import userReducer from '../features/userSlice';
+import { loadFromLocalStorage, saveToLocalStorage } from './reduxPersist';
 
-export default configureStore({
-  reducer: {
-    user: userReducer,
-  },
+const persistedState = loadFromLocalStorage();
+
+export const store = configureStore({
+	reducer: {
+		user: userReducer,
+	},
+	preloadedState: persistedState,
 });
+
+store.subscribe(() => saveToLocalStorage(store.getState()));

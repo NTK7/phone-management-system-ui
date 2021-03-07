@@ -1,6 +1,8 @@
 import { Button, Card } from '@material-ui/core';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ListGroup, Table } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import { AddInventoryData, selectViewInventData, inventoryData } from '../../features/viewInventorySlice';
 import './ViewInventory.css';
 
 function ViewInventory() {
@@ -12,6 +14,31 @@ function ViewInventory() {
 	const totalPayODD__ref = useRef();
 	const initialPayEVEN__ref = useRef();
 	const totalPayEVEN__ref = useRef();
+
+	const dispatch = useDispatch();
+	const viewInventData = useSelector(selectViewInventData);
+
+	// Adding dummy data using redux initially
+	useEffect(() => {
+		// Creating dummy data
+
+		let dummyData = []
+		for (let index = 0; index < 10; index++) {
+			dummyData.push({
+				brand: 'Dummy Brand',
+				model: 'Dummy Model',
+				vendor: 'Dummy Vendor',
+				quantity: 'Dummy Quantity',
+				myPayment: 'Dummy my payment',
+				payDate: 'Dummy pay date',
+				purDate: 'Dummy Pur date',
+				total: 'Dummy total',
+			})
+			
+		}
+		
+		dispatch(inventoryData(dummyData));
+	}, []);
 
 	//  SEARCH VENDOR BY NAME
 	const searchVendor = () => {
@@ -67,7 +94,7 @@ function ViewInventory() {
 					<Table responsive striped bordered hover variant="dark">
 						<tbody>
 							{/* Creating dummy data with 20 rows */}
-							{Array.from({ length: 5 }).map((_) => (
+							{viewInventData.map((item) => (
 								<>
 									<tr
 										className="rowOdd"
@@ -78,14 +105,15 @@ function ViewInventory() {
 											})
 										}
 									>
-										<td>BrandBrand Data</td>
-										<td>Model Data</td>
-										<td>VendorVendor Data</td>
-										<td>Quantity Data</td>
-										<td>1200</td>
-										<td>Pay My Payment Datta</td>
-										<td>Pur DateDateDate Data</td>
-										<td>2500</td>
+										<td>{item?.brand}</td>
+										<td>{item?.model}</td>
+										<td>{item?.vendor}</td>
+										<td>{item?.quantity}</td>
+										<td>{item?.myPayment}</td>
+										<td>{item?.payDate}</td>
+										<td>{item?.purDate}</td>
+										<td>{item?.total}</td>
+										
 									</tr>
 									<tr
 										className="rowEven"
@@ -96,14 +124,14 @@ function ViewInventory() {
 											})
 										}
 									>
-										<td>Brand Data</td>
-										<td>Model Data</td>
-										<td>Vendor Data</td>
-										<td>Quantity Data</td>
-										<td>1600</td>
-										<td>Pay Date Data</td>
-										<td>Pur Date Data</td>
-										<td>5000</td>
+										<td>{item?.brand}</td>
+										<td>{item?.model}</td>
+										<td>{item?.vendor}</td>
+										<td>{item?.quantity}</td>
+										<td>{item?.myPayment}</td>
+										<td>{item?.payDate}</td>
+										<td>{item?.purDate}</td>
+										<td>{item?.total}</td>
 									</tr>
 									<tr
 										className="rowOdd"
@@ -114,14 +142,14 @@ function ViewInventory() {
 											})
 										}
 									>
-										<td>BrandBrand Data</td>
-										<td>Model Data</td>
-										<td>VendorVendor Data</td>
-										<td>Quantity Data</td>
-										<td>1200</td>
-										<td>Pay My Payment Datta</td>
-										<td>Pur DateDateDate Data</td>
-										<td ref={totalPayODD__ref}>1919</td>
+										<td>{item?.brand}</td>
+										<td>{item?.model}</td>
+										<td>{item?.vendor}</td>
+										<td>{item?.quantity}</td>
+										<td>{item?.myPayment}</td>
+										<td>{item?.payDate}</td>
+										<td>{item?.purDate}</td>
+										<td>{item?.total}</td>
 									</tr>
 									<tr
 										className="rowEven"
@@ -132,14 +160,14 @@ function ViewInventory() {
 											})
 										}
 									>
-										<td>Brand Data</td>
-										<td>Model Data</td>
-										<td>Vendor Data</td>
-										<td>Quantity Data</td>
-										<td ref={initialPayEVEN__ref}>1600</td>
-										<td>Pay Date Data</td>
-										<td>Pur Date Data</td>
-										<td ref={totalPayEVEN__ref}>4652</td>
+										<td>{item?.brand}</td>
+										<td>{item?.model}</td>
+										<td>{item?.vendor}</td>
+										<td>{item?.quantity}</td>
+										<td>{item?.myPayment}</td>
+										<td>{item?.payDate}</td>
+										<td>{item?.purDate}</td>
+										<td>{item?.total}</td>
 									</tr>
 								</>
 							))}

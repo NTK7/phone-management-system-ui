@@ -38,12 +38,27 @@
 	background-color: #fd3758 !important;
 	cursor: pointer;
 }
-.home__cardsTopCard:hover{
+.home__cardsTopCard:hover,
+.lastPayments__card:hover,
+.itemEnds__card:hover {
 	color: #fd3758 !important;
 	transition: 0.3s ease-in-out;
 	background-color: white !important;
 }
-
+.home__cardsIpad {
+	display: none;
+}
+.lastPayments__card,
+.itemEnds__card {
+	width: 220px;
+	padding: 20px 15px;
+	font-size: 15px;
+	display: flex !important;
+	color: white !important;
+	transition: 0.3s ease-in-out;
+	background-color: #fd3758 !important;
+	cursor: pointer;
+}
 .mainMenuContainer {
 	width: 100%;
 	display: flex;
@@ -111,8 +126,18 @@
 		background-color: #000000;
 		color: white;
 	}
-	.home__cardsTop{
+	.home__cardsTop {
 		margin-top: 50px;
+	}
+	.home__cardsIpad {
+		display: flex;
+		/* border: 1px white solid; */
+		margin-top: -100px;
+		justify-content: space-between;
+	}
+	.itemEnds,
+	.lastPayments {
+		display: none;
 	}
 	.home__cardsTopCard {
 		width: 100px;

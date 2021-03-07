@@ -50,47 +50,76 @@ function Home() {
 				</Card>
 			</div>
 			<div className="home__cards container">
-					{/* last payments section */}
-					<div className="lastPayments">
-						<Card>
-							<Card.Title>Last Payments</Card.Title>
-						</Card>
-					</div>
+				{/* last payments section */}
+				<div className="lastPayments">
+					<Card className="lastPayments__card">
+						<Card.Text><h6>Last Payments</h6></Card.Text>
+						<Card.Text><li>01-02-2021 : Rs:45000</li></Card.Text>
+						<Card.Text><li>01-02-2021 : Rs:450</li></Card.Text>
+						<Card.Text><li>01-02-2021 : Rs:458990</li></Card.Text>
+					</Card>
+				</div>
 
-					{/* main menu container */}
-					<div className="mainMenuContainer">
-						{displayInventoryOptions ? (
-							<div className="home__cardsInventory" onMouseLeave={() => setDisplayInventoryOptions(false)}>
-								<p>
-									<Link to="/add+inventory">ADD INVENTORY</Link>
-								</p>
-								<p>
-									<Link to="/view+inventory">VIEW INVENTOR</Link>
-								</p>
-							</div>
-						) : (
-							<div className="home__cardsInventory" onMouseEnter={() => setDisplayInventoryOptions(true)}>
-								<p>INVENTORY</p>
-							</div>
-						)}
-
-						<div
-							className="home__cardsOrder"
-							onClick={() => {
-								history.replace('/order');
-							}}
-						>
+				{/* main menu container */}
+				<div className="mainMenuContainer">
+					{displayInventoryOptions ? (
+						<div className="home__cardsInventory" onMouseLeave={() => setDisplayInventoryOptions(false)}>
 							<p>
-								<Link to="/order">ORDER</Link>
+								<Link to="/add+inventory">ADD INVENTORY</Link>
+							</p>
+							<p>
+								<Link to="/view+inventory">VIEW INVENTOR</Link>
 							</p>
 						</div>
+					) : (
+						<div className="home__cardsInventory" onMouseEnter={() => setDisplayInventoryOptions(true)}>
+							<p>INVENTORY</p>
+						</div>
+					)}
+
+					<div
+						className="home__cardsOrder"
+						onClick={() => {
+							history.replace('/order');
+						}}
+					>
+						<p>
+							<Link to="/order">ORDER</Link>
+						</p>
 					</div>
-					{/* items ends section */}
-					<div className="itemEnds">
-						<Card>
-							<Card.Title>Last Payments</Card.Title>
-						</Card>
-					</div>
+				</div>
+				{/* items ends section */}
+				<div className="itemEnds">
+					<Card className="itemEnds__card">
+						<Card.Title>Item ends</Card.Title>
+						<Card.Text><li>itemName : 5 </li> </Card.Text>
+						<Card.Text><li>itemName : 2 </li> </Card.Text>
+						<Card.Text><li>itemName : 6 </li> </Card.Text>
+					</Card>
+				</div>
+			</div>
+
+			{/* Display for ipad mode */}
+			<div className="home__cardsIpad container">
+				{/* last payments section */}
+				<div>
+					<Card className="lastPayments__card">
+						<Card.Text><h6>Last Payments</h6></Card.Text>
+						<Card.Text><li>01-02-2021 : Rs:45000</li></Card.Text>
+						<Card.Text><li>01-02-2021 : Rs:450</li></Card.Text>
+						<Card.Text><li>01-02-2021 : Rs:458990</li></Card.Text>
+					</Card>
+				</div>
+
+				{/* items ends section */}
+				<div>
+					<Card className="itemEnds__card">
+						<Card.Title>Item ends</Card.Title>
+						<Card.Text><li>itemName : 5 </li> </Card.Text>
+						<Card.Text><li>itemName : 2 </li> </Card.Text>
+						<Card.Text><li>itemName : 6 </li> </Card.Text>
+					</Card>
+				</div>
 			</div>
 		</div>
 	);

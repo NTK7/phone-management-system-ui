@@ -2,9 +2,15 @@ import { Button } from '@material-ui/core';
 import { Alert, Tab } from 'bootstrap';
 import { useState } from 'react';
 import { FormControl, InputGroup, Tabs } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectViewInventData, addInventoryData } from '../../features/viewInventorySlice';
+
 import './AddInventory.css';
 
 function AddInventory() {
+	const dispatch = useDispatch();
+	const viewInventData = useSelector(selectViewInventData);
+
 	// insert variables
 	const [insertBrand, setInsertBrand] = useState('');
 	const [insertModel, setInsertModel] = useState('');
@@ -42,6 +48,20 @@ function AddInventory() {
 			!insertVendor
 		) {
 			alert('Please fill all the fields!');
+		} else {
+			// (REMEMBER TO UPDATE THE DATABASE WITH THIS ITEM ELSE IT WONT UPDATE THE VIEW INVENTORY)
+			dispatch(
+				addInventoryData({
+					brand: insertBrand,
+					model: insertModel,
+					vendor: insertVendor,
+					quantity: insertQuantity,
+					myPayment: insertMyPayment,
+					payDate: insertPayDate,
+					purDate: insertPurDate,
+					total: insertTotal,
+				})
+			);
 		}
 
 		// clearing all the fields after backend implementation

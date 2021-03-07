@@ -9,16 +9,13 @@ export const viewInventorySlice = createSlice({
 		inventoryData: (state, action) => {
 			state.viewInventoryData = action.payload;
 		},
-        AddInventoryData: (state, action) => {
+        addInventoryData: (state, action) => {
             state.viewInventoryData.push(action.payload);
-		},
-        UpdateInventoryData: (state, action) => {
-			state.viewInventoryData = action.payload;
 		},
 	},
 });
 
-export const { inventoryData, AddInventoryData,UpdateInventoryData } = viewInventorySlice.actions;
+export const { inventoryData, addInventoryData } = viewInventorySlice.actions;
 
 export const selectViewInventData = (state) => state.viewInventoryData.viewInventoryData;
 

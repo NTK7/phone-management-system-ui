@@ -1,11 +1,17 @@
 import { Button, Card } from '@material-ui/core';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ListGroup, Table } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import { addBillingData, addOrderData, selectBillingData, selectOrderData } from '../../features/OrderDataSlice';
 import './Order.css';
 
 function Order() {
 	const [searchByBrand, setSearchByBrand] = useState('');
 	const [searchByBrandModel, setSearchByBrandModel] = useState('');
+
+	const dispatch = useDispatch();
+	const orderData = useSelector(selectOrderData);
+	const billingData = useSelector(selectBillingData);
 
 	const searchByBrandFunction = () => {
 		alert(searchByBrand);
@@ -14,6 +20,34 @@ function Order() {
 	const searchByBrandAndModelFunction = () => {
 		alert(searchByBrandModel);
 	};
+
+	useEffect(() => {
+		// Creating dummy data (ORDER DATA)
+		// (FETCH THESE DATA FROM THE DATABASE)
+		let dummyData = [];
+		for (let index = 0; index < 5; index++) {
+			dummyData.push({
+				brand: 'Dummy Brand',
+				model: 'Dummy Model',
+				quantity: 'Dummy Quantity',
+				originalPrice: 'Dummy originalPrice',
+			});
+		}
+		dispatch(addOrderData(dummyData));
+
+		// Creating dummy data (BILLING DATA)
+		// (FETCH THESE DATA FROM THE DATABASE)
+		dummyData = [];
+		for (let index = 0; index < 5; index++) {
+			dummyData.push({
+				item: 'Dummy item',
+				quantity: 'Dummy quantity',
+				sellingPrice: 'Dummy sellingPrice',
+				totalBill: 'Dummy totalBill',
+			});
+		}
+		dispatch(addBillingData(dummyData));
+	}, []);
 
 	return (
 		<div className="order">
@@ -48,20 +82,23 @@ function Order() {
 					<Table responsive striped bordered hover variant="dark">
 						<tbody className="order__topTableHeadingThreadBody">
 							{/* Creating dummy data with 20 rows */}
-							{Array.from({ length: 3 }).map((_) => (
+							{orderData.map((item, index) => (
 								<>
-									<tr className="rowOdd">
-										<td> DataBrand Data</td>
-										<td>Model DataModel </td>
-										<td>Quantity DataQuantity Data</td>
-										<td>Original Price DataPrice Data</td>
-									</tr>
-									<tr className="rowEven">
-										<td>Brand Data</td>
-										<td>Model Data</td>
-										<td>Quantity Data</td>
-										<td>Original Price Data</td>
-									</tr>
+									{index % 2 === 0 ? (
+										<tr className="rowOdd">
+											<td>{item?.brand}</td>
+											<td>{item?.model}</td>
+											<td>{item?.quantity}</td>
+											<td>{item?.originalPrice}</td>
+										</tr>
+									) : (
+										<tr className="rowEven">
+											<td>{item?.brand}</td>
+											<td>{item?.model}</td>
+											<td>{item?.quantity}</td>
+											<td>{item?.originalPrice}</td>
+										</tr>
+									)}
 								</>
 							))}
 						</tbody>
@@ -101,28 +138,31 @@ function Order() {
 						<Table responsive striped bordered hover variant="dark">
 							<tbody>
 								{/* Creating dummy data with 20 rows */}
-								{Array.from({ length: 2 }).map((_) => (
+								{billingData.map((item, index) => (
 									<>
-										<tr className="rowOdd">
-											<td>Item Data</td>
-											<td>
-												<input type="text" placeholder="Quantity" />
-											</td>
-											<td>
-												<input type="text" placeholder="Selling Price" />
-											</td>
-											<td>Total bill Data</td>
-										</tr>
-										<tr className="rowEven">
-											<td>Item Data</td>
-											<td>
-												<input type="text" placeholder="Quantity" />
-											</td>
-											<td>
-												<input type="text" placeholder="Selling Price" />
-											</td>
-											<td>Total bill Data</td>
-										</tr>
+										{index % 2 === 0 ? (
+											<tr className="rowOdd">
+												<td>{item.item}</td>
+												<td>
+													<input type="text" placeholder={item.quantity} />
+												</td>
+												<td>
+													<input type="text" placeholder={item.sellingPrice} />
+												</td>
+												<td>{item.totalBill}</td>
+											</tr>
+										) : (
+											<tr className="rowEven">
+												<td>{item.item}</td>
+												<td>
+													<input type="text" placeholder={item.quantity} />
+												</td>
+												<td>
+													<input type="text" placeholder={item.sellingPrice} />
+												</td>
+												<td>{item.totalBill}</td>
+											</tr>
+										)}
 									</>
 								))}
 							</tbody>

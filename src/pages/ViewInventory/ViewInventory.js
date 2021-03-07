@@ -2,18 +2,13 @@ import { Button, Card } from '@material-ui/core';
 import { useEffect, useRef, useState } from 'react';
 import { ListGroup, Table } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { AddInventoryData, selectViewInventData, inventoryData } from '../../features/viewInventorySlice';
+import { selectViewInventData, inventoryData } from '../../features/viewInventorySlice';
 import './ViewInventory.css';
 
 function ViewInventory() {
 	const [searchVendorName, setSearchVendorName] = useState('');
 	const [totalBill, setTotalBill] = useState(15000);
 	const [initialPayment, setInitialPayment] = useState(7000);
-	const [balance, setBalance] = useState('8,000');
-	const initialPayODD__ref = useRef();
-	const totalPayODD__ref = useRef();
-	const initialPayEVEN__ref = useRef();
-	const totalPayEVEN__ref = useRef();
 
 	const dispatch = useDispatch();
 	const viewInventData = useSelector(selectViewInventData);
@@ -21,8 +16,8 @@ function ViewInventory() {
 	// Adding dummy data using redux initially
 	useEffect(() => {
 		// Creating dummy data
-
-		let dummyData = []
+		// (FETCH THESE DATA FROM THE DATABASE)
+		let dummyData = [];
 		for (let index = 0; index < 10; index++) {
 			dummyData.push({
 				brand: 'Dummy Brand',
@@ -33,10 +28,9 @@ function ViewInventory() {
 				payDate: 'Dummy pay date',
 				purDate: 'Dummy Pur date',
 				total: 'Dummy total',
-			})
-			
+			});
 		}
-		
+
 		dispatch(inventoryData(dummyData));
 	}, []);
 
@@ -94,81 +88,48 @@ function ViewInventory() {
 					<Table responsive striped bordered hover variant="dark">
 						<tbody>
 							{/* Creating dummy data with 20 rows */}
-							{viewInventData.map((item) => (
+
+							{viewInventData.map((item, index) => (
 								<>
-									<tr
-										className="rowOdd"
-										onClick={() =>
-											handleOnClickRow({
-												totalB: 2500,
-												initialPay: 1200,
-											})
-										}
-									>
-										<td>{item?.brand}</td>
-										<td>{item?.model}</td>
-										<td>{item?.vendor}</td>
-										<td>{item?.quantity}</td>
-										<td>{item?.myPayment}</td>
-										<td>{item?.payDate}</td>
-										<td>{item?.purDate}</td>
-										<td>{item?.total}</td>
-										
-									</tr>
-									<tr
-										className="rowEven"
-										onClick={() =>
-											handleOnClickRow({
-												totalB: 5000,
-												initialPay: 1600,
-											})
-										}
-									>
-										<td>{item?.brand}</td>
-										<td>{item?.model}</td>
-										<td>{item?.vendor}</td>
-										<td>{item?.quantity}</td>
-										<td>{item?.myPayment}</td>
-										<td>{item?.payDate}</td>
-										<td>{item?.purDate}</td>
-										<td>{item?.total}</td>
-									</tr>
-									<tr
-										className="rowOdd"
-										onClick={() =>
-											handleOnClickRow({
-												totalB: 1919,
-												initialPay: 1200,
-											})
-										}
-									>
-										<td>{item?.brand}</td>
-										<td>{item?.model}</td>
-										<td>{item?.vendor}</td>
-										<td>{item?.quantity}</td>
-										<td>{item?.myPayment}</td>
-										<td>{item?.payDate}</td>
-										<td>{item?.purDate}</td>
-										<td>{item?.total}</td>
-									</tr>
-									<tr
-										className="rowEven"
-										onClick={() =>
-											handleOnClickRow({
-												totalB: 4652,
-												initialPay: 1600,
-											})
-										}
-									>
-										<td>{item?.brand}</td>
-										<td>{item?.model}</td>
-										<td>{item?.vendor}</td>
-										<td>{item?.quantity}</td>
-										<td>{item?.myPayment}</td>
-										<td>{item?.payDate}</td>
-										<td>{item?.purDate}</td>
-										<td>{item?.total}</td>
-									</tr>
+									{(index%2 === 0) ? (
+										<tr
+											className="rowOdd"
+											onClick={() =>
+												handleOnClickRow({
+													totalB: 2500,
+													initialPay: 1200,
+												})
+											}
+										>
+											<td>{item?.brand}</td>
+											<td>{item?.model}</td>
+											<td>{item?.vendor}</td>
+											<td>{item?.quantity}</td>
+											<td>{item?.myPayment}</td>
+											<td>{item?.payDate}</td>
+											<td>{item?.purDate}</td>
+											<td>{item?.total}</td>
+										</tr>
+									) : (
+										<tr
+											className="rowEven"
+											onClick={() =>
+												handleOnClickRow({
+													totalB: 5000,
+													initialPay: 1600,
+												})
+											}
+										>
+											<td>{item?.brand}</td>
+											<td>{item?.model}</td>
+											<td>{item?.vendor}</td>
+											<td>{item?.quantity}</td>
+											<td>{item?.myPayment}</td>
+											<td>{item?.payDate}</td>
+											<td>{item?.purDate}</td>
+											<td>{item?.total}</td>
+										</tr>
+									)}
 								</>
 							))}
 						</tbody>

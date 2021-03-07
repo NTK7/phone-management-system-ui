@@ -20,14 +20,14 @@ th {
 	text-align: center !important;
 	vertical-align: middle !important;
 }
-.order__searchByBrand > button {
-	color: white;
+.order__searchByBrand > button ,.deleteBTN{
+	color: white !important;
 	margin-left: 5px;
-	background-color: #ff2c4f;
+	background-color: #ff2c4f !important;
 }
-.order__searchByBrand > button:hover {
-	background-color: white;
-	color: #e94560;
+.order__searchByBrand > button:hover ,.deleteBTN:hover{
+	background-color: white!important;
+	color: #e94560!important;
 }
 .order__table {
 	padding: 30px;

@@ -130,6 +130,7 @@ function Order() {
 									<th>QUANTITY</th>
 									<th>SELLING PRICE</th>
 									<th>TOTAL BILL</th>
+									<th>DELETE</th>
 								</tr>
 							</thead>
 						</Table>
@@ -150,6 +151,7 @@ function Order() {
 													<input type="text" placeholder={item.sellingPrice} />
 												</td>
 												<td>{item.totalBill}</td>
+												<td><Button className="deleteBTN">DELETE</Button></td>
 											</tr>
 										) : (
 											<tr className="rowEven">
@@ -161,6 +163,7 @@ function Order() {
 													<input type="text" placeholder={item.sellingPrice} />
 												</td>
 												<td>{item.totalBill}</td>
+												<td><Button className="deleteBTN">DELETE</Button></td>
 											</tr>
 										)}
 									</>

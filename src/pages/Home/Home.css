@@ -130,9 +130,10 @@
 		margin-top: 50px;
 	}
 	.home__cardsIpad {
+		padding: 0 100px !important;
 		display: flex;
 		/* border: 1px white solid; */
-		margin-top: -100px;
+		margin-top: -150px;
 		justify-content: space-between;
 	}
 	.itemEnds,

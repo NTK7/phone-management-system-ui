@@ -8,6 +8,8 @@ import './Order.css';
 function Order() {
 	const [searchByBrand, setSearchByBrand] = useState('');
 	const [searchByBrandModel, setSearchByBrandModel] = useState('');
+	const [billingItems, setBillingItems] = useState([]);
+	const [totalSales, setTotalSales] = useState(0);
 
 	const dispatch = useDispatch();
 	const orderData = useSelector(selectOrderData);
@@ -27,27 +29,103 @@ function Order() {
 		let dummyData = [];
 		for (let index = 0; index < 5; index++) {
 			dummyData.push({
-				brand: 'Dummy Brand',
+				brand: `Dummy Brand ${index}`,
 				model: 'Dummy Model',
-				quantity: 'Dummy Quantity',
-				originalPrice: 'Dummy originalPrice',
+				quantity: 1,
+				originalPrice: 20,
 			});
 		}
 		dispatch(addOrderData(dummyData));
 
 		// Creating dummy data (BILLING DATA)
 		// (FETCH THESE DATA FROM THE DATABASE)
-		dummyData = [];
-		for (let index = 0; index < 5; index++) {
-			dummyData.push({
-				item: 'Dummy item',
-				quantity: 'Dummy quantity',
-				sellingPrice: 'Dummy sellingPrice',
-				totalBill: 'Dummy totalBill',
-			});
-		}
-		dispatch(addBillingData(dummyData));
+		// dummyData = [];
+		// for (let index = 0; index < 5; index++) {
+		// dummyData.push({
+		// 	item: 'Dummy item',
+		// 	quantity: 'Dummy quantity',
+		// 	sellingPrice: 'Dummy sellingPrice',
+		// 	totalBill: 'Dummy totalBill',
+		// });
+		// }
+		// dispatch(addBillingData(dummyData));
 	}, []);
+
+	useEffect(() => {
+		// update the billing data items
+		dispatch(addBillingData(billingItems));
+
+		// updating the total sales
+		let sum = [];
+		for (let index = 0; index < billingItems.length; index++) {
+			const element = billingItems[index];
+			sum.push(element?.totalBill);
+		}
+		setTotalSales(sum.reduce((a, b) => a + b, 0));
+	}, [billingItems]);
+
+	const addToBilling = ({ brand, model, quantity, originalPrice }) => {
+		setBillingItems([
+			...billingItems,
+			{
+				item: brand,
+				quantity: quantity,
+				sellingPrice: originalPrice,
+				totalBill: originalPrice * quantity,
+			},
+		]);
+	};
+
+	const updatingBillingItemQuantity = (itemName, e) => {
+		let myList = [];
+		for (let index = 0; index < billingItems.length; index++) {
+			myList.push(billingItems[index]);
+		}
+		for (let index = 0; index < myList.length; index++) {
+			const element = myList[index];
+
+			if (element.item === itemName) {
+				myList[index] = {
+					item: itemName,
+					quantity: e.target.value,
+					sellingPrice: myList[index].sellingPrice,
+					totalBill: myList[index].sellingPrice * e.target.value,
+				};
+			}
+		}
+		setBillingItems(myList);
+	};
+
+	const updatingBillingItemSellingPrice = (itemName, e) => {
+		let myList = [];
+		for (let index = 0; index < billingItems.length; index++) {
+			myList.push(billingItems[index]);
+		}
+		for (let index = 0; index < myList.length; index++) {
+			const element = myList[index];
+
+			if (element.item === itemName) {
+				myList[index] = {
+					item: itemName,
+					quantity: myList[index].quantity,
+					sellingPrice: e.target.value,
+					totalBill: e.target.value * myList[index].quantity,
+				};
+			}
+		}
+		setBillingItems(myList);
+	};
+
+	const deleteBillingItem = (item) => {
+		let myList = [];
+		for (let index = 0; index < billingItems.length; index++) {
+			myList.push(billingItems[index]);
+		}
+
+		myList.pop(item);
+
+		setBillingItems(myList);
+	};
 
 	return (
 		<div className="order">
@@ -85,14 +163,14 @@ function Order() {
 							{orderData.map((item, index) => (
 								<>
 									{index % 2 === 0 ? (
-										<tr className="rowOdd">
+										<tr className="rowOdd" onClick={() => addToBilling(item)}>
 											<td>{item?.brand}</td>
 											<td>{item?.model}</td>
 											<td>{item?.quantity}</td>
 											<td>{item?.originalPrice}</td>
 										</tr>
 									) : (
-										<tr className="rowEven">
+										<tr className="rowEven" onClick={() => addToBilling(item)}>
 											<td>{item?.brand}</td>
 											<td>{item?.model}</td>
 											<td>{item?.quantity}</td>
@@ -145,25 +223,57 @@ function Order() {
 											<tr className="rowOdd">
 												<td>{item.item}</td>
 												<td>
-													<input type="text" placeholder={item.quantity} />
+													<input
+														type="number"
+														defaultValue={item.quantity}
+														onChange={(e) => {
+															updatingBillingItemQuantity(item?.item, e);
+														}}
+													/>
 												</td>
 												<td>
-													<input type="text" placeholder={item.sellingPrice} />
+													<input
+														type="number"
+														defaultValue={item.sellingPrice}
+														onChange={(e) => {
+															updatingBillingItemSellingPrice(item?.item, e);
+														}}
+													/>
 												</td>
 												<td>{item.totalBill}</td>
-												<td><Button className="deleteBTN">DELETE</Button></td>
+												<td>
+													<Button className="deleteBTN" onClick={() => deleteBillingItem(item)}>
+														DELETE
+													</Button>
+												</td>
 											</tr>
 										) : (
 											<tr className="rowEven">
 												<td>{item.item}</td>
 												<td>
-													<input type="text" placeholder={item.quantity} />
+													<input
+														type="number"
+														defaultValue={item.quantity}
+														onChange={(e) => {
+															updatingBillingItemQuantity(item?.item, e);
+														}}
+													/>
 												</td>
 												<td>
-													<input type="text" placeholder={item.sellingPrice} />
+													<input
+														type="number"
+														defaultValue={item.sellingPrice}
+														onChange={(e) => {
+															updatingBillingItemSellingPrice(item?.item, e);
+														}}
+													/>
 												</td>
 												<td>{item.totalBill}</td>
-												<td><Button className="deleteBTN">DELETE</Button></td>
+												<td>
+													<Button className="deleteBTN" onClick={() => deleteBillingItem(item)}>
+														DELETE
+													</Button>
+												</td>
 											</tr>
 										)}
 									</>
@@ -178,7 +288,7 @@ function Order() {
 				<Card className="viewInventory__bottomCard">
 					<ListGroup variant="flush" className="order__bottomCardListGroup">
 						<ListGroup.Item className="viewInventory__bottomCardListGroupItem">
-							<span>Total Sale :</span> <input type="text" value={0} />
+							<span>Total Sale :</span> <input type="text" value={totalSales} />
 						</ListGroup.Item>
 						{/* Button */}
 						<div className="payment__button">

@@ -15,10 +15,6 @@ function Order() {
 	const orderData = useSelector(selectOrderData);
 	const billingData = useSelector(selectBillingData);
 
-	const searchByBrandFunction = () => {
-		alert(searchByBrand);
-	};
-
 	const searchByBrandAndModelFunction = () => {
 		alert(searchByBrandModel);
 	};
@@ -59,61 +55,44 @@ function Order() {
 		let sum = [];
 		for (let index = 0; index < billingItems.length; index++) {
 			const element = billingItems[index];
-			sum.push(element?.totalBill);
+			sum.push(parseInt(element?.totalBill));
 		}
 		setTotalSales(sum.reduce((a, b) => a + b, 0));
 	}, [billingItems]);
 
 	const addToBilling = ({ brand, model, quantity, originalPrice }) => {
-		setBillingItems([
-			...billingItems,
-			{
-				item: brand,
-				quantity: quantity,
-				sellingPrice: originalPrice,
-				totalBill: originalPrice * quantity,
-			},
-		]);
-	};
-
-	const updatingBillingItemQuantity = (itemName, e) => {
 		let myList = [];
+		let found = false;
 		for (let index = 0; index < billingItems.length; index++) {
 			myList.push(billingItems[index]);
 		}
 		for (let index = 0; index < myList.length; index++) {
 			const element = myList[index];
 
-			if (element.item === itemName) {
+			if (element.item === brand) {
+				found = true;
 				myList[index] = {
-					item: itemName,
-					quantity: e.target.value,
+					item: brand,
+					quantity: parseInt(myList[index].quantity) + 1,
 					sellingPrice: myList[index].sellingPrice,
-					totalBill: myList[index].sellingPrice * e.target.value,
+					totalBill: myList[index].sellingPrice * (parseInt(myList[index].quantity) + 1),
 				};
 			}
 		}
-		setBillingItems(myList);
-	};
 
-	const updatingBillingItemSellingPrice = (itemName, e) => {
-		let myList = [];
-		for (let index = 0; index < billingItems.length; index++) {
-			myList.push(billingItems[index]);
+		if (found === false) {
+			setBillingItems([
+				...billingItems,
+				{
+					item: brand,
+					quantity: quantity,
+					sellingPrice: originalPrice,
+					totalBill: originalPrice * quantity,
+				},
+			]);
+		} else {
+			setBillingItems(myList);
 		}
-		for (let index = 0; index < myList.length; index++) {
-			const element = myList[index];
-
-			if (element.item === itemName) {
-				myList[index] = {
-					item: itemName,
-					quantity: myList[index].quantity,
-					sellingPrice: e.target.value,
-					totalBill: e.target.value * myList[index].quantity,
-				};
-			}
-		}
-		setBillingItems(myList);
 	};
 
 	const deleteBillingItem = (item) => {
@@ -127,6 +106,44 @@ function Order() {
 		setBillingItems(myList);
 	};
 
+	const plusAdd = (itemName) => {
+		let myList = [];
+		for (let index = 0; index < billingItems.length; index++) {
+			myList.push(billingItems[index]);
+		}
+		for (let index = 0; index < myList.length; index++) {
+			const element = myList[index];
+
+			if (element.item === itemName) {
+				myList[index] = {
+					item: itemName,
+					quantity: parseInt(myList[index].quantity) + 1,
+					sellingPrice: parseInt(myList[index].sellingPrice),
+					totalBill: parseInt(myList[index].sellingPrice) * (parseInt(myList[index].quantity) + 1),
+				};
+			}
+		}
+		setBillingItems(myList);
+	};
+	const minusRemove = (itemName) => {
+		let myList = [];
+		for (let index = 0; index < billingItems.length; index++) {
+			myList.push(billingItems[index]);
+		}
+		for (let index = 0; index < myList.length; index++) {
+			const element = myList[index];
+
+			if (element.item === itemName) {
+				myList[index] = {
+					item: itemName,
+					quantity: parseInt(myList[index].quantity) - 1,
+					sellingPrice: parseInt(myList[index].sellingPrice),
+					totalBill: parseInt(myList[index].sellingPrice) * (parseInt(myList[index].quantity) - 1),
+				};
+			}
+		}
+		setBillingItems(myList);
+	};
 	return (
 		<div className="order">
 			{/* Search by brand section */}
@@ -138,7 +155,7 @@ function Order() {
 					onChange={(e) => setSearchByBrand(e.target.value)}
 					value={searchByBrand}
 				/>{' '}
-				<Button onClick={searchByBrandFunction}>Search</Button>
+				<Button>Search</Button>
 			</div>
 
 			{/* table section */}
@@ -223,22 +240,14 @@ function Order() {
 											<tr className="rowOdd">
 												<td>{item.item}</td>
 												<td>
-													<input
-														type="number"
-														defaultValue={item.quantity}
-														onChange={(e) => {
-															updatingBillingItemQuantity(item?.item, e);
-														}}
-													/>
+													<button onClick={() => minusRemove(item.item)}>-</button>
+													<input className="quantityTextField" type="text" value={item.quantity} />
+													<button onClick={() => plusAdd(item.item)}>+</button>
 												</td>
 												<td>
-													<input
-														type="number"
-														defaultValue={item.sellingPrice}
-														onChange={(e) => {
-															updatingBillingItemSellingPrice(item?.item, e);
-														}}
-													/>
+												<p>{item.sellingPrice}</p>
+
+													{/* <input type="text" className="quantityTextField" value={item.sellingPrice} /> */}
 												</td>
 												<td>{item.totalBill}</td>
 												<td>
@@ -251,22 +260,13 @@ function Order() {
 											<tr className="rowEven">
 												<td>{item.item}</td>
 												<td>
-													<input
-														type="number"
-														defaultValue={item.quantity}
-														onChange={(e) => {
-															updatingBillingItemQuantity(item?.item, e);
-														}}
-													/>
+													<button onClick={() => minusRemove(item.item)}>-</button>
+													<input className="quantityTextField" type="text" value={item.quantity} />
+													<button onClick={() => plusAdd(item.item)}>+</button>
 												</td>
 												<td>
-													<input
-														type="number"
-														defaultValue={item.sellingPrice}
-														onChange={(e) => {
-															updatingBillingItemSellingPrice(item?.item, e);
-														}}
-													/>
+													<p>{item.sellingPrice}</p>
+													{/* <input type="text" value={item.sellingPrice} /> */}
 												</td>
 												<td>{item.totalBill}</td>
 												<td>

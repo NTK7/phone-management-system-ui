@@ -51,6 +51,15 @@ function Order() {
 		setTotalSales(sum.reduce((a, b) => a + b, 0));
 	}, [billingItems]);
 
+	// Searching Items from the billing section
+	useEffect(() => {
+		if (searchedItemsBilling !== null && validSearchBillItems === true) {
+			// update the billing data items
+			dispatch(addBillingData(searchedItemsBilling));
+			setValidSearchBillItems(false);
+		}
+	}, [searchedItemsBilling]);
+
 	// Adding to billing
 	const addToBilling = ({ brand, quantity, originalPrice, code }) => {
 		let myList = [];
@@ -92,29 +101,38 @@ function Order() {
 	// Deleting Item from the Billing section
 	const deleteBillingItem = (item) => {
 		let myList = [];
+		let removingIndex = null;
 		let myListOther = [];
-		let present = false;
 
 		for (let index = 0; index < billingItems.length; index++) {
+			if (billingItems[index].item === item.item) {
+				removingIndex = index;
+				console.log("removing")
+			}
 			myList.push(billingItems[index]);
 		}
+		console.log(myList);
 
-		// This is to remove the item from the temp list when used for searching in the billing section
-		for (let index = 0; index < searchedItemsBilling?.length; index++) {
-			if (searchedItemsBilling[index] === item) {
-				present = true;
-			}
-			myListOther.push(searchedItemsBilling[index]);
+		if (removingIndex !== null) {
+			myList.splice(removingIndex, 1);
 		}
 
-		myList.pop(item);
+		console.log(myList);
+		// removingIndex = null;
+		// // This is to remove the item from the temp list when used for searching in the billing section
+		// for (let index = 0; index < searchedItemsBilling?.length; index++) {
+		// 	if (searchedItemsBilling[index] === item) {
+		// 		removingIndex = index;
+		// 	}
+		// 	myListOther.push(searchedItemsBilling[index]);
+		// }
 
-		if (present) {
-			myListOther.pop(item);
-		}
+		// if (removingIndex !== null) {
+		// 	myListOther.splice(removingIndex, 1);
+		// }
 
-		setValidSearchBillItems(false);
-		setSearchedItemsBilling(myListOther);
+		// setValidSearchBillItems(false);
+		// setSearchedItemsBilling(myListOther);
 		setBillingItems(myList);
 		setSearchByItemCode('');
 	};
@@ -196,14 +214,6 @@ function Order() {
 			setSearchedItemsBilling(searchItems);
 		}
 	};
-
-	// Searching Items from the billing section
-	useEffect(() => {
-		if (searchedItemsBilling !== null && validSearchBillItems === true) {
-			// update the billing data items
-			dispatch(addBillingData(searchedItemsBilling));
-		}
-	}, [searchedItemsBilling]);
 
 	// Handling search section in order
 	const handleSearchOrder = () => {

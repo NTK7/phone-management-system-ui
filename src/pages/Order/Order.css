@@ -99,6 +99,9 @@ td > input {
 	text-align: center;
 	/* border: 1px red solid; */
 }
+.quantityTextField {
+	width: 100px;
+}
 @media screen and (max-width: 768px) {
 	td > input {
 		width: 110px;

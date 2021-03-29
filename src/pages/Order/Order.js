@@ -3,50 +3,35 @@ import { useEffect, useState } from 'react';
 import { ListGroup, Table } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { addBillingData, addOrderData, selectBillingData, selectOrderData } from '../../features/OrderDataSlice';
+import { db } from '../../firebase';
 import './Order.css';
 
 function Order() {
 	const [searchByBrand, setSearchByBrand] = useState('');
 	const [searchByBrandModel, setSearchByBrandModel] = useState('');
 	const [billingItems, setBillingItems] = useState([]);
+	const [orderItems, setOrderItems] = useState([]);
 	const [totalSales, setTotalSales] = useState(0);
+	const [inventoryData, setInventoryData] = useState([]);
 
 	const dispatch = useDispatch();
 	const orderData = useSelector(selectOrderData);
 	const billingData = useSelector(selectBillingData);
 
-	const searchByBrandAndModelFunction = () => {
-		alert(searchByBrandModel);
-	};
-
+	// This is used to fetch all the inventory data from the database
 	useEffect(() => {
-		// Creating dummy data (ORDER DATA)
-		// (FETCH THESE DATA FROM THE DATABASE)
-		let dummyData = [];
-		for (let index = 0; index < 5; index++) {
-			dummyData.push({
-				brand: `Dummy Brand ${index}`,
-				model: 'Dummy Model',
-				quantity: 1,
-				originalPrice: 20,
-			});
-		}
-		dispatch(addOrderData(dummyData));
-
-		// Creating dummy data (BILLING DATA)
-		// (FETCH THESE DATA FROM THE DATABASE)
-		// dummyData = [];
-		// for (let index = 0; index < 5; index++) {
-		// dummyData.push({
-		// 	item: 'Dummy item',
-		// 	quantity: 'Dummy quantity',
-		// 	sellingPrice: 'Dummy sellingPrice',
-		// 	totalBill: 'Dummy totalBill',
-		// });
-		// }
-		// dispatch(addBillingData(dummyData));
+		// Fetching the data from the database
+		db.collection('item').onSnapshot((snapshot) =>
+			setInventoryData(
+				snapshot.docs.map((doc) => ({
+					id: doc.id,
+					data: doc.data(),
+				}))
+			)
+		);
 	}, []);
 
+	// This is used to update the Total Sales amount when the used changes the billing section
 	useEffect(() => {
 		// update the billing data items
 		dispatch(addBillingData(billingItems));
@@ -60,6 +45,7 @@ function Order() {
 		setTotalSales(sum.reduce((a, b) => a + b, 0));
 	}, [billingItems]);
 
+	// Adding to billing
 	const addToBilling = ({ brand, model, quantity, originalPrice }) => {
 		let myList = [];
 		let found = false;
@@ -95,6 +81,7 @@ function Order() {
 		}
 	};
 
+	// Deleting Item from the Billing section
 	const deleteBillingItem = (item) => {
 		let myList = [];
 		for (let index = 0; index < billingItems.length; index++) {
@@ -106,6 +93,7 @@ function Order() {
 		setBillingItems(myList);
 	};
 
+	// Increase Quantity Method
 	const plusAdd = (itemName) => {
 		let myList = [];
 		for (let index = 0; index < billingItems.length; index++) {
@@ -125,6 +113,8 @@ function Order() {
 		}
 		setBillingItems(myList);
 	};
+
+	// Remove quantity method
 	const minusRemove = (itemName) => {
 		let myList = [];
 		for (let index = 0; index < billingItems.length; index++) {
@@ -144,6 +134,33 @@ function Order() {
 		}
 		setBillingItems(myList);
 	};
+
+	// Handling search section in billing
+	const handleSearchBilling = () => {
+		alert(searchByBrandModel);
+	};
+
+	// Handling search section in order
+	const handleSearchOrder = () => {
+		console.log(inventoryData);
+		let searchedDataRecords = [];
+		for (let index = 0; index < inventoryData?.length; index++) {
+			const item = inventoryData[index];
+
+			if (item?.data.brand.toLowerCase() === searchByBrand.toLowerCase()) {
+				searchedDataRecords.push({
+					brand: item?.data.brand,
+					model: item?.data.model,
+					quantity: item?.data.quantity,
+					originalPrice: item?.data.originalPrice,
+				});
+			}
+			console.log(item.data.brand.toUpperCase());
+		}
+
+		dispatch(addOrderData(searchedDataRecords));
+	};
+
 	return (
 		<div className="order">
 			{/* Search by brand section */}
@@ -155,7 +172,7 @@ function Order() {
 					onChange={(e) => setSearchByBrand(e.target.value)}
 					value={searchByBrand}
 				/>{' '}
-				<Button>Search</Button>
+				<Button onClick={handleSearchOrder}>Search</Button>
 			</div>
 
 			{/* table section */}
@@ -209,9 +226,9 @@ function Order() {
 						type="text"
 						placeholder="Search by brand or model"
 						onChange={(e) => setSearchByBrandModel(e.target.value)}
-						value={setSearchByBrandModel}
+						value={searchByBrandModel}
 					/>{' '}
-					<Button onClick={searchByBrandAndModelFunction}>Search</Button>
+					<Button onClick={handleSearchBilling}>Search</Button>
 				</div>
 
 				{/* table section */}
@@ -245,7 +262,7 @@ function Order() {
 													<button onClick={() => plusAdd(item.item)}>+</button>
 												</td>
 												<td>
-												<p>{item.sellingPrice}</p>
+													<p>{item.sellingPrice}</p>
 
 													{/* <input type="text" className="quantityTextField" value={item.sellingPrice} /> */}
 												</td>
@@ -302,3 +319,32 @@ function Order() {
 }
 
 export default Order;
+
+// TRASH CODE BUT CAN BE RE-USED IF NECESSARY ----------------------------------------------
+
+// useEffect(() => {
+// 	// Creating dummy data (ORDER DATA)
+// 	// (FETCH THESE DATA FROM THE DATABASE)
+// 	let dummyData = [];
+// 	for (let index = 0; index < 5; index++) {
+// 		dummyData.push({
+// 			brand: `Dummy Brand ${index}`,
+// 			model: 'Dummy Model',
+// 			quantity: 1,
+// 			originalPrice: 20,
+// 		});
+// 	}
+// 	dispatch(addOrderData([]));
+// 	// Creating dummy data (BILLING DATA) [THIS IS NOT USED AND CAN BE REMOVED LATELY]
+// 	// (FETCH THESE DATA FROM THE DATABASE)
+// 	dummyData = [];
+// 	for (let index = 0; index < 5; index++) {
+// 	dummyData.push({
+// 		item: 'Dummy item',
+// 		quantity: 'Dummy quantity',
+// 		sellingPrice: 'Dummy sellingPrice',
+// 		totalBill: 'Dummy totalBill',
+// 	});
+// 	}
+// 	dispatch(addBillingData(dummyData));
+// }, []);

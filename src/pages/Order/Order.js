@@ -8,11 +8,13 @@ import './Order.css';
 
 function Order() {
 	const [searchByBrand, setSearchByBrand] = useState('');
-	const [searchByBrandModel, setSearchByBrandModel] = useState('');
+	const [searchByItemCode, setSearchByItemCode] = useState('');
+
 	const [billingItems, setBillingItems] = useState([]);
-	const [orderItems, setOrderItems] = useState([]);
+	const [searchedItemsBilling, setSearchedItemsBilling] = useState(null);
+
 	const [totalSales, setTotalSales] = useState(0);
-	const [inventoryData, setInventoryData] = useState([]);
+	const [itemsData, setItemsData] = useState([]);
 
 	const dispatch = useDispatch();
 	const orderData = useSelector(selectOrderData);
@@ -22,10 +24,10 @@ function Order() {
 	useEffect(() => {
 		// Emptying the order content
 		dispatch(addOrderData([]));
-		
+
 		// Fetching the data from the database
 		db.collection('item').onSnapshot((snapshot) =>
-			setInventoryData(
+			setItemsData(
 				snapshot.docs.map((doc) => ({
 					id: doc.id,
 					data: doc.data(),
@@ -49,7 +51,7 @@ function Order() {
 	}, [billingItems]);
 
 	// Adding to billing
-	const addToBilling = ({ brand, model, quantity, originalPrice }) => {
+	const addToBilling = ({ brand, quantity, originalPrice, code }) => {
 		let myList = [];
 		let found = false;
 		for (let index = 0; index < billingItems.length; index++) {
@@ -62,9 +64,10 @@ function Order() {
 				found = true;
 				myList[index] = {
 					item: brand,
-					quantity: parseInt(myList[index].quantity) + 1,
-					sellingPrice: myList[index].sellingPrice,
-					totalBill: myList[index].sellingPrice * (parseInt(myList[index].quantity) + 1),
+					quantity: parseInt(element.quantity) + 1,
+					sellingPrice: element.sellingPrice,
+					totalBill: element.sellingPrice * (parseInt(element.quantity) + 1),
+					code: element?.code,
 				};
 			}
 		}
@@ -77,6 +80,7 @@ function Order() {
 					quantity: quantity,
 					sellingPrice: originalPrice,
 					totalBill: originalPrice * quantity,
+					code: code,
 				},
 			]);
 		} else {
@@ -94,6 +98,8 @@ function Order() {
 		myList.pop(item);
 
 		setBillingItems(myList);
+		setSearchByItemCode("")
+
 	};
 
 	// Increase Quantity Method
@@ -103,18 +109,21 @@ function Order() {
 			myList.push(billingItems[index]);
 		}
 		for (let index = 0; index < myList.length; index++) {
-			const element = myList[index];
+			const itemElement = myList[index];
 
-			if (element.item === itemName) {
+			if (itemElement.item === itemName) {
 				myList[index] = {
 					item: itemName,
-					quantity: parseInt(myList[index].quantity) + 1,
-					sellingPrice: parseInt(myList[index].sellingPrice),
-					totalBill: parseInt(myList[index].sellingPrice) * (parseInt(myList[index].quantity) + 1),
+					quantity: parseInt(itemElement?.quantity) + 1,
+					sellingPrice: parseInt(itemElement?.sellingPrice),
+					totalBill: parseInt(itemElement?.sellingPrice) * (parseInt(itemElement?.quantity) + 1),
+					code: itemElement?.code,
 				};
 			}
 		}
 		setBillingItems(myList);
+		setSearchByItemCode("")
+
 	};
 
 	// Remove quantity method
@@ -124,31 +133,60 @@ function Order() {
 			myList.push(billingItems[index]);
 		}
 		for (let index = 0; index < myList.length; index++) {
-			const element = myList[index];
+			const itemElement = myList[index];
 
-			if (element.item === itemName) {
+			if (itemElement.item === itemName) {
 				myList[index] = {
 					item: itemName,
-					quantity: parseInt(myList[index].quantity) - 1,
-					sellingPrice: parseInt(myList[index].sellingPrice),
-					totalBill: parseInt(myList[index].sellingPrice) * (parseInt(myList[index].quantity) - 1),
+					quantity: parseInt(itemElement.quantity) - 1,
+					sellingPrice: parseInt(itemElement.sellingPrice),
+					totalBill: parseInt(itemElement.sellingPrice) * (parseInt(itemElement.quantity) - 1),
+					code: itemElement?.code,
 				};
 			}
 		}
 		setBillingItems(myList);
+		setSearchByItemCode("")
 	};
 
 	// Handling search section in billing
 	const handleSearchBilling = () => {
-		alert(searchByBrandModel);
+		let searchItems = [];
+
+		for (let index = 0; index < billingItems.length; index++) {
+			const itemElement = billingItems[index];
+			console.log(itemElement);
+			console.log(searchByItemCode);
+
+			if (itemElement.code === searchByItemCode) {
+				console.log('Helloworld');
+				searchItems.push({
+					item: itemElement.item,
+					quantity: itemElement.quantity,
+					sellingPrice: itemElement.sellingPrice,
+					totalBill: itemElement.totalBill,
+					code: itemElement.code,
+				});
+			}
+		}
+
+		setSearchedItemsBilling(searchItems);
 	};
+
+	// Searching Items from the billing section
+	useEffect(() => {
+		if (searchedItemsBilling !== null) {
+			// update the billing data items
+			dispatch(addBillingData(searchedItemsBilling));
+		}
+	}, [searchedItemsBilling]);
 
 	// Handling search section in order
 	const handleSearchOrder = () => {
-		console.log(inventoryData);
+		console.log(itemsData);
 		let searchedDataRecords = [];
-		for (let index = 0; index < inventoryData?.length; index++) {
-			const item = inventoryData[index];
+		for (let index = 0; index < itemsData?.length; index++) {
+			const item = itemsData[index];
 
 			if (item?.data.brand.toLowerCase() === searchByBrand.toLowerCase()) {
 				searchedDataRecords.push({
@@ -156,6 +194,7 @@ function Order() {
 					model: item?.data.model,
 					quantity: item?.data.quantity,
 					originalPrice: item?.data.originalPrice,
+					code: item?.data.code,
 				});
 			}
 			console.log(item.data.brand.toUpperCase());
@@ -172,7 +211,14 @@ function Order() {
 				<input
 					type="text"
 					placeholder="Search by brand"
-					onChange={(e) => setSearchByBrand(e.target.value)}
+					onChange={(e) => {
+						setSearchByBrand(e.target.value);
+
+						// If the search field is empty then order seciton also empty
+						if (e.target.value === '') {
+							handleSearchOrder();
+						}
+					}}
 					value={searchByBrand}
 				/>{' '}
 				<Button onClick={handleSearchOrder}>Search</Button>
@@ -200,14 +246,14 @@ function Order() {
 							{orderData.map((item, index) => (
 								<>
 									{index % 2 === 0 ? (
-										<tr className="rowOdd" onClick={() => addToBilling(item)}>
+										<tr key={index} className="rowOdd" onClick={() => addToBilling(item)}>
 											<td>{item?.brand}</td>
 											<td>{item?.model}</td>
 											<td>{item?.quantity}</td>
 											<td>{item?.originalPrice}</td>
 										</tr>
 									) : (
-										<tr className="rowEven" onClick={() => addToBilling(item)}>
+										<tr key={index} className="rowEven" onClick={() => addToBilling(item)}>
 											<td>{item?.brand}</td>
 											<td>{item?.model}</td>
 											<td>{item?.quantity}</td>
@@ -227,9 +273,17 @@ function Order() {
 				<div className="order__searchByBrandModel">
 					<input
 						type="text"
-						placeholder="Search by brand or model"
-						onChange={(e) => setSearchByBrandModel(e.target.value)}
-						value={searchByBrandModel}
+						placeholder="Search by Item code"
+						onChange={(e) => {
+							setSearchByItemCode(e.target.value);
+
+							if (e.target.value === '') {
+								// handleSearchBilling();
+								// resetting the billing items will all the selected items
+								dispatch(addBillingData(billingItems));
+							}
+						}}
+						value={searchByItemCode}
 					/>{' '}
 					<Button onClick={handleSearchBilling}>Search</Button>
 				</div>
@@ -257,11 +311,11 @@ function Order() {
 								{billingData.map((item, index) => (
 									<>
 										{index % 2 === 0 ? (
-											<tr className="rowOdd">
+											<tr key={index} className="rowOdd">
 												<td>{item.item}</td>
 												<td>
 													<button onClick={() => minusRemove(item.item)}>-</button>
-													<input className="quantityTextField" type="text" value={item.quantity} />
+													<input className="quantityTextField" type="text" onChange={() => {}} value={item.quantity} />
 													<button onClick={() => plusAdd(item.item)}>+</button>
 												</td>
 												<td>{item.sellingPrice}</td>
@@ -273,11 +327,11 @@ function Order() {
 												</td>
 											</tr>
 										) : (
-											<tr className="rowEven">
+											<tr key={index} className="rowEven">
 												<td>{item.item}</td>
 												<td>
 													<button onClick={() => minusRemove(item.item)}>-</button>
-													<input className="quantityTextField" type="text" value={item.quantity} />
+													<input className="quantityTextField" type="text" onChange={() => {}} value={item.quantity} />
 													<button onClick={() => plusAdd(item.item)}>+</button>
 												</td>
 												<td>{item.sellingPrice}</td>
@@ -301,7 +355,7 @@ function Order() {
 				<Card className="viewInventory__bottomCard">
 					<ListGroup variant="flush" className="order__bottomCardListGroup">
 						<ListGroup.Item className="viewInventory__bottomCardListGroupItem">
-							<span>Total Sale :</span> <input type="text" value={totalSales} />
+							<span>Total Sale :</span> <input type="text" onChange={() => {}} value={totalSales} />
 						</ListGroup.Item>
 						{/* Button */}
 						<div className="payment__button">

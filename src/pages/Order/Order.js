@@ -20,6 +20,9 @@ function Order() {
 
 	// This is used to fetch all the inventory data from the database
 	useEffect(() => {
+		// Emptying the order content
+		dispatch(addOrderData([]));
+		
 		// Fetching the data from the database
 		db.collection('item').onSnapshot((snapshot) =>
 			setInventoryData(
@@ -261,11 +264,7 @@ function Order() {
 													<input className="quantityTextField" type="text" value={item.quantity} />
 													<button onClick={() => plusAdd(item.item)}>+</button>
 												</td>
-												<td>
-													<p>{item.sellingPrice}</p>
-
-													{/* <input type="text" className="quantityTextField" value={item.sellingPrice} /> */}
-												</td>
+												<td>{item.sellingPrice}</td>
 												<td>{item.totalBill}</td>
 												<td>
 													<Button className="deleteBTN" onClick={() => deleteBillingItem(item)}>
@@ -281,10 +280,7 @@ function Order() {
 													<input className="quantityTextField" type="text" value={item.quantity} />
 													<button onClick={() => plusAdd(item.item)}>+</button>
 												</td>
-												<td>
-													<p>{item.sellingPrice}</p>
-													{/* <input type="text" value={item.sellingPrice} /> */}
-												</td>
+												<td>{item.sellingPrice}</td>
 												<td>{item.totalBill}</td>
 												<td>
 													<Button className="deleteBTN" onClick={() => deleteBillingItem(item)}>

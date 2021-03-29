@@ -12,6 +12,7 @@ function Order() {
 
 	const [billingItems, setBillingItems] = useState([]);
 	const [searchedItemsBilling, setSearchedItemsBilling] = useState(null);
+	const [validSearchBillItems, setValidSearchBillItems] = useState(false);
 
 	const [totalSales, setTotalSales] = useState(0);
 	const [itemsData, setItemsData] = useState([]);
@@ -91,15 +92,31 @@ function Order() {
 	// Deleting Item from the Billing section
 	const deleteBillingItem = (item) => {
 		let myList = [];
+		let myListOther = [];
+		let present = false;
+
 		for (let index = 0; index < billingItems.length; index++) {
 			myList.push(billingItems[index]);
 		}
 
+		// This is to remove the item from the temp list when used for searching in the billing section
+		for (let index = 0; index < searchedItemsBilling?.length; index++) {
+			if (searchedItemsBilling[index] === item) {
+				present = true;
+			}
+			myListOther.push(searchedItemsBilling[index]);
+		}
+
 		myList.pop(item);
 
-		setBillingItems(myList);
-		setSearchByItemCode("")
+		if (present) {
+			myListOther.pop(item);
+		}
 
+		setValidSearchBillItems(false);
+		setSearchedItemsBilling(myListOther);
+		setBillingItems(myList);
+		setSearchByItemCode('');
 	};
 
 	// Increase Quantity Method
@@ -122,8 +139,7 @@ function Order() {
 			}
 		}
 		setBillingItems(myList);
-		setSearchByItemCode("")
-
+		setSearchByItemCode('');
 	};
 
 	// Remove quantity method
@@ -138,44 +154,52 @@ function Order() {
 			if (itemElement.item === itemName) {
 				myList[index] = {
 					item: itemName,
-					quantity: parseInt(itemElement.quantity) - 1,
+					quantity: parseInt(itemElement.quantity) !== 0 ? parseInt(itemElement.quantity) - 1 : 0,
 					sellingPrice: parseInt(itemElement.sellingPrice),
-					totalBill: parseInt(itemElement.sellingPrice) * (parseInt(itemElement.quantity) - 1),
+					totalBill:
+						parseInt(itemElement.quantity) !== 0
+							? parseInt(itemElement.sellingPrice) * (parseInt(itemElement.quantity) - 1)
+							: 0,
 					code: itemElement?.code,
 				};
 			}
 		}
 		setBillingItems(myList);
-		setSearchByItemCode("")
+		setSearchByItemCode('');
 	};
 
 	// Handling search section in billing
 	const handleSearchBilling = () => {
 		let searchItems = [];
 
-		for (let index = 0; index < billingItems.length; index++) {
-			const itemElement = billingItems[index];
-			console.log(itemElement);
-			console.log(searchByItemCode);
+		if (searchByItemCode === '') {
+			// resetting the billing items will all the selected items
+			dispatch(addBillingData(billingItems));
+		} else {
+			for (let index = 0; index < billingItems.length; index++) {
+				const itemElement = billingItems[index];
+				console.log(itemElement);
+				console.log(searchByItemCode);
 
-			if (itemElement.code === searchByItemCode) {
-				console.log('Helloworld');
-				searchItems.push({
-					item: itemElement.item,
-					quantity: itemElement.quantity,
-					sellingPrice: itemElement.sellingPrice,
-					totalBill: itemElement.totalBill,
-					code: itemElement.code,
-				});
+				if (itemElement.code === searchByItemCode) {
+					searchItems.push({
+						item: itemElement.item,
+						quantity: itemElement.quantity,
+						sellingPrice: itemElement.sellingPrice,
+						totalBill: itemElement.totalBill,
+						code: itemElement.code,
+					});
+				}
 			}
-		}
 
-		setSearchedItemsBilling(searchItems);
+			setValidSearchBillItems(true);
+			setSearchedItemsBilling(searchItems);
+		}
 	};
 
 	// Searching Items from the billing section
 	useEffect(() => {
-		if (searchedItemsBilling !== null) {
+		if (searchedItemsBilling !== null && validSearchBillItems === true) {
 			// update the billing data items
 			dispatch(addBillingData(searchedItemsBilling));
 		}

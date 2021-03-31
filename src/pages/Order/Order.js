@@ -7,19 +7,21 @@ import { db } from '../../firebase';
 import './Order.css';
 
 function Order() {
-	const [searchByBrand, setSearchByBrand] = useState('');
-	const [searchByItemCode, setSearchByItemCode] = useState('');
+	const [searchByBrand, setSearchByBrand] = useState(''); // user search by brand
+	const [searchByItemCode, setSearchByItemCode] = useState(''); // user search by item code
 
-	const [billingItems, setBillingItems] = useState([]);
-	const [searchedItemsBilling, setSearchedItemsBilling] = useState(null);
+	const [billingItems, setBillingItems] = useState([]); // Array of billing items
+	const [searchedItemsBilling, setSearchedItemsBilling] = useState(null); // Array of searched items
+
+	// This decides whether the bill items or the searched items to be added into the main billing data
 	const [validSearchBillItems, setValidSearchBillItems] = useState(false);
 
-	const [totalSales, setTotalSales] = useState(0);
-	const [itemsData, setItemsData] = useState([]);
+	const [totalSales, setTotalSales] = useState(0); // Total Sales Bill
+	const [itemsData, setItemsData] = useState([]); // Stores all the phone items from the database
 
-	const dispatch = useDispatch();
-	const orderData = useSelector(selectOrderData);
-	const billingData = useSelector(selectBillingData);
+	const dispatch = useDispatch(); // dispatch
+	const orderData = useSelector(selectOrderData); // order data
+	const billingData = useSelector(selectBillingData); // billing data
 
 	// This is used to fetch all the inventory data from the database
 	useEffect(() => {
@@ -61,7 +63,7 @@ function Order() {
 	}, [searchedItemsBilling]);
 
 	// Adding to billing
-	const addToBilling = ({ brand, quantity, originalPrice, code }) => {
+	const addToBilling = ({ brand, quantity, originalPrice, code, model, sellingprice, vendor, date }) => {
 		let myList = [];
 		let found = false;
 		for (let index = 0; index < billingItems.length; index++) {
@@ -70,14 +72,18 @@ function Order() {
 		for (let index = 0; index < myList.length; index++) {
 			const element = myList[index];
 
-			if (element.item === brand) {
+			if (element.brand === brand && element.model === model) {
 				found = true;
 				myList[index] = {
-					item: brand,
+					brand: element?.brand,
 					quantity: parseInt(element.quantity) + 1,
-					sellingPrice: element.sellingPrice,
-					totalBill: element.sellingPrice * (parseInt(element.quantity) + 1),
+					sellingprice: element.sellingprice,
+					totalBill: element.sellingprice * (parseInt(element.quantity) + 1),
 					code: element?.code,
+					model: element?.model,
+					originalPrice: element?.originalPrice,
+					vendor: element?.vendor,
+					date: element?.date,
 				};
 			}
 		}
@@ -86,11 +92,15 @@ function Order() {
 			setBillingItems([
 				...billingItems,
 				{
-					item: brand,
+					brand: brand,
 					quantity: quantity,
-					sellingPrice: originalPrice,
+					sellingprice: sellingprice,
 					totalBill: originalPrice * quantity,
 					code: code,
+					model: model,
+					originalPrice: originalPrice,
+					vendor: vendor,
+					date: date,
 				},
 			]);
 		} else {
@@ -102,12 +112,12 @@ function Order() {
 	const deleteBillingItem = (item) => {
 		let myList = [];
 		let removingIndex = null;
-		let myListOther = [];
+		// let myListOther = [];
 
 		for (let index = 0; index < billingItems.length; index++) {
-			if (billingItems[index].item === item.item) {
+			if (billingItems[index].brand === item.brand) {
 				removingIndex = index;
-				console.log("removing")
+				console.log('removing');
 			}
 			myList.push(billingItems[index]);
 		}
@@ -138,7 +148,7 @@ function Order() {
 	};
 
 	// Increase Quantity Method
-	const plusAdd = (itemName) => {
+	const plusAdd = ({ brand, quantity, originalPrice, code, model, sellingprice, vendor, date }) => {
 		let myList = [];
 		for (let index = 0; index < billingItems.length; index++) {
 			myList.push(billingItems[index]);
@@ -146,13 +156,17 @@ function Order() {
 		for (let index = 0; index < myList.length; index++) {
 			const itemElement = myList[index];
 
-			if (itemElement.item === itemName) {
+			if (itemElement.brand === brand && itemElement.model === model) {
 				myList[index] = {
-					item: itemName,
+					brand: brand,
 					quantity: parseInt(itemElement?.quantity) + 1,
-					sellingPrice: parseInt(itemElement?.sellingPrice),
-					totalBill: parseInt(itemElement?.sellingPrice) * (parseInt(itemElement?.quantity) + 1),
+					sellingprice: parseInt(itemElement?.sellingprice),
+					totalBill: parseInt(itemElement?.sellingprice) * (parseInt(itemElement?.quantity) + 1),
 					code: itemElement?.code,
+					model: itemElement?.model,
+					originalPrice: itemElement?.originalPrice,
+					vendor: itemElement?.vendor,
+					date: itemElement?.date,
 				};
 			}
 		}
@@ -161,7 +175,7 @@ function Order() {
 	};
 
 	// Remove quantity method
-	const minusRemove = (itemName) => {
+	const minusRemove = ({ brand, quantity, originalPrice, code, model, sellingprice, vendor, date }) => {
 		let myList = [];
 		for (let index = 0; index < billingItems.length; index++) {
 			myList.push(billingItems[index]);
@@ -169,16 +183,20 @@ function Order() {
 		for (let index = 0; index < myList.length; index++) {
 			const itemElement = myList[index];
 
-			if (itemElement.item === itemName) {
+			if (itemElement.brand === brand && itemElement.model === model) {
 				myList[index] = {
-					item: itemName,
+					brand: brand,
 					quantity: parseInt(itemElement.quantity) !== 0 ? parseInt(itemElement.quantity) - 1 : 0,
-					sellingPrice: parseInt(itemElement.sellingPrice),
+					sellingprice: parseInt(itemElement.sellingprice),
 					totalBill:
 						parseInt(itemElement.quantity) !== 0
-							? parseInt(itemElement.sellingPrice) * (parseInt(itemElement.quantity) - 1)
+							? parseInt(itemElement.sellingprice) * (parseInt(itemElement.quantity) - 1)
 							: 0,
 					code: itemElement?.code,
+					model: itemElement?.model,
+					originalPrice: itemElement?.originalPrice,
+					vendor: itemElement?.vendor,
+					date: itemElement?.date,
 				};
 			}
 		}
@@ -201,9 +219,9 @@ function Order() {
 
 				if (itemElement.code === searchByItemCode) {
 					searchItems.push({
-						item: itemElement.item,
+						brand: itemElement.brand,
 						quantity: itemElement.quantity,
-						sellingPrice: itemElement.sellingPrice,
+						sellingprice: itemElement.sellingprice,
 						totalBill: itemElement.totalBill,
 						code: itemElement.code,
 					});
@@ -229,6 +247,9 @@ function Order() {
 					quantity: item?.data.quantity,
 					originalPrice: item?.data.originalPrice,
 					code: item?.data.code,
+					date: item?.data.date,
+					vendor: item?.data.vendor,
+					sellingprice: item?.data.sellingprice,
 				});
 			}
 			console.log(item.data.brand.toUpperCase());
@@ -346,13 +367,15 @@ function Order() {
 									<>
 										{index % 2 === 0 ? (
 											<tr key={index} className="rowOdd">
-												<td>{item.item}</td>
 												<td>
-													<button onClick={() => minusRemove(item.item)}>-</button>
-													<input className="quantityTextField" type="text" onChange={() => {}} value={item.quantity} />
-													<button onClick={() => plusAdd(item.item)}>+</button>
+													{item.brand} {item.model}
 												</td>
-												<td>{item.sellingPrice}</td>
+												<td>
+													<button onClick={() => minusRemove(item)}>-</button>
+													<input className="quantityTextField" type="text" onChange={() => {}} value={item.quantity} />
+													<button onClick={() => plusAdd(item)}>+</button>
+												</td>
+												<td>{item.sellingprice}</td>
 												<td>{item.totalBill}</td>
 												<td>
 													<Button className="deleteBTN" onClick={() => deleteBillingItem(item)}>
@@ -362,13 +385,15 @@ function Order() {
 											</tr>
 										) : (
 											<tr key={index} className="rowEven">
-												<td>{item.item}</td>
 												<td>
-													<button onClick={() => minusRemove(item.item)}>-</button>
-													<input className="quantityTextField" type="text" onChange={() => {}} value={item.quantity} />
-													<button onClick={() => plusAdd(item.item)}>+</button>
+													{item.brand} {item.model}
 												</td>
-												<td>{item.sellingPrice}</td>
+												<td>
+													<button onClick={() => minusRemove(item)}>-</button>
+													<input className="quantityTextField" type="text" onChange={() => {}} value={item.quantity} />
+													<button onClick={() => plusAdd(item)}>+</button>
+												</td>
+												<td>{item.sellingprice}</td>
 												<td>{item.totalBill}</td>
 												<td>
 													<Button className="deleteBTN" onClick={() => deleteBillingItem(item)}>
@@ -426,7 +451,7 @@ export default Order;
 // 	dummyData.push({
 // 		item: 'Dummy item',
 // 		quantity: 'Dummy quantity',
-// 		sellingPrice: 'Dummy sellingPrice',
+// 		sellingprice: 'Dummy sellingprice',
 // 		totalBill: 'Dummy totalBill',
 // 	});
 // 	}

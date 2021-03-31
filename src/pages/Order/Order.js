@@ -11,10 +11,10 @@ function Order() {
 	const [searchByItemCode, setSearchByItemCode] = useState(''); // user search by item code
 
 	const [billingItems, setBillingItems] = useState([]); // Array of billing items
-	const [searchedItemsBilling, setSearchedItemsBilling] = useState(null); // Array of searched items
+	// const [searchedItemsBilling, setSearchedItemsBilling] = useState(null); // Array of searched items
 
 	// This decides whether the bill items or the searched items to be added into the main billing data
-	const [validSearchBillItems, setValidSearchBillItems] = useState(false);
+	// const [validSearchBillItems, setValidSearchBillItems] = useState(false);
 
 	const [totalSales, setTotalSales] = useState(0); // Total Sales Bill
 	const [itemsData, setItemsData] = useState([]); // Stores all the phone items from the database
@@ -54,13 +54,13 @@ function Order() {
 	}, [billingItems]);
 
 	// Searching Items from the billing section
-	useEffect(() => {
-		if (searchedItemsBilling !== null && validSearchBillItems === true) {
-			// update the billing data items
-			dispatch(addBillingData(searchedItemsBilling));
-			setValidSearchBillItems(false);
-		}
-	}, [searchedItemsBilling]);
+	// useEffect(() => {
+	// 	if (searchedItemsBilling !== null && validSearchBillItems === true) {
+	// 		// update the billing data items
+	// 		dispatch(addBillingData(searchedItemsBilling));
+	// 		setValidSearchBillItems(false);
+	// 	}
+	// }, [searchedItemsBilling]);
 
 	// Adding to billing
 	const addToBilling = ({ brand, quantity, originalPrice, code, model, sellingprice, vendor, date }) => {
@@ -95,7 +95,7 @@ function Order() {
 					brand: brand,
 					quantity: quantity,
 					sellingprice: sellingprice,
-					totalBill: originalPrice * quantity,
+					totalBill: sellingprice * quantity,
 					code: code,
 					model: model,
 					originalPrice: originalPrice,
@@ -128,21 +128,6 @@ function Order() {
 		}
 
 		console.log(myList);
-		// removingIndex = null;
-		// // This is to remove the item from the temp list when used for searching in the billing section
-		// for (let index = 0; index < searchedItemsBilling?.length; index++) {
-		// 	if (searchedItemsBilling[index] === item) {
-		// 		removingIndex = index;
-		// 	}
-		// 	myListOther.push(searchedItemsBilling[index]);
-		// }
-
-		// if (removingIndex !== null) {
-		// 	myListOther.splice(removingIndex, 1);
-		// }
-
-		// setValidSearchBillItems(false);
-		// setSearchedItemsBilling(myListOther);
 		setBillingItems(myList);
 		setSearchByItemCode('');
 	};
@@ -206,31 +191,45 @@ function Order() {
 
 	// Handling search section in billing
 	const handleSearchBilling = () => {
-		let searchItems = [];
+		let isPresent = false;
 
-		if (searchByItemCode === '') {
-			// resetting the billing items will all the selected items
-			dispatch(addBillingData(billingItems));
-		} else {
-			for (let index = 0; index < billingItems.length; index++) {
-				const itemElement = billingItems[index];
-				console.log(itemElement);
-				console.log(searchByItemCode);
+		for (let index = 0; index < billingItems.length; index++) {
+			const element = billingItems[index];
 
-				if (itemElement.code === searchByItemCode) {
-					searchItems.push({
-						brand: itemElement.brand,
-						quantity: itemElement.quantity,
-						sellingprice: itemElement.sellingprice,
-						totalBill: itemElement.totalBill,
-						code: itemElement.code,
-					});
+			if (element.code === searchByItemCode) {
+				plusAdd(element);
+				isPresent = true;
+			}
+		}
+
+		if (!isPresent) {
+			// checking if there is an item with the entered code in the code
+			for (let index = 0; index < itemsData?.length; index++) {
+				const item = itemsData[index].data;
+
+				if (item?.code === searchByItemCode) {
+					console.log(billingItems[0]);
+					console.log(item);
+					setBillingItems([
+						...billingItems,
+						{
+							brand: item?.brand,
+							quantity: item?.quantity,
+							sellingprice: item?.sellingprice,
+							totalBill: item?.sellingprice * item?.quantity,
+							code: item?.code,
+							model: item?.model,
+							originalPrice: item?.originalPrice,
+							vendor: item?.vendor,
+							date: item?.date,
+						},
+					]);
 				}
 			}
-
-			setValidSearchBillItems(true);
-			setSearchedItemsBilling(searchItems);
 		}
+
+		console.log(billingItems);
+		setSearchByItemCode('');
 	};
 
 	// Handling search section in order
@@ -428,32 +427,3 @@ function Order() {
 }
 
 export default Order;
-
-// TRASH CODE BUT CAN BE RE-USED IF NECESSARY ----------------------------------------------
-
-// useEffect(() => {
-// 	// Creating dummy data (ORDER DATA)
-// 	// (FETCH THESE DATA FROM THE DATABASE)
-// 	let dummyData = [];
-// 	for (let index = 0; index < 5; index++) {
-// 		dummyData.push({
-// 			brand: `Dummy Brand ${index}`,
-// 			model: 'Dummy Model',
-// 			quantity: 1,
-// 			originalPrice: 20,
-// 		});
-// 	}
-// 	dispatch(addOrderData([]));
-// 	// Creating dummy data (BILLING DATA) [THIS IS NOT USED AND CAN BE REMOVED LATELY]
-// 	// (FETCH THESE DATA FROM THE DATABASE)
-// 	dummyData = [];
-// 	for (let index = 0; index < 5; index++) {
-// 	dummyData.push({
-// 		item: 'Dummy item',
-// 		quantity: 'Dummy quantity',
-// 		sellingprice: 'Dummy sellingprice',
-// 		totalBill: 'Dummy totalBill',
-// 	});
-// 	}
-// 	dispatch(addBillingData(dummyData));
-// }, []);

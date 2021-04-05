@@ -102,22 +102,15 @@ td > input {
 .quantityTextField {
 	width: 100px;
 }
-@media screen and (max-width: 768px) {
-	td > input {
-		width: 110px;
-	}
-	.quantityTextField {
-		width: 30px;
-	}
-}
+
 .order__total {
 	margin: 20px 50px;
 }
 .payment__button > button {
 	background-color: #ff2c4f !important;
 	margin-left: 25px;
-	padding: 10px 20px;
-	float: left;
+	height: 180px;
+	padding: 20px;
 	color: white !important;
 }
 .payment__button > button:hover {
@@ -126,6 +119,21 @@ td > input {
 }
 .order__bottomCardListGroup {
 	display: flex !important;
-	flex-direction: row !important;
+	flex-direction: column !important;
 	align-items: center !important;
+}
+.order__totalCard{
+	align-items: flex-end !important;
+}
+
+@media screen and (max-width: 768px) {
+	td > input {
+		width: 110px;
+	}
+	.quantityTextField {
+		width: 30px;
+	}
+	.payment__button > button {
+		height: 160px;
+	}
 }

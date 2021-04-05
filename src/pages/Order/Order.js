@@ -9,6 +9,9 @@ import './Order.css';
 function Order() {
 	const [searchByBrand, setSearchByBrand] = useState(''); // user search by brand
 	const [searchByItemCode, setSearchByItemCode] = useState(''); // user search by item code
+	const [discount, setDiscount] = useState(0);
+	const [totalSellingPrice, setTotalSellingPrice] = useState(0);
+	const [totalOriginalPrice, setTotalOriginalPrice] = useState(0);
 
 	const [billingItems, setBillingItems] = useState([]); // Array of billing items
 	// const [searchedItemsBilling, setSearchedItemsBilling] = useState(null); // Array of searched items
@@ -45,12 +48,21 @@ function Order() {
 		dispatch(addBillingData(billingItems));
 
 		// updating the total sales
-		let sum = [];
+		let totalSalesSum = [];
+		let totalSellingPriceSum = [];
+		let totalOriginalPriceSum = [];
+
 		for (let index = 0; index < billingItems.length; index++) {
 			const element = billingItems[index];
-			sum.push(parseInt(element?.totalBill));
+			console.log(element);
+			totalSalesSum.push(parseInt(element?.totalBill));
+			totalSellingPriceSum.push(parseInt(element?.sellingprice));
+			totalOriginalPriceSum.push(parseInt(element?.originalPrice));
 		}
-		setTotalSales(sum.reduce((a, b) => a + b, 0));
+
+		setTotalSellingPrice(totalSellingPriceSum.reduce((a, b) => a + b, 0));
+		setTotalOriginalPrice(totalOriginalPriceSum.reduce((a, b) => a + b, 0));
+		setTotalSales(totalSalesSum.reduce((a, b) => a + b, 0));
 	}, [billingItems]);
 
 	// Searching Items from the billing section
@@ -106,6 +118,41 @@ function Order() {
 		} else {
 			setBillingItems(myList);
 		}
+	};
+
+	// Handling Discount
+	const handleDiscount = (value) => {
+		if (!isNaN(value)) {
+			// Converting if the user entered a negative number into a positive number
+			value = Math.abs(value);
+
+			// This is a valid integer entered by the user
+			if (value >= totalSales) {
+				setDiscount(totalSales);
+			} else {
+				setDiscount(value);
+			}
+		}
+	};
+
+	// Handling Payment Amount
+	const handlePayment = () => {
+		let finalTotal = totalSales - discount;
+		let profit = totalSellingPrice - totalOriginalPrice - discount;
+		// console.log(`
+		// 	Final Payment: ${finalTotal}
+		// 	Total Selling Price: ${totalSellingPrice}
+		// 	Total Original Price: ${totalOriginalPrice}
+		// 	Profit: ${profit}
+		// `);
+
+		// Updating the firebase database by adding the billing payment records into it.
+		db.collection("billing").add({
+			date: new Date(),
+			TotalProfit: profit,
+			TotalBill: finalTotal,
+		})
+
 	};
 
 	// Deleting Item from the Billing section
@@ -410,16 +457,23 @@ function Order() {
 			</div>
 			{/* Total Section */}
 			<div className="order__total">
-				<Card className="viewInventory__bottomCard">
+				<Card className="viewInventory__bottomCard order__totalCard">
 					<ListGroup variant="flush" className="order__bottomCardListGroup">
 						<ListGroup.Item className="viewInventory__bottomCardListGroupItem">
-							<span>Total Sale :</span> <input type="text" onChange={() => {}} value={totalSales} />
+							<span>Total :</span> <input type="text" onChange={() => {}} value={totalSales} />
 						</ListGroup.Item>
-						{/* Button */}
-						<div className="payment__button">
-							<Button>Payment</Button>
-						</div>
+						<ListGroup.Item className="viewInventory__bottomCardListGroupItem">
+							<span>Discount :</span>{' '}
+							<input type="text" onChange={(e) => handleDiscount(e.target.value)} value={discount} />
+						</ListGroup.Item>
+						<ListGroup.Item className="viewInventory__bottomCardListGroupItem">
+							<span>Balance :</span> <input type="text" onChange={() => {}} value={totalSales - discount} />
+						</ListGroup.Item>
 					</ListGroup>
+					{/* Button */}
+					<div className="payment__button">
+						<Button onClick={handlePayment}>Payment</Button>
+					</div>
 				</Card>
 			</div>
 		</div>

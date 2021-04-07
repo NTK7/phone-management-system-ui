@@ -147,12 +147,11 @@ function Order() {
 		// `);
 
 		// Updating the firebase database by adding the billing payment records into it.
-		db.collection("billing").add({
+		db.collection('billing').add({
 			date: new Date(),
 			TotalProfit: profit,
 			TotalBill: finalTotal,
-		})
-
+		});
 	};
 
 	// Deleting Item from the Billing section
@@ -308,23 +307,32 @@ function Order() {
 		<div className="order">
 			{/* Search by brand section */}
 			<br />
-			<div className="order__searchByBrand">
-				<input
-					type="text"
-					placeholder="Search by brand"
-					onChange={(e) => {
-						setSearchByBrand(e.target.value);
 
-						// If the search field is empty then order seciton also empty
-						if (e.target.value === '') {
-							handleSearchOrder();
-						}
-					}}
-					value={searchByBrand}
-				/>{' '}
-				<Button onClick={handleSearchOrder}>Search</Button>
-			</div>
+			{/* Form is used because when you click enter this will trigger the method handleSearchOrder to run */}
+			<form
+				onSubmit={(e) => {
+					e.preventDefault();
+					handleSearchOrder();
+				}}
+			>
+				<div className="order__searchByBrand">
+					<input
+						type="text"
+						placeholder="Search by brand"
+						onChange={(e) => {
+							e.preventDefault();
+							setSearchByBrand(e.target.value);
 
+							// If the search field is empty then order seciton also empty
+							if (e.target.value === '') {
+								handleSearchOrder();
+							}
+						}}
+						value={searchByBrand}
+					/>{' '}
+					<Button onClick={handleSearchOrder}>Search</Button>
+				</div>
+			</form>
 			{/* table section */}
 			<div className="order__table">
 				<div className="order__topTableHeading">
@@ -371,24 +379,30 @@ function Order() {
 			{/* Billing Section */}
 			<div className="order__billing">
 				<h2>Billing</h2>
-				<div className="order__searchByBrandModel">
-					<input
-						type="text"
-						placeholder="Search by Item code"
-						onChange={(e) => {
-							setSearchByItemCode(e.target.value);
+				<form
+					onSubmit={(e) => {
+						e.preventDefault();
+						handleSearchBilling();
+					}}
+				>
+					<div className="order__searchByBrandModel">
+						<input
+							type="text"
+							placeholder="Search by Item code"
+							onChange={(e) => {
+								setSearchByItemCode(e.target.value);
 
-							if (e.target.value === '') {
-								// handleSearchBilling();
-								// resetting the billing items will all the selected items
-								dispatch(addBillingData(billingItems));
-							}
-						}}
-						value={searchByItemCode}
-					/>{' '}
-					<Button onClick={handleSearchBilling}>Search</Button>
-				</div>
-
+								if (e.target.value === '') {
+									// handleSearchBilling();
+									// resetting the billing items will all the selected items
+									dispatch(addBillingData(billingItems));
+								}
+							}}
+							value={searchByItemCode}
+						/>{' '}
+						<Button onClick={handleSearchBilling}>Search</Button>
+					</div>
+				</form>
 				{/* table section */}
 				<div className="order__table">
 					<div className="order__topTableHeading">

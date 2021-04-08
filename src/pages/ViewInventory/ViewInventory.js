@@ -1,55 +1,89 @@
 import { Button, Card } from '@material-ui/core';
-import { useEffect, useRef, useState } from 'react';
-import { ListGroup, Table } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectViewInventData, inventoryData } from '../../features/viewInventorySlice';
+import { useRef, useState } from 'react';
+import { ListGroup, Table, Modal, Row } from 'react-bootstrap';
 import './ViewInventory.css';
+import React from 'react';
+import { db } from './../../firebase';
 
 function ViewInventory() {
+	const [inventory, inventorydata] = React.useState([]);
 	const [searchVendorName, setSearchVendorName] = useState('');
-	const [totalBill, setTotalBill] = useState(15000);
-	const [initialPayment, setInitialPayment] = useState(7000);
+	const [totalBill, setTotalBill] = useState();
+	const [initialPayment, setInitialPayment] = useState();
+	const [docId, setDocId] = useState();
+	const [pay, setPay] = useState([]);
+	const [myPayment, setMyPayment] = useState();
+	const [inve, setInve] = useState();
+	const [show, setShow] = useState(false);
 
-	const dispatch = useDispatch();
-	const viewInventData = useSelector(selectViewInventData);
+	const getInventorynfo = async () => {
+		db.collection('inventory').where('Brand', '==', searchVendorName);
+		const docs = [];
+		const snapshot = await db.collection('inventory').where('Brand', '==', searchVendorName).get();
+		snapshot.forEach((doc) => {
+			let docdata = doc.data();
 
-	// Adding dummy data using redux initially
-	useEffect(() => {
-		// Creating dummy data
-		// (FETCH THESE DATA FROM THE DATABASE)
-		let dummyData = [];
-		for (let index = 0; index < 10; index++) {
-			dummyData.push({
-				brand: 'Dummy Brand',
-				model: 'Dummy Model',
-				vendor: 'Dummy Vendor',
-				quantity: 'Dummy Quantity',
-				myPayment: 'Dummy my payment',
-				payDate: 'Dummy pay date',
-				purDate: 'Dummy Pur date',
-				total: 'Dummy total',
-			});
-		}
+			//convert pay date normal
+			let pay_date = doc.data().pay_date.toDate().toDateString();
+			let pur_date = doc.data().pay_date.toDate().toDateString();
+			let pay_history = doc.data().pay_history;
+			console.log(pay_history);
+			//getting document id
+			let docid = doc.id;
+			const data = {
+				Brand: `${docdata.Brand}`,
+				model: `${docdata.model}`,
+				vendor: `${docdata.vendor}`,
+				qty: `${docdata.qty}`,
+				my_payment: `${docdata.my_payment}`,
+				pay_date: `${pay_date}`,
+				pur_date: `${pur_date}`,
+				total: `${docdata.total}`,
+				docid: `${docid}`,
+				payhistory: pay_history,
+			};
+			docs.push(data);
+		});
+		inventorydata(docs);
+	};
 
-		dispatch(inventoryData(dummyData));
-	}, []);
-
+	// For search
 	//  SEARCH VENDOR BY NAME
 	const searchVendor = () => {
-		alert(searchVendorName);
-
+		if (searchVendorName == '') {
+			setSearchVendorName('');
+		} else {
+			getInventorynfo();
+		}
 		// clear the text field once searching is done
 		setSearchVendorName('');
 	};
 
 	const payBalance = () => {
-		alert('Paying balance');
+		var newdt = pay;
+		const date = new Date().toString();
+		const st1 = Number(myPayment);
+		const my_total_pay = st1 + Number(initialPayment);
+		newdt.push(st1);
+		newdt.push(date);
+		console.log(pay);
+		db.collection('inventory').doc(docId).update({
+			pay_history: newdt,
+			my_payment: my_total_pay,
+			pay_date: new Date(),
+		});
 	};
 
 	const handleOnClickRow = (input) => {
 		setInitialPayment(input?.initialPay);
 		setTotalBill(input?.totalB);
+		setDocId(input?.docId);
+		setPay(input?.payHistory);
+		console.log(pay);
 	};
+
+	const handleShow = () => setShow(true);
+	const handleClose = () => setShow(false);
 
 	return (
 		<div className="viewInventory">
@@ -57,7 +91,13 @@ function ViewInventory() {
 			<div className="viewInventory__top">
 				{/* input and search button to search for the vender */}
 				<div className="viewInventory__topTableAndSearchSection">
-					<div className="viewInventory__topInput">
+					<form
+						onSubmit={(e) => {
+							e.preventDefault();
+							searchVendor();
+						}}
+						className="viewInventory__topInput"
+					>
 						<input
 							type="text"
 							placeholder="Search by vendor"
@@ -65,14 +105,12 @@ function ViewInventory() {
 							value={searchVendorName}
 						/>{' '}
 						<Button onClick={searchVendor}>Search</Button>
-					</div>
+					</form>
 					<div className="viewInventory__topTableHeading">
 						<Table responsive striped bordered hover variant="dark">
 							<thead>
 								{/* Headings of the table */}
 								<tr>
-									<th>BRAND</th>
-									<th>MODEL</th>
 									<th>VENDOR</th>
 									<th>QUANTITY</th>
 									<th>MY PAYMENT</th>
@@ -87,49 +125,55 @@ function ViewInventory() {
 				<div className="viewInventory__topTableBody">
 					<Table responsive striped bordered hover variant="dark">
 						<tbody>
-							{/* Creating dummy data with 20 rows */}
-
-							{viewInventData.map((item, index) => (
+							{inventory.map((inv, index) => (
 								<>
-									{(index%2 === 0) ? (
-										<tr
-											className="rowOdd"
-											onClick={() =>
-												handleOnClickRow({
-													totalB: 2500,
-													initialPay: 1200,
-												})
-											}
-										>
-											<td>{item?.brand}</td>
-											<td>{item?.model}</td>
-											<td>{item?.vendor}</td>
-											<td>{item?.quantity}</td>
-											<td>{item?.myPayment}</td>
-											<td>{item?.payDate}</td>
-											<td>{item?.purDate}</td>
-											<td>{item?.total}</td>
-										</tr>
-									) : (
-										<tr
-											className="rowEven"
-											onClick={() =>
-												handleOnClickRow({
-													totalB: 5000,
-													initialPay: 1600,
-												})
-											}
-										>
-											<td>{item?.brand}</td>
-											<td>{item?.model}</td>
-											<td>{item?.vendor}</td>
-											<td>{item?.quantity}</td>
-											<td>{item?.myPayment}</td>
-											<td>{item?.payDate}</td>
-											<td>{item?.purDate}</td>
-											<td>{item?.total}</td>
-										</tr>
-									)}
+									<tr
+										className="rowOdd"
+										key={index}
+										onClick={() => {
+											console.log(inv);
+											handleOnClickRow({
+												totalB: inv.total,
+												initialPay: inv.my_payment,
+												docId: inv.docid,
+												payHistory: inv.payhistory,
+											});
+										}}
+									>
+										<td>{inv.vendor}</td>
+										<td>{inv.qty}</td>
+										<td>
+											<Button variant="primary" onClick={handleShow}>
+												{inv.my_payment}
+											</Button>
+											<Modal show={show} onHide={handleClose}>
+												<Modal.Header closeButton>
+													<Modal.Title>Payment History</Modal.Title>
+												</Modal.Header>
+												<Modal.Body>
+													{inv.payhistory.map((arr) => {
+														{
+															console.log(arr);
+														}
+														return (
+															<ul>
+																<li>{arr}</li>
+															</ul>
+														);
+													})}
+												</Modal.Body>
+												<Modal.Footer>
+													<Button variant="secondary" onClick={handleClose}>
+														Close
+													</Button>
+												</Modal.Footer>
+											</Modal>
+										</td>
+
+										<td>{inv.pay_date}</td>
+										<td>{inv.pur_date}</td>
+										<td>{inv.total}</td>
+									</tr>
 								</>
 							))}
 						</tbody>
@@ -150,6 +194,9 @@ function ViewInventory() {
 						</ListGroup.Item>
 						<ListGroup.Item className="viewInventory__bottomCardListGroupItem">
 							<span>Balance:</span> <input type="text" value={totalBill - initialPayment} />
+						</ListGroup.Item>
+						<ListGroup.Item className="viewInventory__bottomCardListGroupItem">
+							<span>My Payment:</span> <input type="text" onChange={(e) => setMyPayment(e.target.value)} />
 						</ListGroup.Item>
 					</ListGroup>
 					<div className="payBalance__button">

@@ -1,15 +1,20 @@
 import { Button } from '@material-ui/core';
 import { Alert, Tab } from 'bootstrap';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FormControl, InputGroup, Tabs } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectViewInventData, addInventoryData } from '../../features/viewInventorySlice';
-
 import './AddInventory.css';
+import DateFnsUtils from '@date-io/date-fns';
+import { DateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import { db } from './../../firebase';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../../features/userSlice';
 
 function AddInventory() {
-	const dispatch = useDispatch();
-	const viewInventData = useSelector(selectViewInventData);
+	// This is the user variable
+	const user = useSelector(selectUser);
+	useEffect(() => {
+		console.log(user);
+	}, []);
 
 	// insert variables
 	const [insertBrand, setInsertBrand] = useState('');
@@ -17,8 +22,8 @@ function AddInventory() {
 	const [insertVendor, setInsertVendor] = useState('');
 	const [insertMyPayment, setInsertMyPayment] = useState('');
 	const [insertQuantity, setInsertQuantity] = useState('');
-	const [insertPayDate, setInsertPayDate] = useState('');
-	const [insertPurDate, setInsertPurDate] = useState('');
+	const [insertPayDate, setInsertPayDate] = useState(new Date());
+	const [insertPurDate, setInsertPurDate] = useState(new Date());
 	const [insertTotal, setInsertTotal] = useState('');
 
 	// update variables
@@ -28,50 +33,42 @@ function AddInventory() {
 	const [updateMyPayment, setUpdateMyPayment] = useState('');
 	const [updateQuantity, setUpdateQuantity] = useState('');
 	const [updatePayDate, setUpdatePayDate] = useState('');
-	const [updatePurDate, setUpdatePurDate] = useState('');
-	const [updateTotal, setUpdateTotal] = useState('');
-
+	const [updateOriginalPrice, setUpdateOriginalPrice] = useState('');
+	const [updateSellingPrice, setupdateSellingPrice] = useState('');
+	const [itemCode, setItemCode] = useState();
 	// Insert and Update color change
 	const [insertColor, setInsertColor] = useState(true);
 
 	// this is the insert method
 	const insertRecord = () => {
 		// field validation
-		if (
-			!insertBrand ||
-			!insertModel ||
-			!insertMyPayment ||
-			!insertPayDate ||
-			!insertPurDate ||
-			!insertQuantity ||
-			!insertTotal ||
-			!insertVendor
-		) {
+		if (!insertMyPayment || !insertPayDate || !insertPurDate || !insertQuantity || !insertTotal || !insertVendor) {
 			alert('Please fill all the fields!');
 		} else {
-			// (REMEMBER TO UPDATE THE DATABASE WITH THIS ITEM ELSE IT WONT UPDATE THE VIEW INVENTORY)
-			dispatch(
-				addInventoryData({
-					brand: insertBrand,
-					model: insertModel,
-					vendor: insertVendor,
-					quantity: insertQuantity,
-					myPayment: insertMyPayment,
-					payDate: insertPayDate,
-					purDate: insertPurDate,
-					total: insertTotal,
-				})
-			);
+			const data = {
+				vendor: insertVendor,
+				qty: insertQuantity,
+				my_payment: insertMyPayment,
+				pay_date: insertPayDate,
+				pur_date: insertPurDate,
+				total: insertTotal,
+				pay_history: [insertMyPayment, insertPayDate.toString()],
+				shop_code: user?.shop_code,
+			};
+
+			db.collection('inventory')
+				.add(data)
+				.then((docRef) => {
+					console.log('Document written with ID: ', docRef.id);
+				});
 		}
 
 		// clearing all the fields after backend implementation
-		setInsertBrand('');
-		setInsertModel('');
 		setInsertVendor('');
 		setInsertMyPayment('');
 		setInsertQuantity('');
-		setInsertPayDate('');
-		setInsertPurDate('');
+		setInsertPayDate(new Date());
+		setInsertPurDate(new Date());
 		setInsertTotal('');
 	};
 
@@ -81,24 +78,46 @@ function AddInventory() {
 		if (
 			!updateBrand ||
 			!updateModel ||
-			!updateMyPayment ||
-			!updatePayDate ||
-			!updatePurDate ||
+			!updateOriginalPrice ||
 			!updateQuantity ||
-			!updateTotal ||
+			!updateSellingPrice ||
 			!updateVendor
 		) {
 			alert('Please fill all the fields!');
+		} else {
+			const docs = [];
+			db.collection('item')
+				.get()
+				.then((res) => {
+					console.log(res.size);
+					const sizes = res.size;
+					docs.push(sizes);
+				});
+			setItemCode(docs);
+
+			let newCode = itemCode + 1;
+			console.log(itemCode);
+			console.log(newCode);
+			let ITEMCODE = 'ITC -' + newCode;
+			const data = {
+				itemcode: ITEMCODE,
+				vendor: updateVendor,
+				qty: updateQuantity,
+				originalprice: updateOriginalPrice,
+				sellingprice: updateSellingPrice,
+				date: new Date(),
+			};
+			db.collection('item')
+				.add(data)
+				.then((docRef) => {
+					console.log('Document written with ID: ', docRef.id);
+				});
 		}
 		// clearing all the fields after backend implementation
 		setUpdateBrand('');
 		setUpdateModel('');
 		setUpdateVendor('');
-		setUpdateMyPayment('');
 		setUpdateQuantity('');
-		setUpdatePayDate('');
-		setUpdatePurDate('');
-		setUpdateTotal('');
 	};
 	return (
 		<div className="addInventory">
@@ -110,36 +129,8 @@ function AddInventory() {
 						className={` tabs ${!insertColor && 'tab__insert'}`}
 						onSelect={() => setInsertColor(!insertColor)}
 					>
-						<Tab eventKey="home" title="Insert" className="tab">
+						<Tab eventKey="home" title="Add Invoice" className="tab">
 							<div className="tab__details">
-								<InputGroup className="mb-3">
-									<InputGroup.Prepend>
-										<InputGroup.Text id="basic-addon1" className="input__label">
-											Brand
-										</InputGroup.Text>
-									</InputGroup.Prepend>
-									<FormControl
-										placeholder="Enter Brand"
-										aria-label="Enter Brand"
-										aria-describedby="basic-addon1"
-										value={insertBrand}
-										onChange={(e) => setInsertBrand(e.target.value)}
-									/>
-								</InputGroup>
-								<InputGroup className="mb-3">
-									<InputGroup.Prepend>
-										<InputGroup.Text className="input__label" id="basic-addon2">
-											Model
-										</InputGroup.Text>
-									</InputGroup.Prepend>
-									<FormControl
-										placeholder="Enter Model"
-										aria-label="Enter Model"
-										aria-describedby="basic-addon2"
-										value={insertModel}
-										onChange={(e) => setInsertModel(e.target.value)}
-									/>
-								</InputGroup>
 								<InputGroup className="mb-3">
 									<InputGroup.Prepend>
 										<InputGroup.Text className="input__label" id="basic-addon3">
@@ -188,13 +179,9 @@ function AddInventory() {
 											Pay Date
 										</InputGroup.Text>
 									</InputGroup.Prepend>
-									<FormControl
-										placeholder="Pay Date"
-										aria-label="Pay Date"
-										aria-describedby="basic-addon6"
-										value={insertPayDate}
-										onChange={(e) => setInsertPayDate(e.target.value)}
-									/>
+									<MuiPickersUtilsProvider utils={DateFnsUtils}>
+										<DateTimePicker value={insertPayDate} onChange={setInsertPayDate} disableFuture />
+									</MuiPickersUtilsProvider>
 								</InputGroup>
 								<InputGroup className="mb-3">
 									<InputGroup.Prepend>
@@ -202,13 +189,9 @@ function AddInventory() {
 											Pur Date
 										</InputGroup.Text>
 									</InputGroup.Prepend>
-									<FormControl
-										placeholder="Puy Date"
-										aria-label="Puy Date"
-										aria-describedby="basic-addon7"
-										value={insertPurDate}
-										onChange={(e) => setInsertPurDate(e.target.value)}
-									/>
+									<MuiPickersUtilsProvider utils={DateFnsUtils}>
+										<DateTimePicker value={insertPurDate} onChange={setInsertPurDate} disableFuture />
+									</MuiPickersUtilsProvider>
 								</InputGroup>
 								<InputGroup className="mb-3">
 									<InputGroup.Prepend>
@@ -226,40 +209,14 @@ function AddInventory() {
 								</InputGroup>
 
 								<div className="tab__buttonAction">
-									<Button onClick={insertRecord}>INSERT</Button>
+									<Button onClick={insertRecord} disabled={!user && true}>
+										INSERT
+									</Button>
 								</div>
 							</div>
 						</Tab>
-						<Tab eventKey="profile" title="Update" className="tab">
+						<Tab eventKey="profile" title="Add Items" className="tab">
 							<div className="tab__details">
-								<InputGroup className="mb-3">
-									<InputGroup.Prepend>
-										<InputGroup.Text className="input__label" id="basic-addon9">
-											Brand
-										</InputGroup.Text>
-									</InputGroup.Prepend>
-									<FormControl
-										placeholder="Enter Brand"
-										aria-label="Enter Brand"
-										aria-describedby="basic-addon9"
-										value={updateBrand}
-										onChange={(e) => setUpdateBrand(e.target.value)}
-									/>
-								</InputGroup>
-								<InputGroup className="mb-3">
-									<InputGroup.Prepend>
-										<InputGroup.Text className="input__label" id="basic-addon10">
-											Model
-										</InputGroup.Text>
-									</InputGroup.Prepend>
-									<FormControl
-										placeholder="Enter Model"
-										aria-label="Enter Model"
-										aria-describedby="basic-addon10"
-										value={updateModel}
-										onChange={(e) => setUpdateModel(e.target.value)}
-									/>
-								</InputGroup>
 								<InputGroup className="mb-3">
 									<InputGroup.Prepend>
 										<InputGroup.Text className="input__label" id="basic-addon11">
@@ -277,76 +234,78 @@ function AddInventory() {
 								<InputGroup className="mb-3">
 									<InputGroup.Prepend>
 										<InputGroup.Text className="input__label" id="basic-addon12">
-											Quantity
+											Brand
 										</InputGroup.Text>
 									</InputGroup.Prepend>
 									<FormControl
 										placeholder="Enter Quantity"
 										aria-label="Enter Quantity"
 										aria-describedby="basic-addon12"
-										value={updateQuantity}
-										onChange={(e) => setUpdateQuantity(e.target.value)}
+										value={updateBrand}
+										onChange={(e) => setUpdateBrand(e.target.value)}
 									/>
 								</InputGroup>
 								<InputGroup className="mb-3">
 									<InputGroup.Prepend>
 										<InputGroup.Text className="input__label" id="basic-addon13">
-											My Payment
+											Model
 										</InputGroup.Text>
 									</InputGroup.Prepend>
 									<FormControl
 										placeholder="Enter My Payment"
 										aria-label="Enter My Payment"
 										aria-describedby="basic-addon13"
-										value={updateMyPayment}
-										onChange={(e) => setUpdateMyPayment(e.target.value)}
+										value={updateModel}
+										onChange={(e) => setUpdateModel(e.target.value)}
 									/>
 								</InputGroup>
 								<InputGroup className="mb-3">
 									<InputGroup.Prepend>
 										<InputGroup.Text className="input__label" id="basic-addon14">
-											Pay Date
+											Quantity
 										</InputGroup.Text>
 									</InputGroup.Prepend>
 									<FormControl
 										placeholder="Pay Date"
 										aria-label="Pay Date"
 										aria-describedby="basic-addon14"
-										value={updatePayDate}
-										onChange={(e) => setUpdatePayDate(e.target.value)}
+										value={updateQuantity}
+										onChange={(e) => setUpdateQuantity(e.target.value)}
 									/>
 								</InputGroup>
 								<InputGroup className="mb-3">
 									<InputGroup.Prepend>
 										<InputGroup.Text className="input__label" id="basic-addon15">
-											Pur Date
+											Original Price
 										</InputGroup.Text>
 									</InputGroup.Prepend>
 									<FormControl
 										placeholder="Puy Date"
 										aria-label="Puy Date"
 										aria-describedby="basic-addon15"
-										value={updatePurDate}
-										onChange={(e) => setUpdatePurDate(e.target.value)}
+										value={updateOriginalPrice}
+										onChange={(e) => setUpdateOriginalPrice(e.target.value)}
 									/>
 								</InputGroup>
 								<InputGroup className="mb-3">
 									<InputGroup.Prepend>
 										<InputGroup.Text className="input__label" id="basic-addon16">
-											Total
+											Selling Price
 										</InputGroup.Text>
 									</InputGroup.Prepend>
 									<FormControl
 										placeholder="Total"
 										aria-label="Total"
 										aria-describedby="basic-addon16"
-										value={updateTotal}
-										onChange={(e) => setUpdateTotal(e.target.value)}
+										value={updateSellingPrice}
+										onChange={(e) => setupdateSellingPrice(e.target.value)}
 									/>
 								</InputGroup>
 
 								<div className="tab__buttonAction">
-									<Button onClick={updateRecord}>UPDATE</Button>
+									<Button onClick={updateRecord} disabled={!user && true}>
+										UPDATE
+									</Button>
 								</div>
 							</div>
 						</Tab>

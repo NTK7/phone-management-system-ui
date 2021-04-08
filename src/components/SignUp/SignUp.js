@@ -8,6 +8,8 @@ function SignUp() {
 	const [email, setEmail] = useState();
 	const [password, setPassword] = useState();
 	const dispatch = useDispatch();
+
+	// You can use this variable with the useSelector method to use the user details anywhere
 	const user = useSelector(selectUser);
 
 	// Register user
@@ -32,6 +34,7 @@ function SignUp() {
 									email: userAuth.user?.email,
 									uid: userAuth.user?.uid,
 									userName: name,
+									shop_code: 'MSB-001',
 								})
 							);
 						});
@@ -74,6 +77,7 @@ function SignUp() {
 							email: userAuth.user?.email,
 							uid: userAuth.user?.uid,
 							userName: name,
+							shop_code: 'MSB-001',
 						})
 					);
 

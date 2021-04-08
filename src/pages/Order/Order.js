@@ -139,14 +139,16 @@ function Order() {
 	const handlePayment = () => {
 		let finalTotal = totalSales - discount;
 		let profit = totalSellingPrice - totalOriginalPrice - discount;
-		if (finalTotal !== 0) {
-			// Updating the firebase database by adding the billing payment records into it.
-			db.collection('billing').add({
-				date: new Date(),
-				TotalProfit: profit,
-				TotalBill: finalTotal,
-			});
+		if(finalTotal !== 0){
+
+		// Updating the firebase database by adding the billing payment records into it.
+		db.collection('billing').add({
+			date: new Date(),
+			TotalProfit: profit,
+			TotalBill: finalTotal,
+		});
 		}
+
 	};
 
 	// Deleting Item from the Billing section

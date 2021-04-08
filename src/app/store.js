@@ -12,7 +12,7 @@ export const store = configureStore({
 		viewInventoryData: viewInventoryDataReducer,
 		order: orderReducer,
 	},
-	// preloadedState: persistedState,
+	preloadedState: persistedState,
 });
 
 store.subscribe(() => saveToLocalStorage(store.getState()));

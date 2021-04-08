@@ -19,9 +19,12 @@
 }
 .signUp__container > h3,
 .signUp__container > input,
-.signUp__container > p,
-.signUp__container > button {
+.signUp__container > p {
 	margin: 20px 0;
+}
+
+.signUp__container > button{
+	margin: 5px 0;
 }
 .signUp__container > input {
 	padding: 8px 30px;

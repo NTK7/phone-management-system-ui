@@ -14,11 +14,6 @@ function Order() {
 	const [totalOriginalPrice, setTotalOriginalPrice] = useState(0);
 
 	const [billingItems, setBillingItems] = useState([]); // Array of billing items
-	// const [searchedItemsBilling, setSearchedItemsBilling] = useState(null); // Array of searched items
-
-	// This decides whether the bill items or the searched items to be added into the main billing data
-	// const [validSearchBillItems, setValidSearchBillItems] = useState(false);
-
 	const [totalSales, setTotalSales] = useState(0); // Total Sales Bill
 	const [itemsData, setItemsData] = useState([]); // Stores all the phone items from the database
 
@@ -64,15 +59,6 @@ function Order() {
 		setTotalOriginalPrice(totalOriginalPriceSum.reduce((a, b) => a + b, 0));
 		setTotalSales(totalSalesSum.reduce((a, b) => a + b, 0));
 	}, [billingItems]);
-
-	// Searching Items from the billing section
-	// useEffect(() => {
-	// 	if (searchedItemsBilling !== null && validSearchBillItems === true) {
-	// 		// update the billing data items
-	// 		dispatch(addBillingData(searchedItemsBilling));
-	// 		setValidSearchBillItems(false);
-	// 	}
-	// }, [searchedItemsBilling]);
 
 	// Adding to billing
 	const addToBilling = ({ brand, quantity, originalPrice, code, model, sellingprice, vendor, date }) => {
@@ -139,16 +125,20 @@ function Order() {
 	const handlePayment = () => {
 		let finalTotal = totalSales - discount;
 		let profit = totalSellingPrice - totalOriginalPrice - discount;
-		if(finalTotal !== 0){
+		if (finalTotal !== 0) {
+			// Updating the firebase database by adding the billing payment records into it.
+			db.collection('billing').add({
+				date: new Date(),
+				TotalProfit: profit,
+				TotalBill: finalTotal,
+			});
 
-		// Updating the firebase database by adding the billing payment records into it.
-		db.collection('billing').add({
-			date: new Date(),
-			TotalProfit: profit,
-			TotalBill: finalTotal,
-		});
+			// Message
+			alert('Payment Successfully Completed');
 		}
 
+		// Once Payment Button is clicked we clear all the old records (RESETTING THE PAGE)
+		window.location.reload(true);
 	};
 
 	// Deleting Item from the Billing section

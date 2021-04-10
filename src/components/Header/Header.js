@@ -63,31 +63,31 @@ function Header() {
 			<div className="header__nav">
 				<div className="header__navLeft">
 					<h4>
-						<Link to={user ? '/home' : '/signUp'}>Phone Shop</Link>
+						<Link to={user ? '/home' : '/signOut'}>Phone Shop</Link>
 					</h4>
 				</div>
 				<div className="header__navRight">
 					{user && (
 						<>
 							<h6 className={borderView && 'border__view'}>
-								<Link to={user ? '/view+inventory' : '/signUp'} onClick={activeViewInventory}>
+								<Link to={user ? '/view+inventory' : '/signOut'} onClick={activeViewInventory}>
 									View Inventory
 								</Link>
 							</h6>
 							<h6 className={borderAdd && 'border__add'}>
-								<Link to={user ? '/add+inventory' : '/signUp'} onClick={activeAddInventory}>
+								<Link to={user ? '/add+inventory' : '/signOut'} onClick={activeAddInventory}>
 									Add Inventory
 								</Link>
 							</h6>
 							<h6 className={borderOrder && 'border__order'}>
-								<Link to={user ? '/order' : '/signUp'} onClick={activeOrderInventory}>
+								<Link to={user ? '/order' : '/signOut'} onClick={activeOrderInventory}>
 									Order
 								</Link>
 							</h6>
 
 							<h6 className={borderSignUp && 'border__signUp'}>
-								<Link to="/signUp" onClick={activeSignUpInventory}>
-									Sign In
+								<Link to="/signOut" onClick={activeSignUpInventory}>
+									Sign Out
 								</Link>
 							</h6>
 						</>

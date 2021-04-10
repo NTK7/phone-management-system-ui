@@ -1,5 +1,5 @@
 import './App.css';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import Order from './pages/Order/Order';
 import AddInventory from './pages/AddInventory/AddInventory';
 import ViewInventory from './pages/ViewInventory/ViewInventory';
@@ -10,9 +10,8 @@ import SignUp from './components/SignUp/SignUp';
 import { useSelector } from 'react-redux';
 import { selectUser } from './features/userSlice';
 
-// You can use this variable with the useSelector method to use the user details anywhere
-
 function App() {
+	// You can use this variable with the useSelector method to use the user details anywhere
 	const user = useSelector(selectUser);
 
 	return (
@@ -20,32 +19,63 @@ function App() {
 		<Router>
 			<div className="app">
 				<Switch>
-					<Route path="/order">
-						<Header />
-						<Order />
-						<Footer />
+					<Route exact path="/order">
+						{user ? (
+							<>
+								<Header />
+								<Order />
+								<Footer />
+							</>
+						) : (
+							<Redirect to="/" />
+						)}
 					</Route>
-					<Route path="/add+inventory">
-						<Header />
-						<AddInventory />
-						<Footer />
+					<Route exact path="/add+inventory">
+						{user ? (
+							<>
+								<Header />
+								<AddInventory />
+								<Footer />
+							</>
+						) : (
+							<Redirect to="/" />
+						)}
 					</Route>
-					<Route path="/view+inventory">
-						<Header />
-						<ViewInventory />
-						<Footer />
+					<Route exact path="/view+inventory">
+						{user ? (
+							<>
+								<Header />
+								<ViewInventory />
+								<Footer />
+							</>
+						) : (
+							<Redirect to="/" />
+						)}
 					</Route>
-					<Route path="/signUp">
-						<Header />
-						<SignUp />
-						<Footer />
+					<Route exact path="/signOut">
+						{user ? (
+							<>
+								<Header />
+								<SignUp />
+								<Footer />
+							</>
+						) : (
+							<Redirect to="/" />
+						)}
 					</Route>
-					<Route path="/home">
-						<Header />
-						<Home />
-						<Footer />
+					<Route exact path="/home">
+						{user ? (
+							<>
+								<Header />
+								<Home />
+								<Footer />
+							</>
+						) : (
+							<Redirect to="/" />
+						)}
 					</Route>
 					<Route path="/">
+						<Redirect to="/" />
 						<Header />
 						<SignUp />
 						<Footer />

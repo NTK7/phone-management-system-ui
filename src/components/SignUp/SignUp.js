@@ -12,6 +12,7 @@ function SignUp() {
 	const [alertMessage, setAlertMessage] = useState('Loading . . .');
 	const history = useHistory();
 	const [validUser, setValidUser] = useState(false);
+	const [userSignOut, setUserSignOut] = useState(false);
 
 	// You can use this variable with the useSelector method to use the user details anywhere
 	const user = useSelector(selectUser);
@@ -162,13 +163,16 @@ function SignUp() {
 
 	// Sign Out User
 	const signOutUser = () => {
-		dispatch(logout());
-		setAlertMessage('You have logged out!');
+		setUserSignOut(true);
+
+		setTimeout(() => {
+			dispatch(logout());
+		}, 1000);
 	};
 
 	return (
 		<div className="signUp">
-			{customAlert(alertMessage)}
+			{!userSignOut && customAlert(alertMessage)}
 			<div className="signUp__container">
 				{!user ? (
 					<>

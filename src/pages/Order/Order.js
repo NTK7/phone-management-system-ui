@@ -127,11 +127,15 @@ function Order() {
 		let profit = totalSellingPrice - totalOriginalPrice - discount;
 		if (finalTotal !== 0) {
 			// Updating the firebase database by adding the billing payment records into it.
-			db.collection('billing').add({
-				date: new Date(),
-				TotalProfit: profit,
-				TotalBill: finalTotal,
-			});
+			db.collection('billing')
+				.add({
+					date: new Date(),
+					TotalProfit: profit,
+					TotalBill: finalTotal,
+				})
+				.catch((err) => {
+					console.log(err.message);
+				});
 		}
 	};
 

@@ -11,6 +11,7 @@ function SignUp() {
 	const dispatch = useDispatch();
 	const [alertMessage, setAlertMessage] = useState('Loading . . .');
 	const history = useHistory();
+	const [validUser, setValidUser] = useState(false);
 
 	// You can use this variable with the useSelector method to use the user details anywhere
 	const user = useSelector(selectUser);
@@ -33,7 +34,13 @@ function SignUp() {
 								Message
 							</h5>
 							<button
-								onClick={() => setAlertMessage('Loading...')}
+								onClick={() => {
+									setAlertMessage('Loading...');
+									if (validUser) {
+										history.replace('/home');
+										setValidUser(false);
+									}
+								}}
 								type="button"
 								className="close"
 								data-dismiss="modal"
@@ -49,7 +56,13 @@ function SignUp() {
 								className="btn btn-primary"
 								data-dismiss="modal"
 								aria-label="Close"
-								onClick={() => setAlertMessage('Loading...')}
+								onClick={() => {
+									setAlertMessage('Loading...');
+									if (validUser) {
+										history.replace('/home');
+										setValidUser(false);
+									}
+								}}
 							>
 								OK
 							</button>
@@ -98,10 +111,8 @@ function SignUp() {
 					});
 				})
 				.then(() => {
+					setValidUser(true);
 					setAlertMessage('Welcome ' + name + '!');
-					setTimeout(() => {
-						history.replace('/home');
-					}, 1000);
 				})
 				.catch((error) => {
 					console.log(error?.message);
@@ -136,12 +147,10 @@ function SignUp() {
 							shop_code: 'MSB-001',
 						})
 					);
-
+					setValidUser(true);
 					setAlertMessage('Welcome ' + name + '!');
-					setTimeout(() => {
-						history.replace('/home');
-					}, 1000);
 				})
+
 				.catch((error) => {
 					setAlertMessage(error?.message);
 				});

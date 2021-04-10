@@ -12,6 +12,7 @@
     "@testing-library/react": "^11.2.5",
     "@testing-library/user-event": "^12.6.3",
     "bootstrap": "^4.6.0",
+    "comma-number": "^2.0.1",
     "date-fns": "^2.19.0",
     "firebase": "^8.3.0",
     "jquery": "^3.5.1",

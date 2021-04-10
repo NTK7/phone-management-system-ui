@@ -28,8 +28,8 @@
 	height: 60vh;
 }
 .home__cardsTopCard {
-	width: 160px;
-	padding: 5px 20px;
+	width: 250px;
+	padding: 10px 20px;
 	display: flex !important;
 	flex-direction: column !important;
 	align-items: center !important;
@@ -60,7 +60,7 @@
 	cursor: pointer;
 }
 .mainMenuContainer {
-	width: 100%;
+	width: 80%;
 	display: flex;
 	align-items: center;
 	flex-direction: column !important;
@@ -173,6 +173,9 @@
 		transition: 0.1s ease-in-out;
 		padding: 0 20px;
 		text-align: center;
+	}
+	.mainMenuContainer {
+		width: 100%;
 	}
 }
 

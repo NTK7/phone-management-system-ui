@@ -1,12 +1,47 @@
-import { useState } from 'react';
+import { set } from 'date-fns';
+import { useEffect, useState } from 'react';
 import { Card } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
+import { db } from '../../firebase';
 import './Home.css';
+import commaNumber from 'comma-number';
 
 function Home() {
 	const history = useHistory();
-
 	const [displayInventoryOptions, setDisplayInventoryOptions] = useState(false);
+	const [totalProfit, setTotalProfit] = useState(0);
+	const [totalSales, setTotalSales] = useState(0);
+	const [loading, setLoading] = useState(true);
+	// const [billingSales, setBillingSales] = useState([]);
+
+	useEffect(() => {
+		let profit = 0;
+		let sales = 0;
+
+		// Getting data from the Billing Collections
+		db.collection('billing').onSnapshot((snapshot) => {
+			for (let index = 0; index < snapshot.docs?.length; index++) {
+				let date = snapshot.docs[index].data().date.toDate().toDateString();
+				let todayDate = new Date().toDateString();
+
+				//  Taking todays records only
+				if (date === todayDate) {
+					// setTotalSales(totalSales + snapshot.docs[index].data().TotalBill)
+					profit = profit + snapshot.docs[index].data().TotalProfit;
+					sales = sales + snapshot.docs[index].data().TotalBill;
+				}
+			}
+			setTotalProfit(profit);
+			setTotalSales(sales);
+			setLoading(false);
+		});
+	}, []);
+
+	useEffect(() => {
+		console.log(totalProfit);
+		console.log(totalSales);
+	}, [totalProfit, totalSales]);
+
 	return (
 		<div className="home">
 			<div className="home__nav">
@@ -14,51 +49,39 @@ function Home() {
 			</div>
 			<div className="home__cardsTop">
 				<Card className="home__cardsTopCard">
-					<Card.Title>Day 01</Card.Title>
-					<Card.Text>Profit</Card.Text>
-					<Card.Text>100000</Card.Text>
+					<Card.Title>Total Profit for Today</Card.Title>
+					{loading ? (
+						<Card.Text>
+							<h4>Loading...</h4>
+						</Card.Text>
+					) : (
+						<Card.Text>
+							<h4>Rs: {commaNumber(totalProfit)}</h4>
+						</Card.Text>
+					)}
 				</Card>
 				<Card className="home__cardsTopCard">
-					<Card.Title>Day 02</Card.Title>
-					<Card.Text>Profit</Card.Text>
-					<Card.Text>100000</Card.Text>
-				</Card>
-				<Card className="home__cardsTopCard">
-					<Card.Title>Day 03</Card.Title>
-					<Card.Text>Profit</Card.Text>
-					<Card.Text>100000</Card.Text>
-				</Card>
-				<Card className="home__cardsTopCard">
-					<Card.Title>Day 04</Card.Title>
-					<Card.Text>Profit</Card.Text>
-					<Card.Text>100000</Card.Text>
-				</Card>
-				<Card className="home__cardsTopCard">
-					<Card.Title>Day 05</Card.Title>
-					<Card.Text>Profit</Card.Text>
-					<Card.Text>100000</Card.Text>
-				</Card>
-				<Card className="home__cardsTopCard">
-					<Card.Title>Day 06</Card.Title>
-					<Card.Text>Profit</Card.Text>
-					<Card.Text>100000</Card.Text>
-				</Card>
-				<Card className="home__cardsTopCard">
-					<Card.Title>Day 07</Card.Title>
-					<Card.Text>Profit</Card.Text>
-					<Card.Text>100000</Card.Text>
+					<Card.Title>Total Sales for Today</Card.Title>
+					{loading ? (
+						<Card.Text>
+							<h4>Loading...</h4>
+						</Card.Text>
+					) : (
+						<Card.Text>
+							<h4>Rs: {commaNumber(totalSales)}</h4>
+						</Card.Text>
+					)}
 				</Card>
 			</div>
 			<div className="home__cards container">
-				{/* last payments section */}
-				<div className="lastPayments">
+				{/* <div className="lastPayments">
 					<Card className="lastPayments__card">
 						<Card.Text><h6>Last Payments</h6></Card.Text>
 						<Card.Text><li>01-02-2021 : Rs:45000</li></Card.Text>
 						<Card.Text><li>01-02-2021 : Rs:450</li></Card.Text>
 						<Card.Text><li>01-02-2021 : Rs:458990</li></Card.Text>
 					</Card>
-				</div>
+				</div> */}
 
 				{/* main menu container */}
 				<div className="mainMenuContainer">
@@ -88,20 +111,18 @@ function Home() {
 						</p>
 					</div>
 				</div>
-				{/* items ends section */}
-				<div className="itemEnds">
+				{/* <div className="itemEnds">
 					<Card className="itemEnds__card">
 						<Card.Title>Item ends</Card.Title>
 						<Card.Text><li>itemName : 5 </li> </Card.Text>
 						<Card.Text><li>itemName : 2 </li> </Card.Text>
 						<Card.Text><li>itemName : 6 </li> </Card.Text>
 					</Card>
-				</div>
+				</div> */}
 			</div>
 
 			{/* Display for ipad mode */}
-			<div className="home__cardsIpad container">
-				{/* last payments section */}
+			{/* <div className="home__cardsIpad container">
 				<div>
 					<Card className="lastPayments__card">
 						<Card.Text><h6>Last Payments</h6></Card.Text>
@@ -111,7 +132,6 @@ function Home() {
 					</Card>
 				</div>
 
-				{/* items ends section */}
 				<div>
 					<Card className="itemEnds__card">
 						<Card.Title>Item ends</Card.Title>
@@ -120,7 +140,7 @@ function Home() {
 						<Card.Text><li>itemName : 6 </li> </Card.Text>
 					</Card>
 				</div>
-			</div>
+			</div> */}
 		</div>
 	);
 }

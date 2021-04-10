@@ -12,7 +12,21 @@ function Home() {
 	const [totalProfit, setTotalProfit] = useState(0);
 	const [totalSales, setTotalSales] = useState(0);
 	const [loading, setLoading] = useState(true);
-	// const [billingSales, setBillingSales] = useState([]);
+	const [displayOnTime, setDisplayOnTime] = useState(false);
+
+	// Displaying the Total Profit and Total Sales
+	useEffect(() => {
+		let date = new Date();
+		let startTime = 10 * 60;
+		let endTime = 18 * 60;
+		let currentTime = date.getHours() * 60 + date.getMinutes();
+
+		if (currentTime >= startTime && currentTime <= endTime) {
+			setDisplayOnTime(true);
+		} else {
+			setDisplayOnTime(false);
+		}
+	}, []);
 
 	useEffect(() => {
 		let profit = 0;
@@ -47,32 +61,34 @@ function Home() {
 			<div className="home__nav">
 				<h4>Phone Shop</h4>
 			</div>
-			<div className="home__cardsTop">
-				<Card className="home__cardsTopCard">
-					<Card.Title>Total Profit for Today</Card.Title>
-					{loading ? (
-						<Card.Text>
-							<h4>Loading...</h4>
-						</Card.Text>
-					) : (
-						<Card.Text>
-							<h4>Rs: {commaNumber(totalProfit)}</h4>
-						</Card.Text>
-					)}
-				</Card>
-				<Card className="home__cardsTopCard">
-					<Card.Title>Total Sales for Today</Card.Title>
-					{loading ? (
-						<Card.Text>
-							<h4>Loading...</h4>
-						</Card.Text>
-					) : (
-						<Card.Text>
-							<h4>Rs: {commaNumber(totalSales)}</h4>
-						</Card.Text>
-					)}
-				</Card>
-			</div>
+			{displayOnTime && (
+				<div className="home__cardsTop">
+					<Card className="home__cardsTopCard">
+						<Card.Title>Total Profit for Today</Card.Title>
+						{loading ? (
+							<Card.Text>
+								<h4>Loading...</h4>
+							</Card.Text>
+						) : (
+							<Card.Text>
+								<h4>Rs: {commaNumber(totalProfit)}</h4>
+							</Card.Text>
+						)}
+					</Card>
+					<Card className="home__cardsTopCard">
+						<Card.Title>Total Sales for Today</Card.Title>
+						{loading ? (
+							<Card.Text>
+								<h4>Loading...</h4>
+							</Card.Text>
+						) : (
+							<Card.Text>
+								<h4>Rs: {commaNumber(totalSales)}</h4>
+							</Card.Text>
+						)}
+					</Card>
+				</div>
+			)}
 			<div className="home__cards container">
 				{/* <div className="lastPayments">
 					<Card className="lastPayments__card">

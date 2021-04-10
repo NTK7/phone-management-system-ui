@@ -132,13 +132,7 @@ function Order() {
 				TotalProfit: profit,
 				TotalBill: finalTotal,
 			});
-
-			// Message
-			alert('Payment Successfully Completed');
 		}
-
-		// Once Payment Button is clicked we clear all the old records (RESETTING THE PAGE)
-		window.location.reload(true);
 	};
 
 	// Deleting Item from the Billing section
@@ -290,8 +284,49 @@ function Order() {
 		dispatch(addOrderData(searchedDataRecords));
 	};
 
+	const customAlert = (message) => {
+		return (
+			<div
+				class="modal fade"
+				id="exampleModal"
+				tabindex="-1"
+				role="dialog"
+				aria-labelledby="exampleModalLabel"
+				aria-hidden="true"
+			>
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLabel">
+								Success
+							</h5>
+							<button
+								type="button"
+								class="close"
+								data-dismiss="modal"
+								aria-label="Close"
+								onClick={() => window.location.reload(true)}
+							>
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">{message}</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-primary" onClick={() => window.location.reload(true)}>
+								OK
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		);
+	};
+
 	return (
 		<div className="order">
+			{/* Alert Message */}
+			{customAlert('Payment Successfully Completed!')}
+
 			{/* Search by brand section */}
 			<br />
 
@@ -473,7 +508,9 @@ function Order() {
 					</ListGroup>
 					{/* Button */}
 					<div className="payment__button">
-						<Button onClick={handlePayment}>Payment</Button>
+						<Button onClick={handlePayment} data-toggle="modal" data-target="#exampleModal">
+							Payment
+						</Button>
 					</div>
 				</Card>
 			</div>

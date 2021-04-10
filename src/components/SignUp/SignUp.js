@@ -8,15 +8,61 @@ function SignUp() {
 	const [email, setEmail] = useState();
 	const [password, setPassword] = useState();
 	const dispatch = useDispatch();
+	const [alertMessage, setAlertMessage] = useState('Loading . . .');
 
 	// You can use this variable with the useSelector method to use the user details anywhere
 	const user = useSelector(selectUser);
+
+	// Alert
+	const customAlert = (message) => {
+		return (
+			<div
+				className="modal fade"
+				id="exampleModal"
+				tabIndex="-1"
+				role="dialog"
+				aria-labelledby="exampleModalLabel"
+				aria-hidden="true"
+			>
+				<div className="modal-dialog" role="document">
+					<div className="modal-content">
+						<div className="modal-header">
+							<h5 className="modal-title" id="exampleModalLabel">
+								Message
+							</h5>
+							<button
+								onClick={() => setAlertMessage('Loading...')}
+								type="button"
+								className="close"
+								data-dismiss="modal"
+								aria-label="Close"
+							>
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div className="modal-body">{message}</div>
+						<div className="modal-footer">
+							<button
+								type="button"
+								className="btn btn-primary"
+								data-dismiss="modal"
+								aria-label="Close"
+								onClick={() => setAlertMessage('Loading...')}
+							>
+								OK
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		);
+	};
 
 	// Register user
 	const registerUser = () => {
 		// User authentication
 		if (!email || !password) {
-			alert('Please fill all the fields!');
+			setAlertMessage('Please fill all the fields below!');
 		} else {
 			// Perform user registration
 			let name = email.split('@')[0];
@@ -39,7 +85,6 @@ function SignUp() {
 							);
 						});
 
-					alert('Welcome ' + name + '!');
 					console.log(user);
 					// Adding to "user" collection in the database
 					db.collection('user').add({
@@ -50,7 +95,13 @@ function SignUp() {
 						email: email,
 					});
 				})
-				.catch((error) => alert(error));
+				.then(() => {
+					setAlertMessage('Welcome ' + name + '!');
+				})
+				.catch((error) => {
+					console.log(error?.message);
+					setAlertMessage(error?.message);
+				});
 		}
 
 		setEmail('');
@@ -61,7 +112,7 @@ function SignUp() {
 	const signInUser = () => {
 		// User authentication
 		if (!email || !password) {
-			alert('Please fill all the fields!');
+			setAlertMessage('Please fill all the fields below!');
 		} else {
 			// Splitting email to get name
 			let name = email.split('@')[0];
@@ -81,9 +132,11 @@ function SignUp() {
 						})
 					);
 
-					alert('Welcome ' + name + '!');
+					setAlertMessage('Welcome ' + name + '!');
 				})
-				.catch((error) => alert(error));
+				.catch((error) => {
+					setAlertMessage(error?.message);
+				});
 		}
 
 		setEmail('');
@@ -93,10 +146,12 @@ function SignUp() {
 	// Sign Out User
 	const signOutUser = () => {
 		dispatch(logout());
+		setAlertMessage('You have logged out!');
 	};
 
 	return (
 		<div className="signUp">
+			{customAlert(alertMessage)}
 			<div className="signUp__container">
 				{!user ? (
 					<>
@@ -106,13 +161,19 @@ function SignUp() {
 
 						<p>Forgot your password?</p>
 
-						<button onClick={signInUser}>Sign In</button>
-						<button onClick={registerUser}>Register</button>
+						<button data-toggle="modal" data-target="#exampleModal" onClick={signInUser}>
+							Sign In
+						</button>
+						<button data-toggle="modal" data-target="#exampleModal" onClick={registerUser}>
+							Register
+						</button>
 					</>
 				) : (
 					<>
 						<h3>Sign out</h3>
-						<button onClick={signOutUser}>Sign Out</button>
+						<button data-toggle="modal" data-target="#exampleModal" onClick={signOutUser}>
+							Sign Out
+						</button>
 					</>
 				)}
 			</div>

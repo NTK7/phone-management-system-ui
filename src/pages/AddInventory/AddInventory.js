@@ -38,13 +38,16 @@ function AddInventory() {
 	const [itemCode, setItemCode] = useState();
 	// Insert and Update color change
 	const [insertColor, setInsertColor] = useState(true);
+	const [displayAlert, setDisplayAlert] = useState(false);
 
 	// this is the insert method
 	const insertRecord = () => {
 		// field validation
 		if (!insertMyPayment || !insertPayDate || !insertPurDate || !insertQuantity || !insertTotal || !insertVendor) {
-			alert('Please fill all the fields!');
+			setDisplayAlert(true);
 		} else {
+			setDisplayAlert(false);
+
 			const data = {
 				vendor: insertVendor,
 				qty: insertQuantity,
@@ -72,6 +75,39 @@ function AddInventory() {
 		setInsertTotal('');
 	};
 
+	// Alert
+	const customAlert = (message) => {
+		return (
+			<div
+				class="modal fade"
+				id="exampleModal"
+				tabindex="-1"
+				role="dialog"
+				aria-labelledby="exampleModalLabel"
+				aria-hidden="true"
+			>
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLabel">
+								Error
+							</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">{message}</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-primary" data-dismiss="modal">
+								OK
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		);
+	};
+
 	// this is the update method
 	const updateRecord = () => {
 		// field validation
@@ -83,8 +119,10 @@ function AddInventory() {
 			!updateSellingPrice ||
 			!updateVendor
 		) {
-			alert('Please fill all the fields!');
+			setDisplayAlert(true);
 		} else {
+			setDisplayAlert(false);
+
 			const docs = [];
 			db.collection('item')
 				.get()
@@ -121,6 +159,8 @@ function AddInventory() {
 	};
 	return (
 		<div className="addInventory">
+			{displayAlert && customAlert('Please fill all the fields below!')}
+
 			<div className="addInventory__section">
 				<div className="addInventory__sectionInner">
 					<Tabs
@@ -209,7 +249,7 @@ function AddInventory() {
 								</InputGroup>
 
 								<div className="tab__buttonAction">
-									<Button onClick={insertRecord} disabled={!user && true}>
+									<Button onClick={insertRecord} disabled={!user && true} data-toggle="modal" data-target="#exampleModal">
 										INSERT
 									</Button>
 								</div>
@@ -303,7 +343,7 @@ function AddInventory() {
 								</InputGroup>
 
 								<div className="tab__buttonAction">
-									<Button onClick={updateRecord} disabled={!user && true}>
+									<Button onClick={updateRecord} disabled={!user && true} data-toggle="modal" data-target="#exampleModal">
 										UPDATE
 									</Button>
 								</div>

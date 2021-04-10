@@ -7,8 +7,14 @@ import Home from './pages/Home/Home';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 import SignUp from './components/SignUp/SignUp';
+import { useSelector } from 'react-redux';
+import { selectUser } from './features/userSlice';
+
+// You can use this variable with the useSelector method to use the user details anywhere
 
 function App() {
+	const user = useSelector(selectUser);
+
 	return (
 		// Set up React Router
 		<Router>

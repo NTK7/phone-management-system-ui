@@ -99,6 +99,9 @@ function SignUp() {
 				})
 				.then(() => {
 					setAlertMessage('Welcome ' + name + '!');
+					setTimeout(() => {
+						history.replace('/home');
+					}, 1000);
 				})
 				.catch((error) => {
 					console.log(error?.message);
@@ -108,7 +111,6 @@ function SignUp() {
 
 		setEmail('');
 		setPassword('');
-		history.replace('/home');
 	};
 
 	// Sign In User
@@ -136,6 +138,9 @@ function SignUp() {
 					);
 
 					setAlertMessage('Welcome ' + name + '!');
+					setTimeout(() => {
+						history.replace('/home');
+					}, 1000);
 				})
 				.catch((error) => {
 					setAlertMessage(error?.message);
@@ -144,8 +149,6 @@ function SignUp() {
 
 		setEmail('');
 		setPassword('');
-		history.replace('/home');
-		
 	};
 
 	// Sign Out User

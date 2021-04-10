@@ -270,7 +270,7 @@ function Order() {
 		for (let index = 0; index < itemsData?.length; index++) {
 			const item = itemsData[index];
 
-			if (item?.data.brand.toLowerCase() === searchByBrand.toLowerCase()) {
+			if (item?.data.brand?.toLowerCase() === searchByBrand?.toLowerCase()) {
 				searchedDataRecords.push({
 					brand: item?.data.brand,
 					model: item?.data.model,
@@ -282,7 +282,7 @@ function Order() {
 					sellingprice: item?.data.sellingprice,
 				});
 			}
-			console.log(item.data.brand.toUpperCase());
+			console.log(item?.data.brand?.toUpperCase());
 		}
 
 		dispatch(addOrderData(searchedDataRecords));

@@ -1,62 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { selectUser } from '../../features/userSlice';
+import { Link, NavLink } from 'react-router-dom';
 import './Header.css';
 
 function Header() {
-	const [borderView, setBorderView] = useState(false);
-	const [borderAdd, setBorderAdd] = useState(false);
-	const [borderOrder, setBorderOrder] = useState(false);
-	const [borderSignUp, setborderSignUp] = useState(false);
 	// You can use this variable with the useSelector method to use the user details anywhere
 	const user = useSelector(selectUser);
-
-	useEffect(() => {
-		console.log(window.location.href);
-		if (window.location.pathname === '/view+inventory') {
-			setBorderView(true);
-			setborderSignUp(false);
-			setBorderAdd(false);
-			setBorderOrder(false);
-		} else if (window.location.pathname === '/add+inventory') {
-			setBorderView(false);
-			setborderSignUp(false);
-			setBorderAdd(true);
-			setBorderOrder(false);
-		} else if (window.location.pathname === '/order') {
-			setBorderView(false);
-			setborderSignUp(false);
-			setBorderAdd(false);
-			setBorderOrder(true);
-		}
-	}, []);
-
-	const activeViewInventory = () => {
-		setBorderView(true);
-		setborderSignUp(false);
-		setBorderAdd(false);
-		setBorderOrder(false);
-	};
-	const activeAddInventory = () => {
-		setBorderView(false);
-		setborderSignUp(false);
-		setBorderAdd(true);
-		setBorderOrder(false);
-	};
-	const activeOrderInventory = () => {
-		setBorderView(false);
-		setborderSignUp(false);
-		setBorderAdd(false);
-		setBorderOrder(true);
-	};
-
-	const activeSignUpInventory = () => {
-		setBorderView(false);
-		setborderSignUp(true);
-		setBorderAdd(false);
-		setBorderOrder(false);
-	};
 
 	return (
 		<div>
@@ -69,26 +19,26 @@ function Header() {
 				<div className="header__navRight">
 					{user && (
 						<>
-							<h6 className={borderView && 'border__view'}>
-								<Link to={user ? '/view+inventory' : '/signOut'} onClick={activeViewInventory}>
+							<h6>
+								<NavLink activeClassName="border__view" to={user ? '/view+inventory' : '/signOut'}>
 									View Inventory
-								</Link>
+								</NavLink>
 							</h6>
-							<h6 className={borderAdd && 'border__add'}>
-								<Link to={user ? '/add+inventory' : '/signOut'} onClick={activeAddInventory}>
+							<h6>
+								<NavLink activeClassName="border__add" to={user ? '/add+inventory' : '/signOut'}>
 									Add Inventory
-								</Link>
+								</NavLink>
 							</h6>
-							<h6 className={borderOrder && 'border__order'}>
-								<Link to={user ? '/order' : '/signOut'} onClick={activeOrderInventory}>
+							<h6>
+								<NavLink activeClassName="border__order" to={user ? '/order' : '/signOut'}>
 									Order
-								</Link>
+								</NavLink>
 							</h6>
 
-							<h6 className={borderSignUp && 'border__signUp'}>
-								<Link to="/signOut" onClick={activeSignUpInventory}>
+							<h6>
+								<NavLink activeClassName="border__signUp" to="/signOut">
 									Sign Out
-								</Link>
+								</NavLink>
 							</h6>
 						</>
 					)}

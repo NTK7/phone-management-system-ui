@@ -34,8 +34,15 @@ function App() {
 						<SignUp />
 						<Footer />
 					</Route>
-					<Route path="/">
+					<Route path="/home">
+						<Header />
 						<Home />
+						<Footer />
+					</Route>
+					<Route path="/">
+						<Header />
+						<SignUp />
+						<Footer />
 					</Route>
 				</Switch>
 			</div>

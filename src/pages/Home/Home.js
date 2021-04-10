@@ -17,8 +17,8 @@ function Home() {
 	// Displaying the Total Profit and Total Sales
 	useEffect(() => {
 		let date = new Date();
-		let startTime = 10 * 60;
-		let endTime = 18 * 60;
+		let startTime = 22 * 60;
+		let endTime = 24 * 60;
 		let currentTime = date.getHours() * 60 + date.getMinutes();
 
 		if (currentTime >= startTime && currentTime <= endTime) {

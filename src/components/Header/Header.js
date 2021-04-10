@@ -59,7 +59,7 @@ function Header() {
 			<div className="header__nav">
 				<div className="header__navLeft">
 					<h4>
-						<Link to="/">Phone Shop</Link>
+						<Link to="/home">Phone Shop</Link>
 					</h4>
 				</div>
 				<div className="header__navRight">

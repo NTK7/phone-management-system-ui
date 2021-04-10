@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { login, logout, selectUser } from '../../features/userSlice';
 import { auth, db } from '../../firebase';
 import './SignUp.css';
@@ -9,6 +10,7 @@ function SignUp() {
 	const [password, setPassword] = useState();
 	const dispatch = useDispatch();
 	const [alertMessage, setAlertMessage] = useState('Loading . . .');
+	const history = useHistory();
 
 	// You can use this variable with the useSelector method to use the user details anywhere
 	const user = useSelector(selectUser);
@@ -106,6 +108,7 @@ function SignUp() {
 
 		setEmail('');
 		setPassword('');
+		history.replace('/home');
 	};
 
 	// Sign In User
@@ -141,6 +144,8 @@ function SignUp() {
 
 		setEmail('');
 		setPassword('');
+		history.replace('/home');
+		
 	};
 
 	// Sign Out User

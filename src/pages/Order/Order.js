@@ -141,12 +141,13 @@ function Order() {
 
 	// Deleting Item from the Billing section
 	const deleteBillingItem = (item) => {
+		console.log(item)
 		let myList = [];
 		let removingIndex = null;
 		// let myListOther = [];
 
 		for (let index = 0; index < billingItems.length; index++) {
-			if (billingItems[index].brand === item.brand) {
+			if (billingItems[index].code === item.code) {
 				removingIndex = index;
 				console.log('removing');
 			}

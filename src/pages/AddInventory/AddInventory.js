@@ -50,20 +50,26 @@ function AddInventory() {
 
 			const data = {
 				vendor: insertVendor,
-				qty: insertQuantity,
+				quantity: insertQuantity,
 				my_payment: insertMyPayment,
 				pay_date: insertPayDate,
 				pur_date: insertPurDate,
 				total: insertTotal,
 				pay_history: [insertMyPayment, insertPayDate.toString()],
-				shop_code: user?.shop_code,
+				shop_code: user?.shop_code, // <----------- THIS IS THE SHOP CODE WHICH COMES FROM THE USER VARIABLE
 			};
 
+			// Adding item to inventory collection
 			db.collection('inventory')
 				.add(data)
 				.then((docRef) => {
 					console.log('Document written with ID: ', docRef.id);
 				});
+
+			// THIS IS WHERE YOU HAVE TO ADD THE ITEM INTO THE COLLECTION LIST
+			// This is item data to be inserted into the collection called 'item'
+			// Adding item to the item collection
+			// db.collection('item').add();
 		}
 
 		// clearing all the fields after backend implementation
@@ -138,11 +144,12 @@ function AddInventory() {
 			console.log(newCode);
 			let ITEMCODE = 'ITC -' + newCode;
 			const data = {
-				itemcode: ITEMCODE,
+				code: ITEMCODE,
 				vendor: updateVendor,
-				qty: updateQuantity,
-				originalprice: updateOriginalPrice,
+				quantity: updateQuantity,
+				originalPrice: updateOriginalPrice,
 				sellingprice: updateSellingPrice,
+				shop_code: user?.shop_code,
 				date: new Date(),
 			};
 			db.collection('item')
@@ -249,7 +256,12 @@ function AddInventory() {
 								</InputGroup>
 
 								<div className="tab__buttonAction">
-									<Button onClick={insertRecord} disabled={!user && true} data-toggle="modal" data-target="#exampleModal">
+									<Button
+										onClick={insertRecord}
+										disabled={!user && true}
+										data-toggle="modal"
+										data-target="#exampleModal"
+									>
 										INSERT
 									</Button>
 								</div>
@@ -343,7 +355,12 @@ function AddInventory() {
 								</InputGroup>
 
 								<div className="tab__buttonAction">
-									<Button onClick={updateRecord} disabled={!user && true} data-toggle="modal" data-target="#exampleModal">
+									<Button
+										onClick={updateRecord}
+										disabled={!user && true}
+										data-toggle="modal"
+										data-target="#exampleModal"
+									>
 										UPDATE
 									</Button>
 								</div>

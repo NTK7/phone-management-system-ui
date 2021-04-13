@@ -4,6 +4,7 @@ import { ListGroup, Table } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { addBillingData, addOrderData, selectBillingData, selectOrderData } from '../../features/OrderDataSlice';
 import { db } from '../../firebase';
+import commaNumber from 'comma-number';
 import './Order.css';
 
 function Order() {
@@ -85,7 +86,10 @@ function Order() {
 				myList[index] = {
 					brand: element?.brand,
 					quantity: element?.quantity,
-					billingQuantity: parseInt(element?.billingQuantity) + 1,
+					billingQuantity:
+						parseInt(element?.billingQuantity) === parseInt(element?.quantity)
+							? parseInt(element?.billingQuantity)
+							: parseInt(element?.billingQuantity) + 1,
 					sellingprice: element?.sellingprice,
 					totalBill: element.sellingprice * (parseInt(element.billingQuantity) + 1),
 					code: element?.code,
@@ -189,7 +193,10 @@ function Order() {
 				myList[index] = {
 					brand: itemElement?.brand,
 					quantity: itemElement?.quantity,
-					billingQuantity: parseInt(itemElement?.billingQuantity) + 1,
+					billingQuantity:
+						parseInt(itemElement?.billingQuantity) === parseInt(itemElement?.quantity)
+							? parseInt(itemElement?.billingQuantity)
+							: parseInt(itemElement?.billingQuantity) + 1,
 					sellingprice: parseInt(itemElement?.sellingprice),
 					totalBill: parseInt(itemElement?.sellingprice) * (parseInt(itemElement?.billingQuantity) + 1),
 					code: itemElement?.code,
@@ -226,7 +233,8 @@ function Order() {
 			if (itemElement.brand === brand && itemElement.model === model) {
 				myList[index] = {
 					brand: itemElement?.brand,
-					billingQuantity: parseInt(itemElement?.billingQuantity) !== 0 ? parseInt(itemElement?.billingQuantity) - 1 : 0,
+					billingQuantity:
+						parseInt(itemElement?.billingQuantity) !== 0 ? parseInt(itemElement?.billingQuantity) - 1 : 0,
 					quantity: itemElement?.quantity,
 					sellingprice: parseInt(itemElement?.sellingprice),
 					totalBill:
@@ -537,14 +545,15 @@ function Order() {
 				<Card className="viewInventory__bottomCard order__totalCard">
 					<ListGroup variant="flush" className="order__bottomCardListGroup">
 						<ListGroup.Item className="viewInventory__bottomCardListGroupItem">
-							<span>Total :</span> <input type="text" onChange={() => {}} value={totalSales} />
+							<span>Total :</span> <input type="text" onChange={() => {}} value={commaNumber(totalSales)} />
 						</ListGroup.Item>
 						<ListGroup.Item className="viewInventory__bottomCardListGroupItem">
 							<span>Discount :</span>{' '}
 							<input type="text" onChange={(e) => handleDiscount(e.target.value)} value={discount} />
 						</ListGroup.Item>
 						<ListGroup.Item className="viewInventory__bottomCardListGroupItem">
-							<span>Balance :</span> <input type="text" onChange={() => {}} value={totalSales - discount} />
+							<span>Balance :</span>{' '}
+							<input type="text" onChange={() => {}} value={commaNumber(totalSales - discount)} />
 						</ListGroup.Item>
 					</ListGroup>
 					{/* Button */}

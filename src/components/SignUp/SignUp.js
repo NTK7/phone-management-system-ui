@@ -8,6 +8,7 @@ import './SignUp.css';
 function SignUp() {
 	const [email, setEmail] = useState();
 	const [password, setPassword] = useState();
+	const [shopCode, setShopCode] = useState();
 	const dispatch = useDispatch();
 	const [alertMessage, setAlertMessage] = useState('Loading . . .');
 	const history = useHistory();
@@ -77,8 +78,8 @@ function SignUp() {
 	// Register user
 	const registerUser = () => {
 		// User authentication
-		if (!email || !password) {
-			setAlertMessage('Please fill all the fields below!');
+		if (!email || !password || !shopCode) {
+			setAlertMessage('Please fill all the fields below for registration!');
 		} else {
 			// Perform user registration
 			let name = email.split('@')[0];
@@ -96,7 +97,7 @@ function SignUp() {
 									email: userAuth.user?.email,
 									uid: userAuth.user?.uid,
 									userName: name,
-									shop_code: 'MSB-001',
+									shop_code: shopCode,
 								})
 							);
 						});
@@ -106,7 +107,7 @@ function SignUp() {
 					db.collection('user').add({
 						UID: userAuth.user?.uid,
 						password: password,
-						shop_code: 'MSB-001',
+						shop_code: shopCode,
 						userName: name,
 						email: email,
 					});
@@ -123,13 +124,14 @@ function SignUp() {
 
 		setEmail('');
 		setPassword('');
+		setShopCode('');
 	};
 
 	// Sign In User
 	const signInUser = () => {
 		// User authentication
 		if (!email || !password) {
-			setAlertMessage('Please fill all the fields below!');
+			setAlertMessage('Please fill the email and password field below for signing!');
 		} else {
 			// Splitting email to get name
 			let name = email.split('@')[0];
@@ -140,16 +142,25 @@ function SignUp() {
 			auth
 				.signInWithEmailAndPassword(email, password)
 				.then((userAuth) => {
-					dispatch(
-						login({
-							email: userAuth.user?.email,
-							uid: userAuth.user?.uid,
-							userName: name,
-							shop_code: 'MSB-001',
-						})
-					);
-					setValidUser(true);
-					setAlertMessage('Welcome ' + name + '!');
+					db.collection('user').onSnapshot((snapshot) => {
+						for (let index = 0; index < snapshot.docs.length; index++) {
+							const user = snapshot.docs[index].data();
+
+							if (user?.email === email) {
+								dispatch(
+									login({
+										email: userAuth.user?.email,
+										uid: userAuth.user?.uid,
+										userName: name,
+										shop_code: user?.shop_code,
+									})
+								);
+								setValidUser(true);
+								setAlertMessage('Welcome ' + name + '!');
+								console.log(user);
+							}
+						}
+					});
 				})
 
 				.catch((error) => {
@@ -159,6 +170,7 @@ function SignUp() {
 
 		setEmail('');
 		setPassword('');
+		setShopCode('');
 	};
 
 	// Sign Out User
@@ -177,8 +189,14 @@ function SignUp() {
 				{!user ? (
 					<>
 						<h3>Sign in</h3>
+						<br />
 						<input type="text" placeholder="Email" onChange={(e) => setEmail(e.target.value)} value={email} />
 						<input type="text" placeholder="Password" onChange={(e) => setPassword(e.target.value)} value={password} />
+						<input type="text" placeholder="Shop Code" onChange={(e) => setShopCode(e.target.value)} value={shopCode} />
+						<strong>
+							<small>Only when registering fill the shop code</small>
+						</strong>
+						<br />
 
 						<p>Forgot your password?</p>
 

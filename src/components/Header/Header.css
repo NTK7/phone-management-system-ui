@@ -1,9 +1,9 @@
 .header__nav {
+	font-family: 'Poppins', sans-serif;
 	position: fixed;
 	top: 0;
 	width: 100%;
-	z-index: 1;   /* this makes it to be at the top layer */
-
+	z-index: 1; /* this makes it to be at the top layer */
 	padding: 15px 25px;
 	background-color: #000000;
 	display: flex;

@@ -61,7 +61,17 @@ function Order() {
 	}, [billingItems]);
 
 	// Adding to billing
-	const addToBilling = ({ brand, quantity, originalPrice, code, model, sellingprice, vendor, date }) => {
+	const addToBilling = ({
+		brand,
+		quantity,
+		billingQuantity,
+		originalPrice,
+		code,
+		model,
+		sellingprice,
+		vendor,
+		date,
+	}) => {
 		let myList = [];
 		let found = false;
 		for (let index = 0; index < billingItems.length; index++) {
@@ -74,9 +84,10 @@ function Order() {
 				found = true;
 				myList[index] = {
 					brand: element?.brand,
-					quantity: parseInt(element.quantity) + 1,
-					sellingprice: element.sellingprice,
-					totalBill: element.sellingprice * (parseInt(element.quantity) + 1),
+					quantity: element?.quantity,
+					billingQuantity: parseInt(element?.billingQuantity) + 1,
+					sellingprice: element?.sellingprice,
+					totalBill: element.sellingprice * (parseInt(element.billingQuantity) + 1),
 					code: element?.code,
 					model: element?.model,
 					originalPrice: element?.originalPrice,
@@ -92,8 +103,9 @@ function Order() {
 				{
 					brand: brand,
 					quantity: quantity,
+					billingQuantity: billingQuantity,
 					sellingprice: sellingprice,
-					totalBill: sellingprice * quantity,
+					totalBill: sellingprice * billingQuantity,
 					code: code,
 					model: model,
 					originalPrice: originalPrice,
@@ -141,7 +153,7 @@ function Order() {
 
 	// Deleting Item from the Billing section
 	const deleteBillingItem = (item) => {
-		console.log(item)
+		console.log(item);
 		let myList = [];
 		let removingIndex = null;
 		// let myListOther = [];
@@ -165,7 +177,7 @@ function Order() {
 	};
 
 	// Increase Quantity Method
-	const plusAdd = ({ brand, quantity, originalPrice, code, model, sellingprice, vendor, date }) => {
+	const plusAdd = ({ brand, quantity, originalPrice, billingQuantity, code, model, sellingprice, vendor, date }) => {
 		let myList = [];
 		for (let index = 0; index < billingItems.length; index++) {
 			myList.push(billingItems[index]);
@@ -175,10 +187,11 @@ function Order() {
 
 			if (itemElement.brand === brand && itemElement.model === model) {
 				myList[index] = {
-					brand: brand,
-					quantity: parseInt(itemElement?.quantity) + 1,
+					brand: itemElement?.brand,
+					quantity: itemElement?.quantity,
+					billingQuantity: parseInt(itemElement?.billingQuantity) + 1,
 					sellingprice: parseInt(itemElement?.sellingprice),
-					totalBill: parseInt(itemElement?.sellingprice) * (parseInt(itemElement?.quantity) + 1),
+					totalBill: parseInt(itemElement?.sellingprice) * (parseInt(itemElement?.billingQuantity) + 1),
 					code: itemElement?.code,
 					model: itemElement?.model,
 					originalPrice: itemElement?.originalPrice,
@@ -192,7 +205,17 @@ function Order() {
 	};
 
 	// Remove quantity method
-	const minusRemove = ({ brand, quantity, originalPrice, code, model, sellingprice, vendor, date }) => {
+	const minusRemove = ({
+		brand,
+		quantity,
+		billingQuantity,
+		originalPrice,
+		code,
+		model,
+		sellingprice,
+		vendor,
+		date,
+	}) => {
 		let myList = [];
 		for (let index = 0; index < billingItems.length; index++) {
 			myList.push(billingItems[index]);
@@ -202,12 +225,13 @@ function Order() {
 
 			if (itemElement.brand === brand && itemElement.model === model) {
 				myList[index] = {
-					brand: brand,
-					quantity: parseInt(itemElement.quantity) !== 0 ? parseInt(itemElement.quantity) - 1 : 0,
-					sellingprice: parseInt(itemElement.sellingprice),
+					brand: itemElement?.brand,
+					billingQuantity: parseInt(itemElement?.billingQuantity) !== 0 ? parseInt(itemElement?.billingQuantity) - 1 : 0,
+					quantity: itemElement?.quantity,
+					sellingprice: parseInt(itemElement?.sellingprice),
 					totalBill:
-						parseInt(itemElement.quantity) !== 0
-							? parseInt(itemElement.sellingprice) * (parseInt(itemElement.quantity) - 1)
+						parseInt(itemElement?.billingQuantity) !== 0
+							? parseInt(itemElement?.sellingprice) * (parseInt(itemElement?.billingQuantity) - 1)
 							: 0,
 					code: itemElement?.code,
 					model: itemElement?.model,
@@ -247,8 +271,9 @@ function Order() {
 						{
 							brand: item?.brand,
 							quantity: item?.quantity,
+							billingQuantity: 1,
 							sellingprice: item?.sellingprice,
-							totalBill: item?.sellingprice * item?.quantity,
+							totalBill: item?.sellingprice * item?.billingQuantity,
 							code: item?.code,
 							model: item?.model,
 							originalPrice: item?.originalPrice,
@@ -276,6 +301,7 @@ function Order() {
 					brand: item?.data.brand,
 					model: item?.data.model,
 					quantity: item?.data.quantity,
+					billingQuantity: 1,
 					originalPrice: item?.data.originalPrice,
 					code: item?.data.code,
 					date: item?.data.date,
@@ -459,7 +485,12 @@ function Order() {
 												</td>
 												<td>
 													<button onClick={() => minusRemove(item)}>-</button>
-													<input className="quantityTextField" type="text" onChange={() => {}} value={item.quantity} />
+													<input
+														className="quantityTextField"
+														type="text"
+														onChange={() => {}}
+														value={item.billingQuantity}
+													/>
 													<button onClick={() => plusAdd(item)}>+</button>
 												</td>
 												<td>{item.sellingprice}</td>
@@ -477,7 +508,12 @@ function Order() {
 												</td>
 												<td>
 													<button onClick={() => minusRemove(item)}>-</button>
-													<input className="quantityTextField" type="text" onChange={() => {}} value={item.quantity} />
+													<input
+														className="quantityTextField"
+														type="text"
+														onChange={() => {}}
+														value={item.billingQuantity}
+													/>
 													<button onClick={() => plusAdd(item)}>+</button>
 												</td>
 												<td>{item.sellingprice}</td>

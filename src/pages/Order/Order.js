@@ -1,10 +1,10 @@
 import { Button, Card } from '@material-ui/core';
+import commaNumber from 'comma-number';
 import { useEffect, useState } from 'react';
 import { ListGroup, Table } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { addBillingData, addOrderData, selectBillingData, selectOrderData } from '../../features/OrderDataSlice';
 import { db } from '../../firebase';
-import commaNumber from 'comma-number';
 import './Order.css';
 
 function Order() {
@@ -152,6 +152,23 @@ function Order() {
 				.catch((err) => {
 					console.log(err.message);
 				});
+
+			// Updating the items collection to update the remaining item present from what has been ordered from the user
+			db.collection('item').onSnapshot((snapshot) => {
+				for (let indexI = 0; indexI < billingItems.length; indexI++) {
+					for (let indexJ = 0; indexJ < snapshot.docs.length; indexJ++) {
+						let item = snapshot.docs[indexJ].data();
+
+						if (billingItems[indexI].code === item.code) {
+							db.collection('item')
+								.doc(snapshot.docs[indexJ].id)
+								.update({
+									quantity: billingItems[indexI].quantity - billingItems[indexI].billingQuantity,
+								});
+						}
+					}
+				}
+			});
 		}
 	};
 

@@ -24,18 +24,15 @@ function Order() {
 
 	// This is used to fetch all the inventory data from the database
 	useEffect(() => {
-		// Emptying the order content
-		dispatch(addOrderData([]));
-
 		// Fetching the data from the database
-		db.collection('item').onSnapshot((snapshot) =>
+		db.collection('item').onSnapshot((snapshot) => {
 			setItemsData(
 				snapshot.docs.map((doc) => ({
 					id: doc.id,
 					data: doc.data(),
 				}))
-			)
-		);
+			);
+		});
 	}, []);
 
 	// This is used to update the Total Sales amount when the used changes the billing section
@@ -315,13 +312,34 @@ function Order() {
 	};
 
 	// Handling search section in order
-	const handleSearchOrder = () => {
+	const handleSearchOrder = (value) => {
 		console.log(itemsData);
 		let searchedDataRecords = [];
-		for (let index = 0; index < itemsData?.length; index++) {
-			const item = itemsData[index];
+		if (value !== '') {
+			// You are searching by brand
+			for (let index = 0; index < itemsData?.length; index++) {
+				const item = itemsData[index];
 
-			if (item?.data.brand?.toLowerCase() === searchByBrand?.toLowerCase()) {
+				if (item?.data.brand?.toLowerCase() === searchByBrand?.toLowerCase()) {
+					searchedDataRecords.push({
+						brand: item?.data.brand,
+						model: item?.data.model,
+						quantity: item?.data.quantity,
+						billingQuantity: 1,
+						originalPrice: item?.data.originalPrice,
+						code: item?.data.code,
+						date: item?.data.date,
+						vendor: item?.data.vendor,
+						sellingprice: item?.data.sellingprice,
+					});
+				}
+				console.log(item?.data.brand?.toUpperCase());
+			}
+			dispatch(addOrderData(searchedDataRecords));
+		} else {
+			// display all the items
+			for (let index = 0; index < itemsData?.length; index++) {
+				const item = itemsData[index];
 				searchedDataRecords.push({
 					brand: item?.data.brand,
 					model: item?.data.model,
@@ -334,11 +352,31 @@ function Order() {
 					sellingprice: item?.data.sellingprice,
 				});
 			}
-			console.log(item?.data.brand?.toUpperCase());
+			dispatch(addOrderData(searchedDataRecords));
 		}
-
-		dispatch(addOrderData(searchedDataRecords));
 	};
+
+	useEffect(() => {
+		let searchedDataRecords = [];
+
+		if (searchByBrand === '') {
+			for (let index = 0; index < itemsData?.length; index++) {
+				const item = itemsData[index];
+				searchedDataRecords.push({
+					brand: item?.data.brand,
+					model: item?.data.model,
+					quantity: item?.data.quantity,
+					billingQuantity: 1,
+					originalPrice: item?.data.originalPrice,
+					code: item?.data.code,
+					date: item?.data.date,
+					vendor: item?.data.vendor,
+					sellingprice: item?.data.sellingprice,
+				});
+			}
+			dispatch(addOrderData(searchedDataRecords));
+		}
+	}, [searchByBrand, itemsData]);
 
 	const customAlert = (message) => {
 		return (
@@ -403,12 +441,18 @@ function Order() {
 
 							// If the search field is empty then order seciton also empty
 							if (e.target.value === '') {
-								handleSearchOrder();
+								handleSearchOrder(searchByBrand);
 							}
 						}}
 						value={searchByBrand}
 					/>{' '}
-					<Button onClick={handleSearchOrder}>Search</Button>
+					<Button
+						onClick={(e) => {
+							handleSearchOrder(searchByBrand);
+						}}
+					>
+						Search
+					</Button>
 				</div>
 			</form>
 			{/* table section */}

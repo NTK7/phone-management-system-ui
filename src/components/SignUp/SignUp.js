@@ -76,56 +76,56 @@ function SignUp() {
 	};
 
 	// Register user
-	const registerUser = () => {
-		// User authentication
-		if (!email || !password || !shopCode) {
-			setAlertMessage('Please fill all the fields below for registration!');
-		} else {
-			// Perform user registration
-			let name = email.split('@')[0];
-			console.log('registering');
-			auth
-				.createUserWithEmailAndPassword(email, password)
-				.then((userAuth) => {
-					userAuth.user
-						.updateProfile({
-							displayName: name,
-						})
-						.then(() => {
-							dispatch(
-								login({
-									email: userAuth.user?.email,
-									uid: userAuth.user?.uid,
-									userName: name,
-									shop_code: shopCode,
-								})
-							);
-						});
+	// const registerUser = () => {
+	// 	// User authentication
+	// 	if (!email || !password || !shopCode) {
+	// 		setAlertMessage('Please fill all the fields below for registration!');
+	// 	} else {
+	// 		// Perform user registration
+	// 		let name = email.split('@')[0];
+	// 		console.log('registering');
+	// 		auth
+	// 			.createUserWithEmailAndPassword(email, password)
+	// 			.then((userAuth) => {
+	// 				userAuth.user
+	// 					.updateProfile({
+	// 						displayName: name,
+	// 					})
+	// 					.then(() => {
+	// 						dispatch(
+	// 							login({
+	// 								email: userAuth.user?.email,
+	// 								uid: userAuth.user?.uid,
+	// 								userName: name,
+	// 								shop_code: shopCode,
+	// 							})
+	// 						);
+	// 					});
 
-					console.log(user);
-					// Adding to "user" collection in the database
-					db.collection('user').add({
-						UID: userAuth.user?.uid,
-						password: password,
-						shop_code: shopCode,
-						userName: name,
-						email: email,
-					});
-				})
-				.then(() => {
-					setValidUser(true);
-					setAlertMessage('Welcome ' + name + '!');
-				})
-				.catch((error) => {
-					console.log(error?.message);
-					setAlertMessage(error?.message);
-				});
-		}
+	// 				console.log(user);
+	// 				// Adding to "user" collection in the database
+	// 				db.collection('user').add({
+	// 					UID: userAuth.user?.uid,
+	// 					password: password,
+	// 					shop_code: shopCode,
+	// 					userName: name,
+	// 					email: email,
+	// 				});
+	// 			})
+	// 			.then(() => {
+	// 				setValidUser(true);
+	// 				setAlertMessage('Welcome ' + name + '!');
+	// 			})
+	// 			.catch((error) => {
+	// 				console.log(error?.message);
+	// 				setAlertMessage(error?.message);
+	// 			});
+	// 	}
 
-		setEmail('');
-		setPassword('');
-		setShopCode('');
-	};
+	// 	setEmail('');
+	// 	setPassword('');
+	// 	setShopCode('');
+	// };
 
 	// Sign In User
 	const signInUser = () => {
@@ -192,20 +192,20 @@ function SignUp() {
 						<br />
 						<input type="text" placeholder="Email" onChange={(e) => setEmail(e.target.value)} value={email} />
 						<input type="text" placeholder="Password" onChange={(e) => setPassword(e.target.value)} value={password} />
-						<input type="text" placeholder="Shop Code" onChange={(e) => setShopCode(e.target.value)} value={shopCode} />
+						{/* <input type="text" placeholder="Shop Code" onChange={(e) => setShopCode(e.target.value)} value={shopCode} />
 						<strong>
 							<small>Only when registering fill the shop code</small>
 						</strong>
-						<br />
+						<br /> */}
 
 						<p>Forgot your password?</p>
 
 						<button data-toggle="modal" data-target="#exampleModal" onClick={signInUser}>
 							Sign In
 						</button>
-						<button data-toggle="modal" data-target="#exampleModal" onClick={registerUser}>
+						{/* <button data-toggle="modal" data-target="#exampleModal" onClick={registerUser}>
 							Register
-						</button>
+						</button> */}
 					</>
 				) : (
 					<>

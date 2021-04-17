@@ -298,7 +298,7 @@ function Order() {
 							quantity: item?.quantity,
 							billingQuantity: 1,
 							sellingprice: item?.sellingprice,
-							totalBill: item?.sellingprice * item?.billingQuantity,
+							totalBill: item?.sellingprice * 1,
 							code: item?.code,
 							model: item?.model,
 							originalPrice: item?.originalPrice,

@@ -13,7 +13,7 @@ function Header() {
 			<div className="header__nav">
 				<div className="header__navLeft">
 					<h4>
-						<Link to={user ? '/home' : '/signOut'}>Phone Shop</Link>
+						<Link to={user ? '/home' : '/'}>Phone Shop</Link>
 					</h4>
 				</div>
 				<div className="header__navRight">

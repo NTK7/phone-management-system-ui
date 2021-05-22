@@ -2,9 +2,9 @@ import easyinvoice from 'easyinvoice';
 import uniqid from 'uniqid';
 import { db, storage } from '../../firebase';
 import firebase from 'firebase';
-import base64 from 'base64topdf';
 
-export const generateBill = async () => {
+export const generateBill = async (billingItems) => {
+	console.log(billingItems);
 	let data = {
 		//"documentTitle": "RECEIPT", //Defaults to INVOICE
 		//"locale": "de-DE", //Defaults to en-US, used for number formatting (see docs)
@@ -38,29 +38,13 @@ export const generateBill = async () => {
 		},
 		invoiceNumber: '2021.0001',
 		invoiceDate: '1.1.2021',
-		products: [
-			{
-				quantity: '2',
-				description: 'Test1',
-				tax: 6,
-                newCol: 'some column',
-				price: 33.87,
-			},
-			{
-				quantity: '4',
-				description: 'Test2',
-				tax: 21,
-                newCol: 'some column',
-				price: 10.45,
-			},
-            {
-				quantity: '3',
-				description: 'Nazhim',
-				tax: 71,
-                newCol: 'some column',
-				price: 80.45,
-			},
-		],
+		products: billingItems.map((item) => ({
+			quantity: item.quantity,
+			description: item.brand + ' ' + item.model,
+			tax: 0,
+			price: item.totalBill,
+		})),
+
 		bottomNotice: 'Kindly pay your invoice within 15 days.',
 		//Used for translating the headers to your preferred language
 		//Defaults to English. Below example is translated to Dutch
@@ -87,3 +71,17 @@ export const generateBill = async () => {
 	// Downloading Bill
 	easyinvoice.download(`customer-bills/${id_}.pdf`, result.pdf);
 };
+
+
+// {
+// 	brand,
+// 	quantity,
+// 	billingQuantity,
+// 	sellingprice,
+// 	totalBill,
+// 	code,
+// 	model,
+// 	originalPrice,
+// 	vendor,
+// 	date,
+// }

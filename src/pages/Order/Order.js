@@ -173,7 +173,7 @@ function Order() {
 			});
 
 			// downloading bill
-			generateBill();
+			generateBill(billingItems);
 		}
 	};
 

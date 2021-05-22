@@ -71,54 +71,56 @@ function Order() {
 		vendor,
 		date,
 	}) => {
-		let myList = [];
-		let found = false;
-		for (let index = 0; index < billingItems.length; index++) {
-			myList.push(billingItems[index]);
-		}
-		for (let index = 0; index < myList.length; index++) {
-			const element = myList[index];
-
-			if (element.brand === brand && element.model === model) {
-				found = true;
-				myList[index] = {
-					brand: element?.brand,
-					quantity: element?.quantity,
-					billingQuantity:
-						parseInt(element?.billingQuantity) === parseInt(element?.quantity)
-							? parseInt(element?.billingQuantity)
-							: parseInt(element?.billingQuantity) + 1,
-					sellingprice: element?.sellingprice,
-					totalBill: !(parseInt(element?.billingQuantity) === parseInt(element?.quantity))
-						? element.sellingprice * (parseInt(element.billingQuantity) + 1)
-						: element.sellingprice * parseInt(element.billingQuantity),
-					code: element?.code,
-					model: element?.model,
-					originalPrice: element?.originalPrice,
-					vendor: element?.vendor,
-					date: element?.date,
-				};
+		if (quantity > 0) {
+			let myList = [];
+			let found = false;
+			for (let index = 0; index < billingItems.length; index++) {
+				myList.push(billingItems[index]);
 			}
-		}
+			for (let index = 0; index < myList.length; index++) {
+				const element = myList[index];
 
-		if (found === false) {
-			setBillingItems([
-				...billingItems,
-				{
-					brand: brand,
-					quantity: quantity,
-					billingQuantity: billingQuantity,
-					sellingprice: sellingprice,
-					totalBill: sellingprice * billingQuantity,
-					code: code,
-					model: model,
-					originalPrice: originalPrice,
-					vendor: vendor,
-					date: date,
-				},
-			]);
-		} else {
-			setBillingItems(myList);
+				if (element.brand === brand && element.model === model) {
+					found = true;
+					myList[index] = {
+						brand: element?.brand,
+						quantity: element?.quantity,
+						billingQuantity:
+							parseInt(element?.billingQuantity) === parseInt(element?.quantity)
+								? parseInt(element?.billingQuantity)
+								: parseInt(element?.billingQuantity) + 1,
+						sellingprice: element?.sellingprice,
+						totalBill: !(parseInt(element?.billingQuantity) === parseInt(element?.quantity))
+							? element.sellingprice * (parseInt(element.billingQuantity) + 1)
+							: element.sellingprice * parseInt(element.billingQuantity),
+						code: element?.code,
+						model: element?.model,
+						originalPrice: element?.originalPrice,
+						vendor: element?.vendor,
+						date: element?.date,
+					};
+				}
+			}
+
+			if (found === false) {
+				setBillingItems([
+					...billingItems,
+					{
+						brand: brand,
+						quantity: quantity,
+						billingQuantity: billingQuantity,
+						sellingprice: sellingprice,
+						totalBill: sellingprice * billingQuantity,
+						code: code,
+						model: model,
+						originalPrice: originalPrice,
+						vendor: vendor,
+						date: date,
+					},
+				]);
+			} else {
+				setBillingItems(myList);
+			}
 		}
 	};
 
@@ -293,7 +295,7 @@ function Order() {
 			for (let index = 0; index < itemsData?.length; index++) {
 				const item = itemsData[index].data;
 
-				if (item?.code === searchByItemCode) {
+				if (item?.code === searchByItemCode && item.quantity > 0) {
 					console.log(billingItems[0]);
 					console.log(item);
 					setBillingItems([
@@ -427,7 +429,9 @@ function Order() {
 	return (
 		<div className="order">
 			{/* Alert Message */}
-			{customAlert('Payment Successfully Completed!')}
+			{customAlert(
+				'Payment Successfully Completed, please wait till the bill downloads before clicking the OK Button!'
+			)}
 
 			{/* Search by brand section */}
 			<br />

@@ -1,17 +1,21 @@
 import easyinvoice from 'easyinvoice';
+import uniqid from 'uniqid';
+import { db, storage } from '../../firebase';
+import firebase from 'firebase';
+import base64 from 'base64topdf';
 
 export const generateBill = async () => {
 	let data = {
 		//"documentTitle": "RECEIPT", //Defaults to INVOICE
 		//"locale": "de-DE", //Defaults to en-US, used for number formatting (see docs)
 		currency: 'USD', //See documentation 'Locales and Currency' for more info
-		taxNotation: 'vat', //or gst
+		// taxNotation: 'vat', //or gst
 		marginTop: 25,
 		marginRight: 25,
 		marginLeft: 25,
 		marginBottom: 25,
 		logo: 'http://www.jijichiz.com/wp-content/uploads/2018/12/Apple-logo-grey-880x625.png', //or base64
-		background: 'https://public.easyinvoice.cloud/img/watermark-draft.jpg', //or base64 //img or pdf
+		// background: 'https://public.easyinvoice.cloud/img/watermark-draft.jpg', //or base64 //img or pdf
 		sender: {
 			company: 'Sample Corp',
 			address: 'Sample Street 123',
@@ -39,13 +43,22 @@ export const generateBill = async () => {
 				quantity: '2',
 				description: 'Test1',
 				tax: 6,
+                newCol: 'some column',
 				price: 33.87,
 			},
 			{
 				quantity: '4',
 				description: 'Test2',
 				tax: 21,
+                newCol: 'some column',
 				price: 10.45,
+			},
+            {
+				quantity: '3',
+				description: 'Nazhim',
+				tax: 71,
+                newCol: 'some column',
+				price: 80.45,
 			},
 		],
 		bottomNotice: 'Kindly pay your invoice within 15 days.',
@@ -63,6 +76,14 @@ export const generateBill = async () => {
 	};
 
 	//Create your invoice! Easy!
-    const result = await easyinvoice.createInvoice(data);
-    easyinvoice.download('bill.pdf', result.pdf);
+	const result = await easyinvoice.createInvoice(data);
+	let id_ = uniqid();
+
+	db.collection('bill-base64').add({
+		billBase64: result.pdf,
+		timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+	});
+
+	// Downloading Bill
+	easyinvoice.download(`customer-bills/${id_}.pdf`, result.pdf);
 };

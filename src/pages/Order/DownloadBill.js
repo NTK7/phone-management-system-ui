@@ -1,87 +1,87 @@
-import easyinvoice from 'easyinvoice';
+import jsPDFInvoiceTemplate, { OutputType, jsPDF } from 'jspdf-invoice-template';
 import uniqid from 'uniqid';
 import { db, storage } from '../../firebase';
 import firebase from 'firebase';
+import currencyFormatter from 'currency-formatter';
 
-export const generateBill = async (billingItems) => {
-	console.log(billingItems);
-	let data = {
-		//"documentTitle": "RECEIPT", //Defaults to INVOICE
-		//"locale": "de-DE", //Defaults to en-US, used for number formatting (see docs)
-		currency: 'USD', //See documentation 'Locales and Currency' for more info
-		// taxNotation: 'vat', //or gst
-		marginTop: 25,
-		marginRight: 25,
-		marginLeft: 25,
-		marginBottom: 25,
-		logo: 'http://www.jijichiz.com/wp-content/uploads/2018/12/Apple-logo-grey-880x625.png', //or base64
-		// background: 'https://public.easyinvoice.cloud/img/watermark-draft.jpg', //or base64 //img or pdf
-		sender: {
-			company: 'Sample Corp',
-			address: 'Sample Street 123',
-			zip: '1234 AB',
-			city: 'Sampletown',
-			country: 'Samplecountry',
-			//"custom1": "custom value 1",
-			//"custom2": "custom value 2",
-			//"custom3": "custom value 3"
+export const generateBill = (billingItems, totalSales, discount, finalTotal) => {
+	const id_ = uniqid();
+	let props = {
+		outputType: OutputType.DataUrlNewWindow,
+		returnJsPDFDocObject: true,
+		fileName: `Payment-bill-id-${id_}`,
+		orientationLandscape: false,
+		logo: {
+			src: 'https://raw.githubusercontent.com/edisonneza/jspdf-invoice-template/demo/images/logo.png',
+			width: 53.33, //aspect ratio = width/height
+			height: 26.66,
+			margin: {
+				top: 0, //negative or positive num, from the current position
+				left: 0, //negative or positive num, from the current position
+			},
 		},
-		client: {
-			company: 'Client Corp',
-			address: 'Clientstreet 456',
-			zip: '4567 CD',
-			city: 'Clientcity',
-			country: 'Clientcountry',
-			//"custom1": "custom value 1",
-			//"custom2": "custom value 2",
-			//"custom3": "custom value 3"
+		business: {
+			name: 'Phone Management',
+			address: 'Albania, Tirane ish-Dogana, Durres 2001',
+			phone: '(+355) 069 11 11 111',
+			email: 'email@example.com',
+			email_1: 'info@example.al',
+			website: 'www.example.al',
 		},
-		invoiceNumber: '2021.0001',
-		invoiceDate: '1.1.2021',
-		products: billingItems.map((item) => ({
-			quantity: item.billingQuantity,
-			description: item.brand + ' ' + item.model,
-			tax: 0,
-			price: (item.totalBill)/item.billingQuantity,
-		})),
-
-		bottomNotice: 'Kindly pay your invoice within 15 days.',
-		//Used for translating the headers to your preferred language
-		//Defaults to English. Below example is translated to Dutch
-		// "translate": {
-		//     "invoiceNumber": "Factuurnummer",
-		//     "invoiceDate": "Factuurdatum",
-		//     "products": "Producten",
-		//     "quantity": "Aantal",
-		//     "price": "Prijs",
-		//     "subtotal": "Subtotaal",
-		//     "total": "Totaal"
-		// }
+		contact: {
+			label: 'Invoice issued for:',
+			name: 'Nazhim Kalam',
+			address: 'Albania, Tirane, Astir',
+			phone: '(+355) 069 22 22 222',
+			email: 'client@website.al',
+			otherInfo: 'www.website.al',
+		},
+		invoice: {
+			label: `Invoice : ${id_}`,
+			num: 1,
+			invDate: 'Payment Date: 01/01/2021 18:12',
+			invGenDate: 'Invoice Date: 02/02/2021 10:17',
+			headerBorder: false,
+			tableBodyBorder: false,
+			header: ['#', 'Brand', 'Model', 'Qty', 'Unit Price', 'Total'],
+			table: Array.from(Array(billingItems.length), (item, index) => [
+				index + 1,
+				billingItems[index].brand,
+				billingItems[index].model,
+				billingItems[index].billingQuantity,
+				currencyFormatter.format(billingItems[index].sellingprice, { locale: 'en-US' }),
+				currencyFormatter.format(billingItems[index].totalBill, { locale: 'en-US' }),
+			]),
+			invTotalLabel: 'SubTotal:',
+			invTotal: currencyFormatter.format(totalSales, { locale: 'en-US' }),
+			// invCurrency: 'Rs',
+			row1: {
+				col1: 'Discount: ',
+				col2: currencyFormatter.format(discount, { locale: 'en-US' }),
+				// col3: 'Rs',
+				style: {
+					fontSize: 12, //optional, default 12
+				},
+			},
+			row2: {
+				col1: 'Grand Total:',
+				col2: currencyFormatter.format(finalTotal, { locale: 'en-US' }),
+				// col3: 'Rs',
+				style: {
+					fontSize: 12, //optional, default 12
+					fontStyle: 'bold',
+				},
+			},
+			invDescLabel: 'Invoice Note',
+			invDesc:
+				"There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary.",
+		},
+		footer: {
+			text: 'The invoice is created on a computer and is valid without the signature and stamp.',
+		},
+		pageEnable: true,
+		pageLabel: 'Page ',
 	};
 
-	//Create your invoice! Easy!
-	const result = await easyinvoice.createInvoice(data);
-	let id_ = uniqid();
-
-	db.collection('bill-base64').add({
-		billBase64: result.pdf,
-		timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-	});
-
-	// Downloading Bill
-	easyinvoice.download(`customer-bills/${id_}.pdf`, result.pdf);
+	jsPDFInvoiceTemplate(props).jsPDFDocObject.save(`Payment-bill-id-${id_}`);
 };
-
-
-// {
-// 	brand,
-// 	quantity,
-// 	billingQuantity,
-// 	sellingprice,
-// 	totalBill,
-// 	code,
-// 	model,
-// 	originalPrice,
-// 	vendor,
-// 	date,
-// }

@@ -173,7 +173,7 @@ function Order() {
 			});
 
 			// downloading bill
-			generateBill(billingItems);
+			generateBill(billingItems, totalSales, discount, finalTotal);
 		}
 	};
 
@@ -430,7 +430,7 @@ function Order() {
 		<div className="order">
 			{/* Alert Message */}
 			{customAlert(
-				'Payment Successfully Completed, please wait till the bill downloads before clicking the OK Button!'
+				'Payment Successfully Completed!'
 			)}
 
 			{/* Search by brand section */}

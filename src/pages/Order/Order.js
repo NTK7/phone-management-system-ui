@@ -5,6 +5,7 @@ import { ListGroup, Table } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { addBillingData, addOrderData, selectBillingData, selectOrderData } from '../../features/OrderDataSlice';
 import { db } from '../../firebase';
+import { generateBill } from './DownloadBill';
 import './Order.css';
 
 function Order() {
@@ -88,7 +89,9 @@ function Order() {
 							? parseInt(element?.billingQuantity)
 							: parseInt(element?.billingQuantity) + 1,
 					sellingprice: element?.sellingprice,
-					totalBill: element.sellingprice * (parseInt(element.billingQuantity) + 1),
+					totalBill: !(parseInt(element?.billingQuantity) === parseInt(element?.quantity))
+						? element.sellingprice * (parseInt(element.billingQuantity) + 1)
+						: element.sellingprice * parseInt(element.billingQuantity),
 					code: element?.code,
 					model: element?.model,
 					originalPrice: element?.originalPrice,
@@ -166,6 +169,9 @@ function Order() {
 					}
 				}
 			});
+
+			// downloading bill
+			generateBill();
 		}
 	};
 
@@ -212,7 +218,9 @@ function Order() {
 							? parseInt(itemElement?.billingQuantity)
 							: parseInt(itemElement?.billingQuantity) + 1,
 					sellingprice: parseInt(itemElement?.sellingprice),
-					totalBill: parseInt(itemElement?.sellingprice) * (parseInt(itemElement?.billingQuantity) + 1),
+					totalBill: !(parseInt(itemElement?.billingQuantity) === parseInt(itemElement?.quantity))
+						? parseInt(itemElement?.sellingprice) * (parseInt(itemElement?.billingQuantity) + 1)
+						: parseInt(itemElement?.sellingprice) * parseInt(itemElement?.billingQuantity),
 					code: itemElement?.code,
 					model: itemElement?.model,
 					originalPrice: itemElement?.originalPrice,
@@ -565,7 +573,10 @@ function Order() {
 												<td>{item.sellingprice}</td>
 												<td>{item.totalBill}</td>
 												<td>
-													<Button className="deleteBTN" onClick={() => deleteBillingItem(item)}>
+													<Button
+														className="deleteBTN"
+														onClick={() => deleteBillingItem(item)}
+													>
 														DELETE
 													</Button>
 												</td>
@@ -588,7 +599,10 @@ function Order() {
 												<td>{item.sellingprice}</td>
 												<td>{item.totalBill}</td>
 												<td>
-													<Button className="deleteBTN" onClick={() => deleteBillingItem(item)}>
+													<Button
+														className="deleteBTN"
+														onClick={() => deleteBillingItem(item)}
+													>
 														DELETE
 													</Button>
 												</td>
@@ -606,7 +620,8 @@ function Order() {
 				<Card className="viewInventory__bottomCard order__totalCard">
 					<ListGroup variant="flush" className="order__bottomCardListGroup">
 						<ListGroup.Item className="viewInventory__bottomCardListGroupItem">
-							<span>Total :</span> <input type="text" onChange={() => {}} value={commaNumber(totalSales)} />
+							<span>Total :</span>{' '}
+							<input type="text" onChange={() => {}} value={commaNumber(totalSales)} />
 						</ListGroup.Item>
 						<ListGroup.Item className="viewInventory__bottomCardListGroupItem">
 							<span>Discount :</span>{' '}

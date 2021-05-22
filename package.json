@@ -14,6 +14,7 @@
     "bootstrap": "^4.6.0",
     "comma-number": "^2.0.1",
     "date-fns": "^2.19.0",
+    "easyinvoice": "^1.0.127",
     "firebase": "^8.3.0",
     "jquery": "^3.5.1",
     "popper.js": "^1.16.1",

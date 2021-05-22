@@ -39,10 +39,10 @@ export const generateBill = async (billingItems) => {
 		invoiceNumber: '2021.0001',
 		invoiceDate: '1.1.2021',
 		products: billingItems.map((item) => ({
-			quantity: item.quantity,
+			quantity: item.billingQuantity,
 			description: item.brand + ' ' + item.model,
 			tax: 0,
-			price: item.totalBill,
+			price: (item.totalBill)/item.billingQuantity,
 		})),
 
 		bottomNotice: 'Kindly pay your invoice within 15 days.',
